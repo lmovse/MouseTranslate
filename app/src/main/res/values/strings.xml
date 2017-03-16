@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Mouse 翻译</string>
+    <string name="item_about">关于</string>
+    <string name="app_settings">设置</string>
+    <string name="et_hint">请输入要翻译的词或句子</string>
+    <string name="result">译文</string>
+    <string name="invalid_translate">发生了一些不可描述的错误</string>
+    <string name="copy_success">复制成功</string>
+    <string name="give_me_five">见或不见</string>
+    <string name="five">"\n"你评，或者不评我，
+                        "\n"我就在那里，
+                        "\n"不悲不喜。
+                        "\n"你赞，或者不赞我，
+                        "\n"赞就在那里，
+                        "\n"不增不减。
+                        "\n"来我怀里，
+                        "\n"或者，
+                        "\n"让我住进你的心里。</string>
+    <string name="positive">见</string>
+    <string name="negative">不见</string>
+    <string name="negative_string">让我感谢你，赠我空欢喜</string>
+    <string name="positive_string">与君初相识，犹如故人归</string>
+    <string name="no_title">""</string>
+    <string name="positive_love">2017年2月3日</string>
+    <string name="dic">字典</string>
+    <string name="us_phonetic">美 : &#160;</string>
+    <string name="en_phonetic">英 : &#160;</string>
+    <string name="no_text">输入为空</string>
+    <string name="delete_success">删除成功</string>
+    <string name="confirm_exit">再点一次退出应用</string>
+    <string name="only_support_dic">当前源仅支持查词，请尝试更换翻译源</string>
+    <string name="close_night_mode">当前处于夜间模式，不支持更换主题, 请先关闭</string>
+</resources>
