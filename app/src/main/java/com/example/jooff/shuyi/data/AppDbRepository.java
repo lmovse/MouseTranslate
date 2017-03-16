@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 /**
  * Created by Jooff on 2017/1/20.
+ * 主要的数据仓库，可以说是一个数据源的代理对象，
+ * presenter 通过它来访问数据，包含本地数据与远程数据，
+ * Repository 本身并不能保存与获取数据，是通过数据源的增删改查来实现
  */
 
 public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSource.HistoryDbSource {

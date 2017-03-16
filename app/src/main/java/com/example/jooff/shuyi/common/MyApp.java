@@ -7,6 +7,7 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Created by Jooff on 2016/8/20.
+ * 自定义 Application ，实现一些资源的程序内共享
  */
 
 public class MyApp extends Application{

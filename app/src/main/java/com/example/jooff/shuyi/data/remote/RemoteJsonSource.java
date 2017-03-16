@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 /**
  * Created by Jooff on 2017/2/1.
+ * 定义 Json 格式的翻译源的访问与获取格式
  */
 
 public class RemoteJsonSource implements AppDbSource.TranslateDbSource {

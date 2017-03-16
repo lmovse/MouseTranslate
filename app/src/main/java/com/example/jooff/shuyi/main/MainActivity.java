@@ -38,7 +38,7 @@ import com.example.jooff.shuyi.common.SourceFragment;
 import com.example.jooff.shuyi.common.ThemeFragment;
 import com.example.jooff.shuyi.history.HistoryFragment;
 import com.example.jooff.shuyi.settings.SettingsFragment;
-import com.example.jooff.shuyi.translate.main.MainTranslateFragment;
+import com.example.jooff.shuyi.translate.main.MainTranslateView;
 import com.example.jooff.shuyi.util.ActivityCollector;
 import com.example.jooff.shuyi.util.AnimationUtil;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
         mProgressBar.setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.contentFrag, MainTranslateFragment.newInstance(transFrom, original)).commit();
+        fm.beginTransaction().replace(R.id.contentFrag, MainTranslateView.newInstance(transFrom, original)).commit();
     }
 
     @Override

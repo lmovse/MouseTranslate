@@ -11,5 +11,4 @@ public class YiYunTransApi {
     public static final String YIYUN_ORIGINAL_LAN = "&from=";
     public static final String YIYUN_RESULT_LAN = "&to=";
     public static final String YIYUN_ORIGINAL = "?text=";
-
 }

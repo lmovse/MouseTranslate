@@ -30,7 +30,7 @@ import butterknife.OnClick;
  * Created by Jooff on 2017/1/18.
  */
 
-public class MainTranslateFragment extends Fragment implements MainTranslateContract.View {
+public class MainTranslateView extends Fragment implements MainTranslateContract.View {
     private Context mContext;
     private MainTranslateContract.Presenter mPresenter;
     private OnAppStatusListener mListener;
@@ -54,11 +54,11 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
     @BindView(R.id.dic_web)
     TextView mWeb;
 
-    public static MainTranslateFragment newInstance(int transSource, String original) {
+    public static MainTranslateView newInstance(int transSource, String original) {
         Bundle bundle = new Bundle();
         bundle.putInt(Constant.ARG_FROM, transSource);
         bundle.putString(Constant.ARG_ORIGINAL, original);
-        MainTranslateFragment fragment = new MainTranslateFragment();
+        MainTranslateView fragment = new MainTranslateView();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -101,6 +101,9 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
         drawable.start();
     }
 
+    /*
+    翻译卡片结果
+     */
     @Override
     public void showResult(String result) {
         mTransCard.setVisibility(View.VISIBLE);
@@ -108,6 +111,9 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
         mResult.setText(result);
     }
 
+    /*
+    音标
+     */
     @Override
     public void showPhonetic(String usPhonetic, String ukPhonetic) {
         mPhonetic.setVisibility(View.VISIBLE);
@@ -115,18 +121,27 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
         mUkPhonetic.setText(ukPhonetic);
     }
 
+    /*
+    英文释义
+     */
     @Override
     public void showExplainEn(String explainEn) {
         mExplainEn.setVisibility(View.VISIBLE);
         mExplainEn.setText(explainEn);
     }
 
+    /*
+    中文释义
+     */
     @Override
     public void showExplain(String explain) {
         mExplain.setVisibility(View.VISIBLE);
         mExplain.setText(explain);
     }
 
+    /*
+    网络例句
+     */
     @Override
     public void showWeb(String web) {
         mDicCard.setVisibility(View.VISIBLE);
@@ -134,12 +149,18 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
         mWeb.setText(web);
     }
 
+    /*
+    翻译可能出现了错误：原因可能是 ① API 服务器不稳定；② 免费次数用光了；③ 没有网络；④ 不支持的文本或者文本过长
+     */
     @Override
     public void showError() {
         MySnackBar.getSnack(mTransCard, R.string.invalid_translate).show();
         mListener.onSnackBarShow();
     }
 
+    /*
+    在使用金山扇贝等只能查词的源时输入的是句子时提示
+     */
     @Override
     public void showNotSupport() {
         MySnackBar.getSnack(mTransCard, R.string.only_support_dic).setAction("换源", new View.OnClickListener() {
@@ -152,6 +173,9 @@ public class MainTranslateFragment extends Fragment implements MainTranslateCont
         mListener.onSnackBarShow();
     }
 
+    /*
+    通知主 activity 翻译完成，以便隐藏 progressbar 与显示原文
+     */
     @Override
     public void showCompletedTrans(String original) {
         if (mListener != null) {

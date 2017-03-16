@@ -27,12 +27,6 @@
                 android:layout_marginLeft="26dp"
                 android:background="@drawable/speechb3"
                 android:visibility="gone"/>
-            <ImageView
-                android:layout_marginLeft="26dp"
-                android:id="@+id/share_copy"
-                android:src="@drawable/ic_content_copy_white_18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
         </android.support.v7.widget.Toolbar>
 
@@ -92,7 +86,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="释义"
+            android:text="@string/explain"
             android:textColor="@color/black"
             android:textSize="16sp"/>
 

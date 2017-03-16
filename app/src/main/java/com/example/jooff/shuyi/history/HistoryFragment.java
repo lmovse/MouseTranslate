@@ -16,7 +16,7 @@ import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.bean.HistoryBean;
-import com.example.jooff.shuyi.translate.main.MainTranslateFragment;
+import com.example.jooff.shuyi.translate.main.MainTranslateView;
 import com.example.jooff.shuyi.main.DividerItemDecoration;
 import com.example.jooff.shuyi.common.MySnackBar;
 
@@ -69,7 +69,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void showTranslate(String original) {
-        MainTranslateFragment fragment = MainTranslateFragment.newInstance(0, original);
+        MainTranslateView fragment = MainTranslateView.newInstance(0, original);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, fragment).commit();
     }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by Jooff on 2017/1/20.
+ * 定义唯一数据 bean 以便适配多样的翻译源，其他源可以根据需要设置对应的值
  */
 
 public class TranslateBean {

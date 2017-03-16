@@ -15,7 +15,7 @@
 
         <activity
             android:launchMode="singleInstance"
-            android:name=".translate.dialog.DialogTransActivity"
+            android:name=".translate.dialog.DialogTransView"
             android:theme="@style/AlertDialogTheme">
             <intent-filter>
                 <action android:name="com.example.jooff.share"/>

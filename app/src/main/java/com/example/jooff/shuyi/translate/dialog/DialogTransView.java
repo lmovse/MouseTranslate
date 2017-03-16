@@ -1,7 +1,5 @@
 package com.example.jooff.shuyi.translate.dialog;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -18,16 +16,16 @@ import android.widget.TextView;
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.AboutFragment;
 import com.example.jooff.shuyi.common.Constant;
+import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.main.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
-import com.example.jooff.shuyi.common.MySnackBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class DialogTransActivity extends AppCompatActivity implements DialogTransContract.View, Toolbar.OnMenuItemClickListener {
+public class DialogTransView extends AppCompatActivity implements DialogTransContract.View, Toolbar.OnMenuItemClickListener {
     private DialogTransContract.Presenter mPresenter;
 
     @BindView(R.id.share_result)
@@ -75,7 +73,7 @@ public class DialogTransActivity extends AppCompatActivity implements DialogTran
         mResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DialogTransActivity.this, MainActivity.class);
+                Intent intent = new Intent(DialogTransView.this, MainActivity.class);
                 intent.putExtra("original", mEditText.getText().toString());
                 startActivity(intent);
             }
@@ -104,19 +102,11 @@ public class DialogTransActivity extends AppCompatActivity implements DialogTran
         mPresenter.beginTrans(mEditText.getText().toString());
     }
 
-    @OnClick(R.id.share_copy)
-    public void onCopy(){
-        ClipboardManager clipboardManager = (ClipboardManager) this.getSystemService(CLIPBOARD_SERVICE);
-        ClipData result = ClipData.newPlainText("result", mResult.getText().toString());
-        clipboardManager.setPrimaryClip(result);
-        MySnackBar.getSnack(mResult, R.string.copy_success).show();
-    }
-
     @Override
     public void showTrans(String original, String result) {
         mEditText.setText(original);
         mResult.setText(result);
-        mResult.startAnimation(AnimationUtil.getAlpha(DialogTransActivity.this));
+        mResult.startAnimation(AnimationUtil.getAlpha(DialogTransView.this));
     }
 
     @Override

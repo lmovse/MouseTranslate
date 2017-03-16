@@ -7,7 +7,7 @@
     <string name="invalid_translate">发生了一些不可描述的错误</string>
     <string name="copy_success">复制成功</string>
     <string name="give_me_five">见或不见</string>
-    <string name="five">"\n"你评，或者不评我，
+    <string name="five">"\n"你见，或者不见我，
                         "\n"我就在那里，
                         "\n"不悲不喜。
                         "\n"你赞，或者不赞我，
@@ -30,4 +30,5 @@
     <string name="confirm_exit">再点一次退出应用</string>
     <string name="only_support_dic">当前源仅支持查词，请尝试更换翻译源</string>
     <string name="close_night_mode">当前处于夜间模式，不支持更换主题, 请先关闭</string>
+    <string name="explain">释义</string>
 </resources>

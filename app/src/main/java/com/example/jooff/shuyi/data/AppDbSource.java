@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Jooff on 2017/1/13.
+ * 定义一个数据源接口，实现了此数据源接口的类便可以提供数据
  */
 
 public interface AppDbSource {

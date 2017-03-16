@@ -13,6 +13,7 @@ import java.io.IOException;
 
 /**
  * Created by Jooff on 2017/1/25.
+ * 定义 XML 源的访问与获取格式
  */
 
 public class RemoteXmlSource implements AppDbSource.TranslateDbSource {

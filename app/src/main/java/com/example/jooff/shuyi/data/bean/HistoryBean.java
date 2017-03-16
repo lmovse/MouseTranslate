@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 /**
  * Created by jooff on 16/7/30.
+ * 历史记录  bean 包含两个属性值，原文与译文，不存储具体翻译结果
  */
 
 public class HistoryBean implements Serializable{
