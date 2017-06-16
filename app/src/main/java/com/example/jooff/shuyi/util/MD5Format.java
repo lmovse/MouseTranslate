@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by Jooff on 2017/1/30.
+ * Tomorrow is a nice day
  */
 
 public class MD5Format {

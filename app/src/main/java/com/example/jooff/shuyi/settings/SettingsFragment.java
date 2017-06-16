@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Jooff on 2017/1/24.
+ * Tomorrow is a nice day
  */
 
 public class SettingsFragment extends DialogFragment implements SettingsContract.View, CompoundButton.OnCheckedChangeListener {
@@ -27,10 +28,13 @@ public class SettingsFragment extends DialogFragment implements SettingsContract
 
     @BindView(R.id.copy_trans)
     SwitchCompat copyTrans;
+
     @BindView(R.id.trans_mode)
     SwitchCompat transMode;
+
     @BindView(R.id.night_mode)
     SwitchCompat nightMode;
+
     @BindView(R.id.note_mode)
     SwitchCompat noteMode;
 

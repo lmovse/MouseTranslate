@@ -7,13 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jooff.shuyi.data.AppDbSchema;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.bean.HistoryBean;
-import com.example.jooff.shuyi.data.bean.TranslateBean;
+import com.example.jooff.shuyi.data.entity.History;
+import com.example.jooff.shuyi.data.entity.Translate;
 
 import java.util.ArrayList;
 
 /**
  * Created by Jooff on 2016/8/14.
+ * Tomorrow is a nice day
  */
 
 public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.TranslateDbSource {
@@ -44,11 +45,11 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
 
     @Override
     public void getTrans(String original, AppDbSource.TranslateCallback callback) {
-        HistoryBean his = getHistoryItem(original);
-        TranslateBean trans = new TranslateBean();
-        if (his.getTextResult() != null) {
-            trans.setQuery(his.getTextOriginal());
-            trans.setTranslation(his.getTextResult());
+        History his = getHistory(original);
+        Translate trans = new Translate();
+        if (his.getResult() != null) {
+            trans.setQuery(his.getOriginal());
+            trans.setTranslation(his.getResult());
             callback.onResponse(trans);
         } else {
             callback.onError(0);
@@ -56,18 +57,24 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
     }
 
     @Override
-    public void saveHistoryItem(HistoryBean historyBean) {
-        if (getHistoryItem(historyBean.getTextOriginal()) == null) {
+    public void saveHistory(History history) {
+        if (getHistory(history.getOriginal()) == null) {
             ContentValues values = new ContentValues();
-            values.put(AppDbSchema.HistoryTable.ORIGINAL, historyBean.getTextOriginal());
-            values.put(AppDbSchema.HistoryTable.RESULT, historyBean.getTextResult());
+            values.put(AppDbSchema.HistoryTable.ORIGINAL, history.getOriginal());
+            values.put(AppDbSchema.HistoryTable.RESULT, history.getResult());
             db.insert(AppDbSchema.HistoryTable.TABLE_NAME, null, values);
+        } else {
+            ContentValues values = new ContentValues();
+            String updateClause = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
+            String[] updateArgs = {history.getOriginal()};
+            values.put(AppDbSchema.HistoryTable.RESULT, history.getResult());
+            db.update(AppDbSchema.HistoryTable.TABLE_NAME, values, updateClause, updateArgs);
         }
     }
 
     @Override
-    public HistoryBean getHistoryItem(String original) {
-        HistoryBean item = null;
+    public History getHistory(String original) {
+        History item = null;
         String queryLogic = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
         String[] queryArgs = {original};
         Cursor cursor = db.query(AppDbSchema.HistoryTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
@@ -75,7 +82,7 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
             cursor.moveToFirst();
             String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
             String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-            item = new HistoryBean(textOriginal, textResult);
+            item = new History(textOriginal, textResult);
         }
         if (cursor != null) {
             cursor.close();
@@ -84,14 +91,14 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
     }
 
     @Override
-    public ArrayList<HistoryBean> getHistory() {
-        ArrayList<HistoryBean> items = new ArrayList<>();
+    public ArrayList<History> getHistorys() {
+        ArrayList<History> items = new ArrayList<>();
         Cursor cursor = db.query(AppDbSchema.HistoryTable.TABLE_NAME, null, null, null, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
-                String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-                HistoryBean item = new HistoryBean(textOriginal, textResult);
+                String hisOrigin = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
+                String hisResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
+                History item = new History(hisOrigin, hisResult);
                 items.add(0, item);
             }
         }
@@ -102,11 +109,11 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
     }
 
     @Override
-    public void deleteHistoryItem(String original) {
+    public void deleteHistory(String original) {
         //指定删除的逻辑
-        String deleteLogic = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
+        String deleteClause = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
         String[] deleteArgs = {original};
-        db.delete(AppDbSchema.HistoryTable.TABLE_NAME, deleteLogic, deleteArgs);
+        db.delete(AppDbSchema.HistoryTable.TABLE_NAME, deleteClause, deleteArgs);
     }
 
 }

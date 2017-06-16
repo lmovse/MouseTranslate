@@ -7,6 +7,7 @@ import com.example.jooff.shuyi.base.BaseView;
 
 /**
  * Created by Jooff on 2017/1/18.
+ * Tomorrow is a nice day
  */
 
 public interface MainTranslateContract {

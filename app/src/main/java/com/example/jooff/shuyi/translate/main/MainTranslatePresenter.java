@@ -5,12 +5,13 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.bean.HistoryBean;
-import com.example.jooff.shuyi.data.bean.TranslateBean;
+import com.example.jooff.shuyi.data.entity.History;
+import com.example.jooff.shuyi.data.entity.Translate;
 
 import java.io.IOException;
 
@@ -18,6 +19,7 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * Created by Jooff on 2017/1/18.
+ * Tomorrow is a nice day
  */
 
 public class MainTranslatePresenter implements MainTranslateContract.Presenter {
@@ -41,15 +43,16 @@ public class MainTranslatePresenter implements MainTranslateContract.Presenter {
     public void loadData() {
         mAppDbRepository.setTranFrom(transFrom).getTrans(mOriginal, new AppDbSource.TranslateCallback() {
             @Override
-            public void onResponse(TranslateBean response) {
+            public void onResponse(Translate response) {
                 if (response == null) {
                     mView.showError();
+                    return;
                 }
-                assert response != null;
                 mView.showCompletedTrans(response.getQuery());
                 if (transFrom != 0) {
-                    HistoryBean historyBean = new HistoryBean(response.getQuery(), response.getTranslation());
-                    mAppDbRepository.saveHistoryItem(historyBean);
+                    History history = new History(response.getQuery(), response.getTranslation());
+                    Log.d("history", "onResponse: " + history.toString());
+                    mAppDbRepository.saveHistory(history);
                 }
                 if (response.getTranslation() != null) {
                     mView.showResult(response.getTranslation());

@@ -1,4 +1,4 @@
-package com.example.jooff.shuyi.data.bean;
+package com.example.jooff.shuyi.data.entity;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import java.util.List;
  * 定义唯一数据 bean 以便适配多样的翻译源，其他源可以根据需要设置对应的值
  */
 
-public class TranslateBean {
+public class Translate {
     //    查询对象
     private String query;
     //    基本释义

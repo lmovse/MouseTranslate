@@ -10,7 +10,7 @@ import android.util.Log;
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.bean.TranslateBean;
+import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 import com.example.jooff.shuyi.util.UTF8Format;
 
@@ -20,6 +20,7 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by Jooff on 2017/2/1.
+ * Tomorrow is a nice day
  */
 
 public class DialogTransPresenter implements DialogTransContract.Presenter {
@@ -44,7 +45,7 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
                     + YouDaoTransAPI.YOUDAO_ORIGINAL + UTF8Format.encode(original.replace("\n", ""));
             RemoteJsonSource.getInstance().setSource(3).getTrans(url, new AppDbSource.TranslateCallback() {
                 @Override
-                public void onResponse(TranslateBean response) {
+                public void onResponse(Translate response) {
                     String original = response.getQuery();
                     if (response.getExplains() != null) {
                         String explain = response.getExplains();

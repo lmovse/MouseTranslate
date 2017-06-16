@@ -3,7 +3,7 @@ package com.example.jooff.shuyi.data;
 import android.content.Context;
 
 import com.example.jooff.shuyi.R;
-import com.example.jooff.shuyi.data.bean.HistoryBean;
+import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.local.LocalDbSource;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 import com.example.jooff.shuyi.data.remote.RemoteXmlSource;
@@ -63,23 +63,23 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
-    public void saveHistoryItem(HistoryBean historyBean) {
-        mLocalDbSource.saveHistoryItem(historyBean);
+    public void saveHistory(History history) {
+        mLocalDbSource.saveHistory(history);
     }
 
     @Override
-    public HistoryBean getHistoryItem(String original) {
-        return mLocalDbSource.getHistoryItem(original);
+    public History getHistory(String original) {
+        return mLocalDbSource.getHistory(original);
     }
 
     @Override
-    public ArrayList<HistoryBean> getHistory() {
-        return mLocalDbSource.getHistory();
+    public ArrayList<History> getHistorys() {
+        return mLocalDbSource.getHistorys();
     }
 
     @Override
-    public void deleteHistoryItem(String original) {
-        mLocalDbSource.deleteHistoryItem(original);
+    public void deleteHistory(String original) {
+        mLocalDbSource.deleteHistory(original);
     }
 
 }

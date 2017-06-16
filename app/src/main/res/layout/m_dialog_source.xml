@@ -12,7 +12,7 @@
 
         <RadioButton
             android:id="@+id/source_youdao"
-            android:text="有道"
+            android:text="@string/source_youdao"
             android:textSize="18sp"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
 
         <RadioButton
             android:id="@+id/source_jinshan"
-            android:text="金山"
+            android:text="@string/source_jinshan"
             android:textSize="18sp"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -31,7 +31,7 @@
             android:id="@+id/source_baidu"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:text="百度"
+            android:text="@string/source_baidu"
             android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -41,7 +41,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textSize="18sp"
-            android:text="译云"
+            android:text="@string/source_yiyun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -50,7 +50,7 @@
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textSize="18sp"
-            android:text="扇贝"
+            android:text="@string/source_shanbei"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </RadioGroup>

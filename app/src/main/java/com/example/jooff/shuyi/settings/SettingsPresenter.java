@@ -9,6 +9,7 @@ import static com.example.jooff.shuyi.common.Constant.ARG_TRANS;
 
 /**
  * Created by Jooff on 2017/1/24.
+ * Tomorrow is a nice day
  */
 
 public class SettingsPresenter implements SettingsContract.Presenter {

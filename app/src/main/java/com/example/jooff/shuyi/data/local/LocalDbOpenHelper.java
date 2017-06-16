@@ -8,6 +8,7 @@ import com.example.jooff.shuyi.data.AppDbSchema;
 
 /**
  * Created by Jooff on 2016/8/14.
+ * Tomorrow is a nice day
  */
 
 public class LocalDbOpenHelper extends SQLiteOpenHelper {
@@ -15,7 +16,6 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
     /**
      * History建表语句
      */
-
     private static final String CREATE_HISTORY = "CREATE TABLE "
             + AppDbSchema.HistoryTable.TABLE_NAME + " ("
             + AppDbSchema.HistoryTable._ID + " integer" + " primary key autoincrement" + ", "
@@ -29,11 +29,9 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_HISTORY);
-
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {}
 
-    }
 }

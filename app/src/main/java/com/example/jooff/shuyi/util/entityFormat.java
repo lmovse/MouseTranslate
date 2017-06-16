@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.jooff.shuyi.api.ShanBeiTransApi;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.bean.TranslateBean;
+import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 
 import org.json.JSONException;
@@ -20,29 +20,30 @@ import java.util.List;
 
 /**
  * Created by Jooff on 2017/1/31.
+ * Tomorrow is a nice day
  */
 
-public class BeanFormat {
-    private static TranslateBean translateBean = new TranslateBean();
+public class EntityFormat {
+    private static Translate sTranslate = new Translate();
     private static List<String> original = new ArrayList<>();
     private static List<String> translate = new ArrayList<>();
 
     public static void getBeanFromYoudao(final JSONObject json, AppDbSource.TranslateCallback callback) throws JSONException {
-        translateBean.setQuery(json.getString("query"));
-        translateBean.setTranslation(json.getJSONArray("translation").toString().substring(2, json.getJSONArray("translation").toString().length() - 2));
+        sTranslate.setQuery(json.getString("query"));
+        sTranslate.setTranslation(json.getJSONArray("translation").toString().substring(2, json.getJSONArray("translation").toString().length() - 2));
         if (json.getInt("errorCode") != 0) {
             callback.onError(1);
             return;
         }
         if (!json.isNull("basic")) {
-            translateBean.setExplains(json.getJSONObject("basic").getJSONArray("explains").toString()
+            sTranslate.setExplains(json.getJSONObject("basic").getJSONArray("explains").toString()
                     .substring(2, json.getJSONObject("basic").getJSONArray("explains").toString().length() - 2)
                     .replace("\",\"", "\n"));
             if (!json.getJSONObject("basic").isNull("us-phonetic")) {
-                translateBean.setUkPhonetic(json.getJSONObject("basic").getString("uk-phonetic"));
-                translateBean.setUsPhonetic(json.getJSONObject("basic").getString("us-phonetic"));
-                translateBean.setUkSpeech(json.getJSONObject("basic").getString("uk-speech"));
-                translateBean.setUsSpeech(json.getJSONObject("basic").getString("us-speech"));
+                sTranslate.setUkPhonetic(json.getJSONObject("basic").getString("uk-phonetic"));
+                sTranslate.setUsPhonetic(json.getJSONObject("basic").getString("us-phonetic"));
+                sTranslate.setUkSpeech(json.getJSONObject("basic").getString("uk-speech"));
+                sTranslate.setUsSpeech(json.getJSONObject("basic").getString("us-speech"));
             }
         }
         if (!json.isNull("web")) {
@@ -53,10 +54,10 @@ public class BeanFormat {
                             .substring(2, json.getJSONArray("web").getJSONObject(i).getJSONArray("value").toString().length() - 2));
                 }
             }
-            translateBean.setOriginal(original);
-            translateBean.setTranslate(translate);
+            sTranslate.setOriginal(original);
+            sTranslate.setTranslate(translate);
         }
-        callback.onResponse(translateBean);
+        callback.onResponse(sTranslate);
         clearTrans();
     }
 
@@ -115,40 +116,40 @@ public class BeanFormat {
             Log.d("explains", "getBeanFromJinShan: " + explain);
             if (explain.split("\\.").length > 1) {
                 explain = explain.substring(0, explain.length() - 1);
-                translateBean.setTranslation(explain.split("\\.")[1].split("；")[0].replace(" ", ""));
-                translateBean.setExplains(explain);
+                sTranslate.setTranslation(explain.split("\\.")[1].split("；")[0].replace(" ", ""));
+                sTranslate.setExplains(explain);
             }
         }
         if (!ukPhonetic.equals("")) {
-            translateBean.setUkPhonetic(ukPhonetic);
+            sTranslate.setUkPhonetic(ukPhonetic);
         }
         if (original.isEmpty()){
             callback.onError(2);
             clearTrans();
             return;
         }
-        translateBean.setQuery(query);
-        translateBean.setUsSpeech(usSpeech);
-        translateBean.setUkSpeech(ukSpeech);
-        translateBean.setUsPhonetic(usPhonetic);
-        translateBean.setOriginal(original);
-        translateBean.setTranslate(translate);
-        callback.onResponse(translateBean);
+        sTranslate.setQuery(query);
+        sTranslate.setUsSpeech(usSpeech);
+        sTranslate.setUkSpeech(ukSpeech);
+        sTranslate.setUsPhonetic(usPhonetic);
+        sTranslate.setOriginal(original);
+        sTranslate.setTranslate(translate);
+        callback.onResponse(sTranslate);
         clearTrans();
     }
 
     public static void getBeanFromBaidu(JSONObject json, AppDbSource.TranslateCallback callback) throws JSONException {
-        TranslateBean translateBean = new TranslateBean();
-        translateBean.setQuery(json.getJSONArray("trans_result").getJSONObject(0).getString("src"));
-        translateBean.setTranslation(json.getJSONArray("trans_result").getJSONObject(0).getString("dst"));
-        callback.onResponse(translateBean);
+        Translate translate = new Translate();
+        translate.setQuery(json.getJSONArray("trans_result").getJSONObject(0).getString("src"));
+        translate.setTranslation(json.getJSONArray("trans_result").getJSONObject(0).getString("dst"));
+        callback.onResponse(translate);
     }
 
     public static void getBeanFromYiyun(JSONObject json, AppDbSource.TranslateCallback callback) throws JSONException {
-        TranslateBean translateBean = new TranslateBean();
-        translateBean.setQuery(json.getJSONArray("translation").getJSONObject(0).getJSONArray("translated").getJSONObject(0).getString("src-tokenized").replace(" ", ""));
-        translateBean.setTranslation(json.getJSONArray("translation").getJSONObject(0).getJSONArray("translated").getJSONObject(0).getString("text"));
-        callback.onResponse(translateBean);
+        Translate translate = new Translate();
+        translate.setQuery(json.getJSONArray("translation").getJSONObject(0).getJSONArray("translated").getJSONObject(0).getString("src-tokenized").replace(" ", ""));
+        translate.setTranslation(json.getJSONArray("translation").getJSONObject(0).getJSONArray("translated").getJSONObject(0).getString("text"));
+        callback.onResponse(translate);
     }
 
     public static void getBeanFromShanBei(JSONObject json, AppDbSource.TranslateCallback callback) throws JSONException {
@@ -166,27 +167,27 @@ public class BeanFormat {
                         + json.getJSONArray("data").getJSONObject(i).getString("last"));
                 translate.add(json.getJSONArray("data").getJSONObject(i).getString("translation"));
             }
-            translateBean.setOriginal(original);
-            translateBean.setTranslate(translate);
-            callback.onResponse(translateBean);
+            sTranslate.setOriginal(original);
+            sTranslate.setTranslate(translate);
+            callback.onResponse(sTranslate);
         }
         if (json.toString().contains("pronunciations")) {
-            translateBean.setExplains(json.getJSONObject("data").getString("definition")
+            sTranslate.setExplains(json.getJSONObject("data").getString("definition")
                     .replace(" ", "")
                     .replace(".", ". "));
             if (json.getJSONObject("data").getJSONObject("en_definitions").toString().length() > 2) {
-                translateBean.setExplainsEn(json.getJSONObject("data").getJSONObject("en_definitions").toString()
+                sTranslate.setExplainsEn(json.getJSONObject("data").getJSONObject("en_definitions").toString()
                         .substring(1, json.getJSONObject("data").getJSONObject("en_definitions").toString().length() - 2)
                         .replace("\"", "")
                         .replace(":[", ": ")
                         .replace("],", "\n\n"));
             }
-            translateBean.setQuery(json.getJSONObject("data").getString("content"));
+            sTranslate.setQuery(json.getJSONObject("data").getString("content"));
             if (!json.getJSONObject("data").getJSONObject("pronunciations").getString("uk").equals("")) {
-                translateBean.setUkPhonetic(json.getJSONObject("data").getJSONObject("pronunciations").getString("uk"));
-                translateBean.setUsPhonetic(json.getJSONObject("data").getJSONObject("pronunciations").getString("us"));
-                translateBean.setUkSpeech(json.getJSONObject("data").getString("uk_audio"));
-                translateBean.setUsSpeech(json.getJSONObject("data").getString("us_audio"));
+                sTranslate.setUkPhonetic(json.getJSONObject("data").getJSONObject("pronunciations").getString("uk"));
+                sTranslate.setUsPhonetic(json.getJSONObject("data").getJSONObject("pronunciations").getString("us"));
+                sTranslate.setUkSpeech(json.getJSONObject("data").getString("uk_audio"));
+                sTranslate.setUsSpeech(json.getJSONObject("data").getString("us_audio"));
             }
             translation = json.getJSONObject("data").getString("definition");
             if (translation.contains(".")) {
@@ -194,7 +195,7 @@ public class BeanFormat {
                         .split(",")[0]
                         .replace(" ", "");
             }
-            translateBean.setTranslation(translation);
+            sTranslate.setTranslation(translation);
             if (json.getJSONObject("data").getString("id") != null) {
                 String id = ShanBeiTransApi.SHANBEI_EXAMPLE_URL + json.getJSONObject("data").getString("id") + "&type=sys";
                 RemoteJsonSource.getInstance().setSource(2).getTrans(id, callback);
@@ -203,7 +204,7 @@ public class BeanFormat {
     }
 
     private static void clearTrans() {
-        translateBean = new TranslateBean();
+        sTranslate = new Translate();
         original = new ArrayList<>();
         translate = new ArrayList<>();
     }

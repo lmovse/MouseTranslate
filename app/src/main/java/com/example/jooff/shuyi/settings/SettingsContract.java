@@ -5,6 +5,7 @@ import com.example.jooff.shuyi.base.BaseView;
 
 /**
  * Created by Jooff on 2017/1/24.
+ * Tomorrow is a nice day
  */
 
 public class SettingsContract {

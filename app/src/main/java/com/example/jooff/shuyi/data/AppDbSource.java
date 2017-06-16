@@ -1,7 +1,7 @@
 package com.example.jooff.shuyi.data;
 
-import com.example.jooff.shuyi.data.bean.HistoryBean;
-import com.example.jooff.shuyi.data.bean.TranslateBean;
+import com.example.jooff.shuyi.data.entity.History;
+import com.example.jooff.shuyi.data.entity.Translate;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ public interface AppDbSource {
 
     interface TranslateCallback {
 
-        void onResponse(TranslateBean response);
+        void onResponse(Translate response);
 
         void onError(int errorCode);
 
@@ -22,13 +22,13 @@ public interface AppDbSource {
 
     interface HistoryDbSource {
 
-        void saveHistoryItem(HistoryBean historyBean);
+        void saveHistory(History history);
 
-        HistoryBean getHistoryItem(String original);
+        History getHistory(String original);
 
-        ArrayList<HistoryBean> getHistory();
+        ArrayList<History> getHistorys();
 
-        void deleteHistoryItem(String original);
+        void deleteHistory(String original);
 
     }
 

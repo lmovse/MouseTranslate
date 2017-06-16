@@ -2,7 +2,7 @@ package com.example.jooff.shuyi.history;
 
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.bean.HistoryBean;
+import com.example.jooff.shuyi.data.entity.History;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void loadData() {
-        ArrayList<HistoryBean> items = mHistoryDbSource.getHistory();
+        ArrayList<History> items = mHistoryDbSource.getHistorys();
         if (!items.isEmpty()) {
             mHistoryView.showHistory(items);
         }
@@ -36,15 +36,15 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void deleteHistoryItem(int position) {
-        String original = mHistoryDbSource.getHistory().get(position).getTextOriginal();
-        mHistoryDbSource.deleteHistoryItem(original);
+        String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
+        mHistoryDbSource.deleteHistory(original);
         mHistoryView.showHistoryDeleted();
     }
 
     @Override
     public void beginTranslate(int position) {
-        HistoryBean item = mHistoryDbSource.getHistory().get(position);
-        String original = item.getTextOriginal();
+        History item = mHistoryDbSource.getHistorys().get(position);
+        String original = item.getOriginal();
         mHistoryView.showTranslate(original);
     }
 

@@ -5,7 +5,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.util.BeanFormat;
+import com.example.jooff.shuyi.util.EntityFormat;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -35,7 +35,7 @@ public class RemoteXmlSource implements AppDbSource.TranslateDbSource {
             @Override
             public void onResponse(String s) {
                 try {
-                    BeanFormat.getBeanFromJinShan(new String(s.getBytes("ISO-8859-1"), "utf-8"), callback);
+                    EntityFormat.getBeanFromJinShan(new String(s.getBytes("ISO-8859-1"), "utf-8"), callback);
                 } catch (XmlPullParserException | IOException e) {
                     e.printStackTrace();
                 }

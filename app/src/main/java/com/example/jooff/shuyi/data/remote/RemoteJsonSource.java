@@ -4,7 +4,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.util.BeanFormat;
+import com.example.jooff.shuyi.util.EntityFormat;
 import com.example.jooff.shuyi.common.MyApp;
 
 import org.json.JSONException;
@@ -43,16 +43,16 @@ public class RemoteJsonSource implements AppDbSource.TranslateDbSource {
                 try {
                     switch (source) {
                         case 0:
-                            BeanFormat.getBeanFromBaidu(s, callback);
+                            EntityFormat.getBeanFromBaidu(s, callback);
                             break;
                         case 1:
-                            BeanFormat.getBeanFromYiyun(s, callback);
+                            EntityFormat.getBeanFromYiyun(s, callback);
                             break;
                         case 2:
-                            BeanFormat.getBeanFromShanBei(s, callback);
+                            EntityFormat.getBeanFromShanBei(s, callback);
                             break;
                         case 3:
-                            BeanFormat.getBeanFromYoudao(s, callback);
+                            EntityFormat.getBeanFromYoudao(s, callback);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

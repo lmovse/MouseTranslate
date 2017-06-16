@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
 import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.data.bean.HistoryBean;
+import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.translate.main.MainTranslateView;
-import com.example.jooff.shuyi.main.DividerItemDecoration;
-import com.example.jooff.shuyi.common.MySnackBar;
+import com.example.jooff.shuyi.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -27,6 +27,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Jooff on 2017/1/14.
+ * Tomorrow is a nice day
  */
 
 public class HistoryFragment extends Fragment implements HistoryContract.View {
@@ -50,7 +51,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void initView() {
-        mAdapter = new HistoryRvAdapter(new ArrayList<HistoryBean>(0), mListener);
+        mAdapter = new HistoryRvAdapter(new ArrayList<History>(0), mListener);
         recHistory.setAdapter(mAdapter);
         recHistory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recHistory.setNestedScrollingEnabled(false);
@@ -62,7 +63,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     }
 
     @Override
-    public void showHistory(ArrayList<HistoryBean> items) {
+    public void showHistory(ArrayList<History> items) {
         mAdapter.refreshItems(items);
         cardHistory.setVisibility(View.VISIBLE);
     }
@@ -122,23 +123,23 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     class HistoryRvAdapter extends RecyclerView.Adapter<HistoryRvAdapter.historyViewHolder> {
         private OnItemClickListener onItemClickListener;
-        private ArrayList<HistoryBean> items;
+        private ArrayList<History> items;
 
         @Override
         public HistoryRvAdapter.historyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new HistoryRvAdapter.historyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.m_item_history, parent, false));
         }
 
-        public HistoryRvAdapter(ArrayList<HistoryBean> items, OnItemClickListener listener) {
+        public HistoryRvAdapter(ArrayList<History> items, OnItemClickListener listener) {
             this.items = items;
             onItemClickListener = listener;
         }
 
         @Override
         public void onBindViewHolder(final HistoryRvAdapter.historyViewHolder holder, int position) {
-            HistoryBean item = items.get(position);
-            holder.textOriginal.setText(item.getTextOriginal());
-            holder.textResult.setText(item.getTextResult());
+            History item = items.get(position);
+            holder.textOriginal.setText(item.getOriginal());
+            holder.textResult.setText(item.getResult());
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -161,7 +162,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
         }
 
-        public void refreshItems(ArrayList<HistoryBean> items) {
+        public void refreshItems(ArrayList<History> items) {
             this.items = items;
             notifyDataSetChanged();
         }

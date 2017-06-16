@@ -4,7 +4,9 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
@@ -56,20 +58,28 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
     @BindView(R.id.result_spinner)
     Spinner mSpinner;
+
     @BindView(R.id.et)
     EditText mEditText;
+
     @BindView(R.id.appbar)
     AppBarLayout mAppBarLayout;
+
     @BindView(R.id.contentFrag)
     FrameLayout mContentFrag;
+
     @BindView(R.id.progress_bar)
     ProgressBar mProgressBar;
+
     @BindView(R.id.fab_menu)
     FloatingActionsMenu mFabMenu;
+
     @BindView(R.id.coordinator)
     CoordinatorLayout mCoordinatorLayout;
+
     @BindView(R.id.status_bar)
     Button mStatus;
 
@@ -209,15 +219,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showNotification() {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent intent = new Intent("com.example.jooff.share");
+        Intent intent = new Intent(this.getString(R.string.share_intent));
         intent.setType("text/*");
         PendingIntent notifyIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher1)
                 .setOngoing(true)
                 .setContentIntent(notifyIntent)
-                .setContentTitle("Mouse 翻译")
-                .setContentText("点击进行快速查词").build();
+                .setContentTitle(this.getString(R.string.app_name))
+                .setContentText(this.getString(R.string.notifi_name)).build();
         manager.notify(1, notification);
     }
 
@@ -227,12 +237,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         manager.cancelAll();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setTransparent(int colorPrimary) {
         getWindow().setStatusBarColor(colorPrimary);
         getWindow().setNavigationBarColor(colorPrimary);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setMaterial(int colorPrimaryDark) {
         getWindow().setStatusBarColor(colorPrimaryDark);

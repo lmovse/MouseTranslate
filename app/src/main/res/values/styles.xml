@@ -3,7 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:listDivider">@drawable/m_divider_bg</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="AlertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
@@ -20,6 +19,5 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.AppbarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
 
 </resources>
