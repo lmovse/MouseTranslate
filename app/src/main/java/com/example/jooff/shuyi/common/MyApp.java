@@ -1,6 +1,7 @@
 package com.example.jooff.shuyi.common;
 
 import android.app.Application;
+import android.graphics.Color;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -12,6 +13,8 @@ import com.android.volley.toolbox.Volley;
 
 public class MyApp extends Application{
     public static RequestQueue sRequestQueue;
+    public static boolean sIsNightMode = false;
+    public static int sColorPrimary = Color.parseColor("#35464e");
 
     @Override
     public void onCreate() {

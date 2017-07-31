@@ -6,16 +6,15 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -29,11 +28,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.AboutFragment;
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.common.CopyTranslateService;
+import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
 import com.example.jooff.shuyi.common.SourceFragment;
@@ -92,14 +93,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
         initView();
-        Log.d("ok", "onCreate: ok");
         ActivityCollector.addActivity(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ActivityCollector.removeActivity(this);
     }
 
     @Override
@@ -115,29 +109,33 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         return true;
     }
 
+    // 解决旋转屏幕时报空指针
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {}
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     @OnClick(R.id.fab_setting)
     public void openSetting() {
-        SettingsFragment sf = new SettingsFragment();
-        sf.show(getSupportFragmentManager(), "sf");
-        mFabMenu.collapse();
+        showFrag(new SettingsFragment(), "sf");
     }
 
     @OnClick(R.id.fab_theme)
     public void setTheme() {
-        ThemeFragment tf = new ThemeFragment();
-        tf.show(getSupportFragmentManager(), "tf");
-        mFabMenu.collapse();
+        showFrag(new ThemeFragment(), "tf");
     }
 
     @OnClick(R.id.fab_source)
     public void setSource() {
-        SourceFragment sft = new SourceFragment();
-        sft.show(getSupportFragmentManager(), "sft");
+        showFrag(new SourceFragment(), "sft");
+    }
+
+    private void showFrag(DialogFragment fragment, String name) {
+        fragment.show(getSupportFragmentManager(), name);
         mFabMenu.collapse();
     }
 
@@ -161,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @OnItemSelected(R.id.result_spinner)
     public void onSelected(int position) {
+        // 更新所选目标语言
         String resultLan = getResources().getStringArray(R.array.BDLanguageEN)[position];
         mPresenter.refreshResultLan(resultLan);
     }
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.setType("text/*");
         PendingIntent notifyIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher1)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setOngoing(true)
                 .setContentIntent(notifyIntent)
                 .setContentTitle(this.getString(R.string.app_name))
@@ -237,35 +236,29 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         manager.cancelAll();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setTransparent(int colorPrimary) {
-        getWindow().setStatusBarColor(colorPrimary);
-        getWindow().setNavigationBarColor(colorPrimary);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(colorPrimary);
+            getWindow().setNavigationBarColor(colorPrimary);
+        } else {
+            Toast.makeText(this, "当前系统版本不支持此操作", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void setMaterial(int colorPrimaryDark) {
-        getWindow().setStatusBarColor(colorPrimaryDark);
-        getWindow().setNavigationBarColor(colorPrimaryDark);
-    }
-
-    @Override
-    public void initLayout() {
-        mStatus.setVisibility(View.VISIBLE);
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics());
-        params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
-        mAppBarLayout.setLayoutParams(params);
-        params = (CoordinatorLayout.LayoutParams) mContentFrag.getLayoutParams();
-        params.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics()), 0, 0);
-        mContentFrag.setLayoutParams(params);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(colorPrimaryDark);
+            getWindow().setNavigationBarColor(colorPrimaryDark);
+        } else {
+            Toast.makeText(this, "当前系统版本不支持此操作", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void initTheme(int themeId, int colorPrimary) {
-        Constant.sColorPrimary = colorPrimary;
+        MyApp.sColorPrimary = colorPrimary;
         MySnackBar.color = colorPrimary;
         switch (themeId) {
             case 1024:
@@ -385,6 +378,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void initView() {
         mPresenter.initSettings();
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            initKitKatLayout();
+        }
         mPresenter.loadData();
         String original = getIntent().getStringExtra("original");
         if (original != null) {
@@ -392,9 +388,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -405,10 +399,20 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-
-            }
+            public void afterTextChanged(Editable s) {}
         });
+    }
+
+    @Override
+    public void initKitKatLayout() {
+        mStatus.setVisibility(View.VISIBLE);
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics());
+        params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+        mAppBarLayout.setLayoutParams(params);
+        params = (CoordinatorLayout.LayoutParams) mContentFrag.getLayoutParams();
+        params.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics()), 0, 0);
+        mContentFrag.setLayoutParams(params);
     }
 
 }

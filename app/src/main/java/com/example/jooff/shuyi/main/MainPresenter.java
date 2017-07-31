@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.api.BaiDuTransAPI;
@@ -13,6 +12,7 @@ import com.example.jooff.shuyi.api.ShanBeiTransApi;
 import com.example.jooff.shuyi.api.YiYunTransApi;
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
 import com.example.jooff.shuyi.common.Constant;
+import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.util.MD5Format;
 import com.example.jooff.shuyi.util.UTF8Format;
 
@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by Jooff on 2017/1/17.
+ * Tomorrow is a nice day
  */
 
 public class MainPresenter implements MainContract.Presenter {
@@ -57,7 +58,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void initTheme() {
-        Constant.sIsNightMode = isNightMode;
+        MyApp.sIsNightMode = isNightMode;
         if (isNightMode) {
             themeId = 1024;
             colorPrimary = Color.parseColor("#35464e");
@@ -68,9 +69,6 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void initSettings() {
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            mView.initLayout();
-        }
         if (isCopyTrans) {
             mView.startService();
         }
@@ -95,25 +93,23 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void updateSetting(int position, boolean isChecked) {
         switch (position) {
-            case 0:
+            case Constant.COPY_TANS:
                 if (isChecked) {
                     mView.startService();
                 } else {
                     mView.stopService();
                 }
                 break;
-            case 1:
+            case Constant.TRAS_MODE:
                 if (!isNightMode) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        if (isChecked) {
-                            mView.setTransparent(colorPrimary);
-                        } else {
-                            mView.setMaterial(colorPrimaryDark);
-                        }
+                    if (isChecked) {
+                        mView.setTransparent(colorPrimary);
+                    } else {
+                        mView.setMaterial(colorPrimaryDark);
                     }
                 }
                 break;
-            case 2:
+            case Constant.NIGHT_MODE:
                 if (isChecked) {
                     mView.openNightMode();
                     mView.startIntent();
@@ -122,7 +118,7 @@ public class MainPresenter implements MainContract.Presenter {
                     mView.startIntent();
                 }
                 break;
-            case 3:
+            case Constant.NOTI_TRANS:
                 if (isChecked) {
                     mView.showNotification();
                 } else {
@@ -158,10 +154,10 @@ public class MainPresenter implements MainContract.Presenter {
                             + BaiDuTransAPI.BAIDU_ID
                             + BaiDuTransAPI.BAIDU_SALT + String.valueOf(1234567899)
                             + BaiDuTransAPI.BAIDU_SIGN + MD5Format.getMd5(BaiDuTransAPI.BAIDU_ID.substring(7) + original + 1234567899 + BaiDuTransAPI.BAIDU_KEY);
-                    Log.d(TAG, "beginTrans: " + transUrl);
                     break;
                 case R.id.source_yiyun:
                     String originalLan, resultLan;
+                    // 设置源语言与目标语言
                     Pattern p = Pattern.compile("[a-zA-Z]+");
                     Matcher m = p.matcher(original);
                     if (m.matches()) {
@@ -177,11 +173,9 @@ public class MainPresenter implements MainContract.Presenter {
                             + YiYunTransApi.YIYUN_RESULT_LAN + resultLan
                             + YiYunTransApi.YIYUN_ID
                             + YiYunTransApi.YIYUN_KEY;
-                    Log.d(TAG, "beginTrans: " + transUrl);
                     break;
                 case R.id.source_shanbei:
                     transUrl = ShanBeiTransApi.SHANBEI_SEARCH_URL + UTF8Format.encode(original).replace("\n", "");
-                    Log.d(TAG, "beginTrans: " + transUrl);
                     break;
                 default:
                     break;

@@ -1,6 +1,6 @@
 package com.example.jooff.shuyi.history;
 
-import com.example.jooff.shuyi.common.Constant;
+import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
 
@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Jooff on 2017/1/15.
+ * Tomorrow is a nice day
  */
 
 public class HistoryPresenter implements HistoryContract.Presenter {
@@ -29,8 +30,8 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void initTheme() {
-        if (!Constant.sIsNightMode) {
-            mHistoryView.setAppTheme(Constant.sColorPrimary);
+        if (!MyApp.sIsNightMode) {
+            mHistoryView.setAppTheme(MyApp.sColorPrimary);
         }
     }
 

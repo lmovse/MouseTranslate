@@ -28,6 +28,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Jooff on 2017/1/18.
+ * Tomorrow is a nice day
  */
 
 public class MainTranslateView extends Fragment implements MainTranslateContract.View {
@@ -70,7 +71,7 @@ public class MainTranslateView extends Fragment implements MainTranslateContract
         mContext = getActivity();
         mListener = (OnAppStatusListener) mContext;
         mPresenter = new MainTranslatePresenter(getArguments()
-                , AppDbRepository.getInstance(getContext())
+                , AppDbRepository.getInstance(getContext().getApplicationContext())
                 , this);
         initView();
         return view;

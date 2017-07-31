@@ -5,9 +5,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.example.jooff.shuyi.common.Constant;
+import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
@@ -51,7 +51,6 @@ public class MainTranslatePresenter implements MainTranslateContract.Presenter {
                 mView.showCompletedTrans(response.getQuery());
                 if (transFrom != 0) {
                     History history = new History(response.getQuery(), response.getTranslation());
-                    Log.d("history", "onResponse: " + history.toString());
                     mAppDbRepository.saveHistory(history);
                 }
                 if (response.getTranslation() != null) {
@@ -125,8 +124,8 @@ public class MainTranslatePresenter implements MainTranslateContract.Presenter {
 
     @Override
     public void initTheme() {
-        if (!Constant.sIsNightMode) {
-            mView.setAppTheme(Constant.sColorPrimary);
+        if (!MyApp.sIsNightMode) {
+            mView.setAppTheme(MyApp.sColorPrimary);
         }
     }
 

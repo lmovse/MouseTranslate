@@ -17,6 +17,7 @@ import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.AboutFragment;
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.common.MySnackBar;
+import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.main.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
@@ -44,41 +45,30 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         ButterKnife.bind(this);
-        mPresenter = new DialogTransPresenter(getSharedPreferences(Constant.ARG_NAME, MODE_PRIVATE), getIntent(), this);
-        mPresenter.initTheme();
+        mPresenter = new DialogTransPresenter(getSharedPreferences(Constant.ARG_NAME, MODE_PRIVATE)
+                , AppDbRepository.getInstance(this.getApplicationContext())
+                , getIntent()
+                , this);
         initView();
-
+        mPresenter.loadData();
     }
 
     @Override
     public void initView() {
+        mPresenter.initTheme();
+
+        // 改变 dialog 的显示位置与大小
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
+        p.y = - (int) (dm.heightPixels * 0.2);
         p.width = (int) (dm.widthPixels * 0.8);
         getWindow().setAttributes(p);
+
+        // 初始化 toolbar
         mToolbar.setTitle(R.string.app_name);
         mToolbar.inflateMenu(R.menu.menu_main);
         mToolbar.setOnMenuItemClickListener(this);
-        mShareSpeech.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setBackgroundResource(R.drawable.m_speech1);
-                AnimationDrawable drawable = (AnimationDrawable) v.getBackground();
-                drawable.stop();
-                drawable.start();
-                mPresenter.playSpeech();
-            }
-        });
-        mResult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DialogTransView.this, MainActivity.class);
-                intent.putExtra("original", mEditText.getText().toString());
-                startActivity(intent);
-            }
-        });
-        mPresenter.loadData();
     }
 
     @Override
@@ -86,6 +76,22 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         AboutFragment fragment = new AboutFragment();
         fragment.show(getSupportFragmentManager(), "dialogAbout");
         return false;
+    }
+
+    @OnClick(R.id.share_speech)
+    public void playSpeech(View v) {
+        v.setBackgroundResource(R.drawable.m_speech1);
+        AnimationDrawable drawable = (AnimationDrawable) v.getBackground();
+        drawable.stop();
+        drawable.start();
+        mPresenter.playSpeech();
+    }
+
+    @OnClick(R.id.share_result)
+    public void toApp() {
+        Intent intent = new Intent(DialogTransView.this, MainActivity.class);
+        intent.putExtra("original", mEditText.getText().toString());
+        startActivity(intent);
     }
 
     @OnClick(R.id.share_original_delete)

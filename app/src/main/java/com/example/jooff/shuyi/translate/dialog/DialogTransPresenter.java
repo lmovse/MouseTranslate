@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
 import com.example.jooff.shuyi.common.Constant;
+import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
+import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 import com.example.jooff.shuyi.util.UTF8Format;
@@ -29,9 +31,14 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
     private boolean isNightMode;
     private String mUsSpeech;
     private String original;
+    private AppDbRepository mAppDbRepository;
 
-    public DialogTransPresenter(SharedPreferences preferences, Intent intent, DialogTransContract.View view) {
+    public DialogTransPresenter(SharedPreferences preferences
+            ,AppDbRepository transSource
+            , Intent intent
+            , DialogTransContract.View view) {
         mView = view;
+        mAppDbRepository = transSource;
         colorPrimary = preferences.getInt(Constant.ARG_PRIMARY, Color.parseColor("#F44336"));
         isNightMode = preferences.getBoolean(Constant.ARG_NIGHT, false);
         original = getOriginal(intent);
@@ -49,13 +56,12 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
                     String original = response.getQuery();
                     if (response.getExplains() != null) {
                         String explain = response.getExplains();
+                        mAppDbRepository.saveHistory(new History(original, explain));
                         mView.showTrans(original, explain);
                     } else if (response.getTranslation() != null) {
                         mView.showTrans(original, response.getTranslation());
                     }
-                    Log.d(TAG, "onResponse: " + response.getUsPhonetic());
                     if (response.getUkPhonetic() != null) {
-                        Log.d(TAG, "onResponse: ok" );
                         mUsSpeech = response.getUsSpeech();
                         mView.showSpeech();
                     }
@@ -94,7 +100,7 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
 
     @Override
     public void initTheme() {
-        Log.d(TAG, "initLayout: " + isNightMode);
+        Log.d(TAG, "initKitKatLayout: " + isNightMode);
         if (!isNightMode) {
             mView.setAppTheme(colorPrimary);
         }

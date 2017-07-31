@@ -5,6 +5,7 @@ import com.example.jooff.shuyi.base.BaseView;
 
 /**
  * Created by Jooff on 2017/2/1.
+ * Tomorrow is a nice day
  */
 
 public interface DialogTransContract {

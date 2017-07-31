@@ -5,6 +5,7 @@ import com.example.jooff.shuyi.base.BaseView;
 
 /**
  * Created by Jooff on 2017/1/17.
+ * Tomorrow is a nice day
  */
 
 public interface MainContract {
@@ -31,7 +32,7 @@ public interface MainContract {
 
         void setMaterial(int colorPrimaryDark);
 
-        void initLayout();
+        void initKitKatLayout();
 
         void initTheme(int themeId, int colorPrimary);
 
