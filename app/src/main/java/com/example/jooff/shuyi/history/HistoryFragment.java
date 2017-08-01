@@ -1,8 +1,16 @@
 package com.example.jooff.shuyi.history;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +42,8 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     private HistoryRvAdapter mAdapter;
     private HistoryContract.Presenter mPresenter;
     private OnAppStatusListener mAppListener;
+    private Resources mResources;
+    private Context mContext;
 
     @BindView(R.id.card_history)
     CardView cardHistory;
@@ -47,6 +57,13 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         mPresenter = new HistoryPresenter(AppDbRepository.getInstance(getContext()), this);
         initView();
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        mContext = this.getActivity();
+        mResources = this.getResources();
+        super.onStart();
     }
 
     @Override
@@ -85,7 +102,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void setAppTheme(int color) {
-        recHistory.setBackgroundColor(color);
+//        recHistory.setBackgroundColor(color);
     }
 
     /**
@@ -96,7 +113,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         @Override
         public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
             //设置滑动的方向
-            int swipeFlags = makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT
+            int swipeFlags = makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE,  ItemTouchHelper.RIGHT
             );
             return makeMovementFlags(0, swipeFlags);
         }
@@ -114,6 +131,57 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
                 cardHistory.setVisibility(View.GONE);
             }
             mPresenter.deleteHistoryItem(position);
+        }
+
+        @Override
+        public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                //dX 大于 0 时向右滑动，小于 0 向左滑动
+                View itemView = viewHolder.itemView;// 获取滑动的 view
+                Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.ic_delete_sweep_black_24dp);// 获取删除指示的背景图片
+                int padding = 10;// 图片绘制的 padding
+                int maxDrawWidth = 2 * padding + bitmap.getWidth();// 最大的绘制宽度
+                Paint paint = new Paint();
+                paint.setColor(ContextCompat.getColor(mContext, R.color.background));
+                int x = Math.round(Math.abs(dX));
+                int drawWidth = Math.min(x, maxDrawWidth);// 实际的绘制宽度，取实时滑动距离 x 和最大绘制距离 maxDrawWidth 最小值
+                int itemTop = itemView.getBottom() - itemView.getHeight();// 绘制的 top 位置
+                // 向右滑动
+                if (dX > 0) {
+                    // 根据滑动实时绘制一个背景
+                    c.drawRect(itemView.getLeft(), itemTop, drawWidth, itemView.getBottom(), paint);
+                    // 在背景上面绘制图片
+                    if (x > padding) {// 滑动距离大于 padding 时开始绘制图片
+                        // 指定图片绘制的位置
+                        Rect rect = new Rect();// 画图的位置
+                        rect.left = itemView.getLeft() + padding;
+                        rect.top = itemTop + (itemView.getBottom() - itemTop - bitmap.getHeight()) / 2;// 图片居中
+                        int maxRight = rect.left + bitmap.getWidth();
+                        rect.right = Math.min(x, maxRight);
+                        rect.bottom = rect.top + bitmap.getHeight();
+                        // 指定图片的绘制区域
+                        Rect rect1 = null;
+                        if (x < maxRight) {
+                            rect1 = new Rect();// 不能再外面初始化，否则 dx 大于画图区域时，删除图片不显示
+                            rect1.left = 0;
+                            rect1.top = 0;
+                            rect1.bottom = bitmap.getHeight();
+                            rect1.right = x - padding;
+                        }
+                        c.drawBitmap(bitmap, rect1, rect, paint);
+                    }
+                    float alpha = 1.0f - Math.abs(dX) / (float) itemView.getWidth();
+                    itemView.setAlpha(alpha);
+                    // 绘制时需调用平移动画，否则滑动看不到反馈
+                    itemView.setTranslationX(dX);
+                } else {
+                    // 如果在 getMovementFlags 指定了向左滑动（ItemTouchHelper。START）时则绘制工作可参考向右的滑动绘制，也可直接使用下面语句交友系统自己处理
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+            } else {
+                // 拖动时有系统自己完成
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
         }
     }
 

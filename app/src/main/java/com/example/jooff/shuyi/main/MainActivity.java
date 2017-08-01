@@ -147,8 +147,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @OnClick(R.id.original_delete)
     public void onDelete(ImageView delete) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(mEditText.getWindowToken(), 0, 0);
         mProgressBar.setVisibility(View.GONE);
         mFabMenu.collapse();
         mEditText.setText("");

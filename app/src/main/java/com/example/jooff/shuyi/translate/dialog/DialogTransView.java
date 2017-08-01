@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +71,22 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         mToolbar.setTitle(R.string.app_name);
         mToolbar.inflateMenu(R.menu.menu_main);
         mToolbar.setOnMenuItemClickListener(this);
+
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (count == 1 && s.charAt(start) == '\n') {
+                    mEditText.getText().replace(start, start + 1, "");
+                    mPresenter.beginTrans(mEditText.getEditableText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     @Override
@@ -125,6 +143,7 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         mShareSpeech.startAnimation(AnimationUtil.getAlpha(this));
         mShareSpeech.setVisibility(View.VISIBLE);
     }
+
 
     @Override
     public void setAppTheme(int colorPrimary) {

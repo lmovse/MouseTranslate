@@ -2,26 +2,50 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical"
               android:background="@color/white"
               android:foreground="?attr/selectableItemBackground"
-              android:padding="@dimen/app_padding">
+              android:orientation="horizontal"
+              android:padding="@dimen/app_padding"
+              android:baselineAligned="false">
 
-    <TextView
-        android:textColor="@color/black"
-        android:maxLines="1"
-        android:textSize="16sp"
-        android:id="@+id/item_original"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"/>
+        android:layout_weight="10"
+        android:orientation="vertical">
 
-    <TextView
-        android:ellipsize="end"
-        android:textSize="16sp"
-        android:id="@+id/item_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1" />
+        <TextView
+            android:id="@+id/item_original"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:paddingRight="30dp"
+            android:id="@+id/item_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:layout_height="match_parent">
+        <ImageButton
+            android:background="@color/white"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/app_padding"
+            android:layout_marginEnd="@dimen/app_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_star_border_black_24dp"/>
+    </LinearLayout>
 
 </LinearLayout>
