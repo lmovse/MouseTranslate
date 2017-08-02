@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#D32f2f</color>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryDark">#512DA8</color>
     <color name="colorAccent">#e91e63</color>
     <color name="colorAccentDark">#c2185b</color>
     <color name="black">@android:color/black</color>
     <color name="white">@android:color/white</color>
     <color name="background">#e5e5e5</color>
 
-    <color name="colorPrimary1">#E71E61</color>
-    <color name="colorPrimaryDark1">#C1195A</color>
+    <color name="colorPrimaryPink">#E71E61</color>
+    <color name="colorPrimaryDarkPink">#C1195A</color>
 
-    <color name="colorPrimary2">#607D89</color>
-    <color name="colorPrimaryDark2">#455A63</color>
+    <color name="colorPrimaryBlueGrey">#607D89</color>
+    <color name="colorPrimaryDarkBuleGrey">#455A63</color>
 
-    <color name="colorPrimary3">#2297F1</color>
-    <color name="colorPrimaryDark3">#1978D0</color>
+    <color name="colorPrimaryGirl">#fb7299</color>
+    <color name="colorPrimaryDarkGirl">#cc5d7c</color>
 
-    <color name="colorPrimary4">#4CAC50</color>
-    <color name="colorPrimaryDark4">#388B3B</color>
+    <color name="colorPrimaryGreen">#4CAC50</color>
+    <color name="colorPrimaryDarkGreen">#388B3B</color>
 
-    <color name="colorPrimary5">#795548</color>
-    <color name="colorPrimaryDark5">#5D4037</color>
+    <color name="colorPrimaryBrown">#795548</color>
+    <color name="colorPrimaryDarkBrown">#5D4037</color>
 
-    <color name="colorPrimary6">#009384</color>
-    <color name="colorPrimaryDark6">#00786A</color>
+    <color name="colorPrimaryTeal">#009384</color>
+    <color name="colorPrimaryDarkTeal">#00786A</color>
 
-    <color name="colorPrimary7">#fb7299</color>
-    <color name="colorPrimaryDark7">#cc5d7c</color>
+    <color name="colorPrimaryRed">#F44336</color>
+    <color name="colorPrimaryDarkRed">#D32f2f</color>
 
-    <color name="colorPrimary8">#673AB7</color>
-    <color name="colorPrimaryDark8">#512DA8</color>
+    <color name="colorPrimaryBlue">#2297F1</color>
+    <color name="colorPrimaryDarkBlue">#1978D0</color>
 
 </resources>

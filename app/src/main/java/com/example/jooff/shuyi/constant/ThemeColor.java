@@ -11,9 +11,9 @@ public class ThemeColor {
 
     public static final int PINK = 1;
 
-    public static final int BULU_GREY = 2;
+    public static final int BULE_GREY = 2;
 
-    public static final int BULU = 3;
+    public static final int BULE = 3;
 
     public static final int GREEN = 4;
 

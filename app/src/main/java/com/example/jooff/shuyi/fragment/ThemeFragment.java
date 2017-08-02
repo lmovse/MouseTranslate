@@ -45,64 +45,64 @@ public class ThemeFragment extends DialogFragment {
         return new AlertDialog.Builder(getContext()).setTitle("主题").setView(view).create();
     }
 
-    @OnClick({R.id.color0,
-            R.id.color1,
-            R.id.color2,
-            R.id.color3,
-            R.id.color4,
-            R.id.color5,
-            R.id.color6,
-            R.id.color7,
-            R.id.color8})
+    @OnClick({R.id.color_girl,
+            R.id.color_pink,
+            R.id.color_bule_grey,
+            R.id.color_blue,
+            R.id.color_green,
+            R.id.color_brown,
+            R.id.color_teal,
+            R.id.color_red,
+            R.id.color_purple})
     public void setColor(Button color) {
         if (isNightMode) {
             Toast.makeText(this.getActivity(), R.string.close_night_mode, Toast.LENGTH_SHORT).show();
             return;
         }
         switch (color.getId()) {
-            case R.id.color0:
+            case R.id.color_girl:
                 colorPrimary = R.color.colorPrimary;
                 colorPrimaryDark = R.color.colorPrimaryDark;
                 themeId = ThemeColor.RED;
                 break;
-            case R.id.color1:
-                colorPrimary = R.color.colorPrimary1;
-                colorPrimaryDark = R.color.colorPrimaryDark1;
+            case R.id.color_pink:
+                colorPrimary = R.color.colorPrimaryPink;
+                colorPrimaryDark = R.color.colorPrimaryDarkPink;
                 themeId = ThemeColor.PINK;
                 break;
-            case R.id.color2:
-                colorPrimary = R.color.colorPrimary2;
-                colorPrimaryDark = R.color.colorPrimaryDark2;
-                themeId = ThemeColor.BULU_GREY;
+            case R.id.color_bule_grey:
+                colorPrimary = R.color.colorPrimaryBlueGrey;
+                colorPrimaryDark = R.color.colorPrimaryDarkBuleGrey;
+                themeId = ThemeColor.BULE_GREY;
                 break;
-            case R.id.color3:
-                colorPrimary = R.color.colorPrimary3;
-                colorPrimaryDark = R.color.colorPrimaryDark3;
-                themeId = ThemeColor.BULU;
+            case R.id.color_blue:
+                colorPrimary = R.color.colorPrimaryGirl;
+                colorPrimaryDark = R.color.colorPrimaryDarkGirl;
+                themeId = ThemeColor.BULE;
                 break;
-            case R.id.color4:
-                colorPrimary = R.color.colorPrimary4;
-                colorPrimaryDark = R.color.colorPrimaryDark4;
+            case R.id.color_green:
+                colorPrimary = R.color.colorPrimaryGreen;
+                colorPrimaryDark = R.color.colorPrimaryDarkGreen;
                 themeId = ThemeColor.GREEN;
                 break;
-            case R.id.color5:
-                colorPrimary = R.color.colorPrimary5;
-                colorPrimaryDark = R.color.colorPrimaryDark5;
+            case R.id.color_brown:
+                colorPrimary = R.color.colorPrimaryBrown;
+                colorPrimaryDark = R.color.colorPrimaryDarkBrown;
                 themeId = ThemeColor.BROWN;
                 break;
-            case R.id.color6:
-                colorPrimary = R.color.colorPrimary6;
-                colorPrimaryDark = R.color.colorPrimaryDark6;
+            case R.id.color_teal:
+                colorPrimary = R.color.colorPrimaryTeal;
+                colorPrimaryDark = R.color.colorPrimaryDarkTeal;
                 themeId = ThemeColor.TEAL;
                 break;
-            case R.id.color7:
-                colorPrimary = R.color.colorPrimary7;
-                colorPrimaryDark = R.color.colorPrimaryDark7;
+            case R.id.color_red:
+                colorPrimary = R.color.colorPrimaryRed;
+                colorPrimaryDark = R.color.colorPrimaryDarkRed;
                 themeId = ThemeColor.GIRL;
                 break;
-            case R.id.color8:
-                colorPrimary = R.color.colorPrimary8;
-                colorPrimaryDark = R.color.colorPrimaryDark8;
+            case R.id.color_purple:
+                colorPrimary = R.color.colorPrimaryBlue;
+                colorPrimaryDark = R.color.colorPrimaryDarkBlue;
                 themeId = ThemeColor.PURPLE;
                 break;
             default:

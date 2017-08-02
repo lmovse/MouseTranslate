@@ -13,6 +13,7 @@ import com.example.jooff.shuyi.api.YiYunTransApi;
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
+import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.constant.TransMode;
 import com.example.jooff.shuyi.util.MD5Format;
 import com.example.jooff.shuyi.util.UTF8Format;
@@ -48,11 +49,11 @@ public class MainPresenter implements MainContract.Presenter {
         isTransMode = mPref.getBoolean(AppPref.ARG_TRANS, false);
         isNightMode = mPref.getBoolean(AppPref.ARG_NIGHT, false);
         isNoteMode = mPref.getBoolean(AppPref.ARG_NOTE, false);
-        colorPrimary = mPref.getInt(AppPref.ARG_PRIMARY, Color.parseColor("#F44336"));
-        colorPrimaryDark = mPref.getInt(AppPref.ARG_DARK, Color.parseColor("#D32f2f"));
+        colorPrimary = mPref.getInt(AppPref.ARG_PRIMARY, Color.parseColor(SettingDefault.COLOR_PRIMARY));
+        colorPrimaryDark = mPref.getInt(AppPref.ARG_DARK, Color.parseColor(SettingDefault.COLOR_PRIMARY_DARK));
         themeId = mPref.getInt(AppPref.ARG_THEME, 0);
-        transFrom = mPref.getInt(AppPref.ARG_FROM, R.id.source_youdao);
-        mResultLan = mPref.getString(AppPref.ARG_LAN, "en");
+        transFrom = mPref.getInt(AppPref.ARG_FROM, SettingDefault.TRANS_FROM);
+        mResultLan = mPref.getString(AppPref.ARG_LAN, SettingDefault.RESULT_LAN);
         isDoubleClick = false;
     }
 

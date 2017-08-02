@@ -259,16 +259,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 setTheme(R.style.AppTheme_Dark);
                 break;
             case ThemeColor.RED:
-                setTheme(R.style.AppTheme_Red);
+                setTheme(R.style.AppTheme_Purple);
                 break;
             case ThemeColor.PINK:
                 setTheme(R.style.AppTheme_Pink);
                 break;
-            case ThemeColor.BULU_GREY:
+            case ThemeColor.BULE_GREY:
                 setTheme(R.style.AppTheme_BlueGrey);
                 break;
-            case ThemeColor.BULU:
-                setTheme(R.style.AppTheme_Blue);
+            case ThemeColor.BULE:
+                setTheme(R.style.AppTheme_Girl);
                 break;
             case ThemeColor.GREEN:
                 setTheme(R.style.AppTheme_Green);
@@ -280,10 +280,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 setTheme(R.style.AppTheme_Teal);
                 break;
             case ThemeColor.GIRL:
-                setTheme(R.style.AppTheme_Girl);
+                setTheme(R.style.AppTheme_Red);
                 break;
             case ThemeColor.PURPLE:
-                setTheme(R.style.AppTheme_Purple);
+                setTheme(R.style.AppTheme_Bule);
                 break;
             default:
                 break;

@@ -87,7 +87,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     @OnClick(R.id.result_copy)
     public void setCopy(ImageView mCopy) {
         mCopy.startAnimation(AnimationUtil.getScale(getContext()));
-        mPresenter.setTextToClip(getContext(), mResult.getText().toString());
+        mPresenter.setTextToClip(mContext, mResult.getText().toString());
     }
 
     @OnClick(R.id.us_speech)
@@ -162,7 +162,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
      */
     @Override
     public void showError() {
-        Toast.makeText(this.getActivity(), R.string.only_support_dic, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.only_support_dic, Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -170,7 +170,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
      */
     @Override
     public void showNotSupport() {
-        Toast.makeText(this.getActivity(), R.string.invalid_translate, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.invalid_translate, Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -185,7 +185,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
 
     @Override
     public void showCopySuccess() {
-        Toast.makeText(this.getActivity(), R.string.copy_success, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.copy_success, Toast.LENGTH_SHORT).show();
     }
 
     @Override

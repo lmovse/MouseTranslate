@@ -12,22 +12,22 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/color0"
+            android:id="@+id/color_girl"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_color_red"/>
+            android:layout_height="41dp"
+            android:background="@drawable/shape_color_girl"/>
 
         <Button
-            android:id="@+id/color1"
+            android:id="@+id/color_pink"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_color_pink"/>
 
         <Button
-            android:id="@+id/color2"
+            android:id="@+id/color_bule_grey"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="right"
             android:background="@drawable/shape_color_blue_grey"/>
 
@@ -42,22 +42,22 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/color3"
+            android:id="@+id/color_blue"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:background="@drawable/shape_color_blue"/>
 
         <Button
-            android:id="@+id/color4"
+            android:id="@+id/color_green"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="center"
             android:background="@drawable/shape_color_green"/>
 
         <Button
-            android:id="@+id/color5"
+            android:id="@+id/color_brown"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="right"
             android:background="@drawable/shape_color_brown"/>
 
@@ -71,22 +71,22 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/color6"
+            android:id="@+id/color_teal"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:background="@drawable/shape_color_teal"/>
 
         <Button
-            android:id="@+id/color7"
+            android:id="@+id/color_red"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="center"
-            android:background="@drawable/shape_color_girl"/>
+            android:background="@drawable/shape_color_red"/>
 
         <Button
-            android:id="@+id/color8"
+            android:id="@+id/color_purple"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="41dp"
             android:layout_gravity="right"
             android:background="@drawable/shape_color_purple"/>
 
