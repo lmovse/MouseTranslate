@@ -38,3 +38,16 @@ captures/
 
 # Keystore files
 *.jks
+src/main/res/drawable-xxxhdpi/ic_beach_access_black_18dp.png
+src/main/res/drawable-xxxhdpi/ic_beach_access_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_beach_access_white_18dp.png
+src/main/res/drawable-xxxhdpi/ic_book_white_18dp.png
+src/main/res/drawable-xxxhdpi/ic_color_lens_black_18dp.png
+src/main/res/drawable-xxxhdpi/ic_color_lens_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_delete_black_18dp.png
+src/main/res/drawable-xxxhdpi/ic_delete_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_delete_sweep_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_send_black_18dp.png
+src/main/res/drawable-xxxhdpi/ic_star_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_star_border_black_24dp.png
+src/main/res/drawable-xxxhdpi/ic_star_yellow_800_24dp.png

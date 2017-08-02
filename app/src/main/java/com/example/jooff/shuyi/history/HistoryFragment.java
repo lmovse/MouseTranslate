@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.entity.History;
-import com.example.jooff.shuyi.translate.main.MainTranslateView;
+import com.example.jooff.shuyi.translate.main.MainTransView;
 import com.example.jooff.shuyi.util.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void showTranslate(String original) {
-        MainTranslateView fragment = MainTranslateView.newInstance(0, original);
+        MainTransView fragment = MainTransView.newInstance(0, original);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, fragment).commit();
     }
 

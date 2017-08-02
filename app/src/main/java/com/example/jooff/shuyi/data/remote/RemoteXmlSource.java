@@ -19,8 +19,7 @@ import java.io.IOException;
 public class RemoteXmlSource implements AppDbSource.TranslateDbSource {
     private static RemoteXmlSource instance = null;
 
-    private RemoteXmlSource() {
-    }
+    private RemoteXmlSource() {}
 
     public static RemoteXmlSource getInstance() {
         if (instance == null) {
@@ -30,7 +29,7 @@ public class RemoteXmlSource implements AppDbSource.TranslateDbSource {
     }
 
     @Override
-    public void getTrans(String original, final AppDbSource.TranslateCallback callback) {
+    public void getTrans(final int transFrom, String original, final AppDbSource.TranslateCallback callback) {
         StringRequest stringRequest = new StringRequest(original, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {

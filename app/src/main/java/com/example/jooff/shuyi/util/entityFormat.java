@@ -1,8 +1,7 @@
 package com.example.jooff.shuyi.util;
 
-import android.util.Log;
-
 import com.example.jooff.shuyi.api.ShanBeiTransApi;
+import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
@@ -113,7 +112,6 @@ public class EntityFormat {
         }
         String explain = explains.toString();
         if (!explain.equals("")) {
-            Log.d("explains", "getBeanFromJinShan: " + explain);
             if (explain.split("\\.").length > 1) {
                 explain = explain.substring(0, explain.length() - 1);
                 sTranslate.setTranslation(explain.split("\\.")[1].split("；")[0].replace(" ", ""));
@@ -198,7 +196,7 @@ public class EntityFormat {
             sTranslate.setTranslation(translation);
             if (json.getJSONObject("data").getString("id") != null) {
                 String id = ShanBeiTransApi.SHANBEI_EXAMPLE_URL + json.getJSONObject("data").getString("id") + "&type=sys";
-                RemoteJsonSource.getInstance().setSource(2).getTrans(id, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_SHANBEI, id, callback);
             }
         }
     }

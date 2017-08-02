@@ -124,12 +124,11 @@
 
                     <ImageView
                         android:id="@+id/us_speech"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginLeft="4dp"
-                        android:background="@drawable/m_speech"/>
+                        android:background="@drawable/volume_black_high"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -148,12 +147,11 @@
 
                     <ImageView
                         android:id="@+id/uk_speech"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginLeft="4dp"
-                        android:background="@drawable/m_speech"/>
+                        android:background="@drawable/volume_black_high"/>
 
                 </LinearLayout>
 

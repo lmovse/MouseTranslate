@@ -23,8 +23,8 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.data.entity.History;
-import com.example.jooff.shuyi.translate.main.MainTranslateView;
+import com.example.jooff.shuyi.data.entity.Collect;
+import com.example.jooff.shuyi.translate.main.MainTransView;
 import com.example.jooff.shuyi.util.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class CollectFragment extends Fragment implements CollectContract.View {
 
     @Override
     public void initView() {
-        mAdapter = new CollectRvAdapter(new ArrayList<History>(0), mListener);
+        mAdapter = new CollectRvAdapter(new ArrayList<Collect>(0), mListener);
         recCollect.setAdapter(mAdapter);
         recCollect.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recCollect.setNestedScrollingEnabled(false);
@@ -78,14 +78,14 @@ public class CollectFragment extends Fragment implements CollectContract.View {
     }
 
     @Override
-    public void showCollects(ArrayList<History> items) {
+    public void showCollects(ArrayList<Collect> items) {
         mAdapter.refreshItems(items);
         cardCollect.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showTranslate(String original) {
-        MainTranslateView fragment = MainTranslateView.newInstance(0, original);
+        MainTransView fragment = MainTransView.newInstance(-1, original);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, fragment).commit();
     }
 
@@ -178,21 +178,21 @@ public class CollectFragment extends Fragment implements CollectContract.View {
      */
     class CollectRvAdapter extends RecyclerView.Adapter<CollectRvAdapter.collectViewHolder> {
         private OnItemClickListener onItemClickListener;
-        private ArrayList<History> items;
+        private ArrayList<Collect> items;
 
         @Override
         public CollectRvAdapter.collectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new CollectRvAdapter.collectViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.m_item_collect, parent, false));
         }
 
-        public CollectRvAdapter(ArrayList<History> items, OnItemClickListener listener) {
+        public CollectRvAdapter(ArrayList<Collect> items, OnItemClickListener listener) {
             this.items = items;
             onItemClickListener = listener;
         }
 
         @Override
         public void onBindViewHolder(final CollectRvAdapter.collectViewHolder holder, int position) {
-            History item = items.get(position);
+            Collect item = items.get(position);
             holder.textOriginal.setText(item.getOriginal());
             holder.textResult.setText(item.getResult());
             if (onItemClickListener != null) {
@@ -217,7 +217,7 @@ public class CollectFragment extends Fragment implements CollectContract.View {
 
         }
 
-        public void refreshItems(ArrayList<History> items) {
+        public void refreshItems(ArrayList<Collect> items) {
             this.items = items;
             notifyDataSetChanged();
         }

@@ -31,15 +31,16 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.collect.CollectFragment;
-import com.example.jooff.shuyi.common.AboutFragment;
-import com.example.jooff.shuyi.common.Constant;
-import com.example.jooff.shuyi.common.CopyTranslateService;
+import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.common.MyApp;
-import com.example.jooff.shuyi.common.OnAppStatusListener;
-import com.example.jooff.shuyi.common.SourceFragment;
+import com.example.jooff.shuyi.constant.ThemeColor;
+import com.example.jooff.shuyi.fragment.AboutFragment;
+import com.example.jooff.shuyi.fragment.SourceFragment;
 import com.example.jooff.shuyi.history.HistoryFragment;
-import com.example.jooff.shuyi.settings.SettingsFragment;
-import com.example.jooff.shuyi.translate.main.MainTranslateView;
+import com.example.jooff.shuyi.listener.OnAppStatusListener;
+import com.example.jooff.shuyi.service.CopyTranslateService;
+import com.example.jooff.shuyi.setting.SettingsFragment;
+import com.example.jooff.shuyi.translate.main.MainTransView;
 import com.example.jooff.shuyi.util.ActivityCollector;
 import com.example.jooff.shuyi.util.AnimationUtil;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new MainPresenter(getSharedPreferences(Constant.ARG_NAME, MODE_PRIVATE), this);
+        mPresenter = new MainPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE), this);
         mPresenter.initTheme();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
         mProgressBar.setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.contentFrag, MainTranslateView.newInstance(transFrom, original)).commit();
+        fm.beginTransaction().replace(R.id.contentFrag, MainTransView.newInstance(transFrom, original)).commit();
     }
 
     @Override
@@ -254,34 +255,34 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void initTheme(int themeId, int colorPrimary) {
         MyApp.sColorPrimary = colorPrimary;
         switch (themeId) {
-            case 1024:
+            case ThemeColor.DARK:
                 setTheme(R.style.AppTheme_Dark);
                 break;
-            case 0:
+            case ThemeColor.RED:
                 setTheme(R.style.AppTheme_Red);
                 break;
-            case 1:
+            case ThemeColor.PINK:
                 setTheme(R.style.AppTheme_Pink);
                 break;
-            case 2:
+            case ThemeColor.BULU_GREY:
                 setTheme(R.style.AppTheme_BlueGrey);
                 break;
-            case 3:
+            case ThemeColor.BULU:
                 setTheme(R.style.AppTheme_Blue);
                 break;
-            case 4:
+            case ThemeColor.GREEN:
                 setTheme(R.style.AppTheme_Green);
                 break;
-            case 5:
+            case ThemeColor.BROWN:
                 setTheme(R.style.AppTheme_Brown);
                 break;
-            case 6:
+            case ThemeColor.TEAL:
                 setTheme(R.style.AppTheme_Teal);
                 break;
-            case 7:
+            case ThemeColor.GIRL:
                 setTheme(R.style.AppTheme_Girl);
                 break;
-            case 8:
+            case ThemeColor.PURPLE:
                 setTheme(R.style.AppTheme_Purple);
                 break;
             default:
@@ -336,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mEditText.setText(original);
     }
 
-
     @Override
     public void onSettingChanged(int position, boolean isChecked) {
         mPresenter.updateSetting(position, isChecked);
@@ -345,6 +345,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onSourceChanged(int source) {
         mPresenter.refreshSource(source);
+        mPresenter.beginTrans(mEditText.getText().toString());
     }
 
     @Override
@@ -379,9 +380,13 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void initKitKatLayout() {
         mStatus.setVisibility(View.VISIBLE);
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
+
+        // 设置高度 将输入的整形数值转换为相对应的 dp 值
         params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics());
         params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
         mAppBarLayout.setLayoutParams(params);
+
+        //　设置边距
         params = (CoordinatorLayout.LayoutParams) mContentFrag.getLayoutParams();
         params.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281, this.getResources().getDisplayMetrics()), 0, 0);
         mContentFrag.setLayoutParams(params);

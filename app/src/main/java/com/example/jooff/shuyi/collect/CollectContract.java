@@ -2,7 +2,7 @@ package com.example.jooff.shuyi.collect;
 
 import com.example.jooff.shuyi.base.BasePresenter;
 import com.example.jooff.shuyi.base.BaseView;
-import com.example.jooff.shuyi.data.entity.History;
+import com.example.jooff.shuyi.data.entity.Collect;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public interface CollectContract {
 
     interface View extends BaseView {
 
-        void showCollects(ArrayList<History> items);
+        void showCollects(ArrayList<Collect> items);
 
         void showTranslate(String original);
 

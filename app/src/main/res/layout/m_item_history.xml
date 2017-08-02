@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:layout_marginRight="@dimen/app_padding"
               android:background="@color/white"
+              android:baselineAligned="false"
               android:foreground="?attr/selectableItemBackground"
               android:orientation="horizontal"
-              android:layout_marginRight="@dimen/app_padding"
-              android:padding="@dimen/app_padding"
-              android:baselineAligned="false">
+              android:padding="@dimen/app_padding">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="10"
         android:orientation="vertical">
@@ -25,28 +25,25 @@
             android:textSize="16sp"/>
 
         <TextView
-            android:paddingRight="30dp"
             android:id="@+id/item_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
+            android:paddingRight="30dp"
             android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:gravity="end"
-        android:layout_height="match_parent">
-        <ImageButton
+        android:gravity="center">
+
+        <ImageView
             android:id="@+id/collcect"
-            android:background="@color/white"
-            android:layout_gravity="end"
-            android:layout_marginRight="@dimen/app_padding"
-            android:layout_marginEnd="@dimen/app_padding"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_star_border_black_24dp"/>
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.jooff.shuyi.data;
 
+import com.example.jooff.shuyi.data.entity.Collect;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.entity.Translate;
 
@@ -30,21 +31,21 @@ public interface AppDbSource {
 
         History getHistory(String original);
 
-        History getCollect(String original);
-
         ArrayList<History> getHistorys();
-
-        ArrayList<History> getCollects();
-
-        void deleteCollect(String original);
 
         void deleteHistory(String original);
 
     }
 
+    interface CollectDbSource {
+        void deleteCollect(String original);
+        Collect getCollect(String original);
+        ArrayList<Collect> getCollects();
+    }
+
     interface TranslateDbSource {
 
-       void getTrans(String original, TranslateCallback callback);
+       void getTrans(int transFrom, String original, TranslateCallback callback);
 
     }
 

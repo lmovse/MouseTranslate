@@ -11,8 +11,9 @@ import com.example.jooff.shuyi.api.JinShanTransApi;
 import com.example.jooff.shuyi.api.ShanBeiTransApi;
 import com.example.jooff.shuyi.api.YiYunTransApi;
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
-import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.common.MyApp;
+import com.example.jooff.shuyi.constant.AppPref;
+import com.example.jooff.shuyi.constant.TransMode;
 import com.example.jooff.shuyi.util.MD5Format;
 import com.example.jooff.shuyi.util.UTF8Format;
 
@@ -27,7 +28,6 @@ import java.util.regex.Pattern;
  */
 
 public class MainPresenter implements MainContract.Presenter {
-    private static final String TAG = "MainPresenter";
     private MainContract.View mView;
     private SharedPreferences mPref;
     private Boolean isDoubleClick;
@@ -44,15 +44,15 @@ public class MainPresenter implements MainContract.Presenter {
     public MainPresenter(SharedPreferences sharedPreferences, MainContract.View mainView) {
         mPref = sharedPreferences;
         mView = mainView;
-        isCopyTrans = mPref.getBoolean(Constant.ARG_COPY, false);
-        isTransMode = mPref.getBoolean(Constant.ARG_TRANS, false);
-        isNightMode = mPref.getBoolean(Constant.ARG_NIGHT, false);
-        isNoteMode = mPref.getBoolean(Constant.ARG_NOTE, false);
-        colorPrimary = mPref.getInt(Constant.ARG_PRIMARY, Color.parseColor("#F44336"));
-        colorPrimaryDark = mPref.getInt(Constant.ARG_DARK, Color.parseColor("#D32f2f"));
-        themeId = mPref.getInt(Constant.ARG_THEME, 0);
-        transFrom = mPref.getInt(Constant.ARG_FROM, R.id.source_youdao);
-        mResultLan = mPref.getString(Constant.ARG_LAN, "en");
+        isCopyTrans = mPref.getBoolean(AppPref.ARG_COPY, false);
+        isTransMode = mPref.getBoolean(AppPref.ARG_TRANS, false);
+        isNightMode = mPref.getBoolean(AppPref.ARG_NIGHT, false);
+        isNoteMode = mPref.getBoolean(AppPref.ARG_NOTE, false);
+        colorPrimary = mPref.getInt(AppPref.ARG_PRIMARY, Color.parseColor("#F44336"));
+        colorPrimaryDark = mPref.getInt(AppPref.ARG_DARK, Color.parseColor("#D32f2f"));
+        themeId = mPref.getInt(AppPref.ARG_THEME, 0);
+        transFrom = mPref.getInt(AppPref.ARG_FROM, R.id.source_youdao);
+        mResultLan = mPref.getString(AppPref.ARG_LAN, "en");
         isDoubleClick = false;
     }
 
@@ -93,14 +93,14 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void updateSetting(int position, boolean isChecked) {
         switch (position) {
-            case Constant.COPY_TANS:
+            case TransMode.COPY_TANS:
                 if (isChecked) {
                     mView.startService();
                 } else {
                     mView.stopService();
                 }
                 break;
-            case Constant.TRAS_MODE:
+            case TransMode.TRAS_MODE:
                 if (!isNightMode) {
                     if (isChecked) {
                         mView.setTransparent(colorPrimary);
@@ -109,7 +109,7 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 }
                 break;
-            case Constant.NIGHT_MODE:
+            case TransMode.NIGHT_MODE:
                 if (isChecked) {
                     mView.openNightMode();
                     mView.startIntent();
@@ -118,7 +118,7 @@ public class MainPresenter implements MainContract.Presenter {
                     mView.startIntent();
                 }
                 break;
-            case Constant.NOTI_TRANS:
+            case TransMode.NOTI_TRANS:
                 if (isChecked) {
                     mView.showNotification();
                 } else {
@@ -202,7 +202,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void refreshResultLan(String lan) {
         mResultLan = lan;
-        mPref.edit().putString(Constant.ARG_LAN, mResultLan).apply();
+        mPref.edit().putString(AppPref.ARG_LAN, mResultLan).apply();
     }
 
     @Override

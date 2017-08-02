@@ -1,7 +1,7 @@
 package com.example.jooff.shuyi.collect;
 
 import com.example.jooff.shuyi.data.AppDbSource;
-import com.example.jooff.shuyi.data.entity.History;
+import com.example.jooff.shuyi.data.entity.Collect;
 
 import java.util.ArrayList;
 
@@ -11,19 +11,19 @@ import java.util.ArrayList;
  */
 
 public class CollectPresenter implements CollectContract.Presenter {
-    private AppDbSource.HistoryDbSource mHistoryDbSource;
-    private CollectContract.View mHistoryView;
+    private AppDbSource.CollectDbSource mCollectDbSource;
+    private CollectContract.View mCollectView;
 
-    public CollectPresenter(AppDbSource.HistoryDbSource historyDbSource, CollectContract.View historyView) {
-        this.mHistoryDbSource = historyDbSource;
-        this.mHistoryView = historyView;
+    public CollectPresenter(AppDbSource.CollectDbSource collectDbSource, CollectContract.View collectView) {
+        this.mCollectDbSource = collectDbSource;
+        this.mCollectView = collectView;
     }
 
     @Override
     public void loadData() {
-        ArrayList<History> items = mHistoryDbSource.getCollects();
+        ArrayList<Collect> items = mCollectDbSource.getCollects();
         if (!items.isEmpty()) {
-            mHistoryView.showCollects(items);
+            mCollectView.showCollects(items);
         }
     }
 
@@ -32,16 +32,16 @@ public class CollectPresenter implements CollectContract.Presenter {
 
     @Override
     public void deleteCollect(int position) {
-        String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
-        mHistoryDbSource.deleteCollect(original);
-        mHistoryView.showCollectDeleted();
+        String original = mCollectDbSource.getCollects().get(position).getOriginal();
+        mCollectDbSource.deleteCollect(original);
+        mCollectView.showCollectDeleted();
     }
 
     @Override
     public void beginTranslate(int position) {
-        History item = mHistoryDbSource.getHistorys().get(position);
+        Collect item = mCollectDbSource.getCollects().get(position);
         String original = item.getOriginal();
-        mHistoryView.showTranslate(original);
+        mCollectView.showTranslate(original);
     }
 
 }

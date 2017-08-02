@@ -3,6 +3,8 @@ package com.example.jooff.shuyi.data;
 import android.content.Context;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.constant.TransSource;
+import com.example.jooff.shuyi.data.entity.Collect;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.local.LocalDbSource;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
@@ -17,15 +19,9 @@ import java.util.ArrayList;
  * Repository 本身并不能保存与获取数据，是通过数据源的增删改查来实现
  */
 
-public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSource.HistoryDbSource {
-    private int tranFrom = 0;
+public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSource.HistoryDbSource, AppDbSource.CollectDbSource {
     private final LocalDbSource mLocalDbSource;
     public static AppDbRepository instance = null;
-
-    public AppDbRepository setTranFrom(int tranFrom) {
-        this.tranFrom = tranFrom;
-        return this;
-    }
 
     private AppDbRepository(Context context) {
         mLocalDbSource = LocalDbSource.getInstance(context);
@@ -39,25 +35,28 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
-    public void getTrans(String original, AppDbSource.TranslateCallback callback) {
+    public void getTrans(int tranFrom, String original, AppDbSource.TranslateCallback callback) {
         switch (tranFrom) {
-            case 0:
-                mLocalDbSource.getTrans(original, callback);
+            case TransSource.FROM_COLLECT:
+                mLocalDbSource.getTrans(TransSource.FROM_COLLECT, original, callback);
+                break;
+            case TransSource.FROM_HISTORY:
+                mLocalDbSource.getTrans(TransSource.FROM_HISTORY, original, callback);
                 break;
             case R.id.source_jinshan:
-                RemoteXmlSource.getInstance().getTrans(original, callback);
+                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSAHN, original, callback);
                 break;
             case R.id.source_baidu:
-                RemoteJsonSource.getInstance().setSource(0).getTrans(original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAUDU, original, callback);
                 break;
             case R.id.source_yiyun:
-                RemoteJsonSource.getInstance().setSource(1).getTrans(original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YIYUN, original, callback);
                 break;
             case R.id.source_shanbei:
-                RemoteJsonSource.getInstance().setSource(2).getTrans(original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_SHANBEI, original, callback);
                 break;
             case R.id.source_youdao:
-                RemoteJsonSource.getInstance().setSource(3).getTrans(original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, original, callback);
                 break;
         }
     }
@@ -83,28 +82,28 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
-    public History getCollect(String original) {
-        return mLocalDbSource.getCollect(original);
-    }
-
-    @Override
     public ArrayList<History> getHistorys() {
         return mLocalDbSource.getHistorys();
     }
 
     @Override
-    public ArrayList<History> getCollects() {
+    public void deleteHistory(String original) {
+        mLocalDbSource.deleteHistory(original);
+    }
+
+    @Override
+    public Collect getCollect(String original) {
+        return mLocalDbSource.getCollect(original);
+    }
+
+    @Override
+    public ArrayList<Collect> getCollects() {
         return mLocalDbSource.getCollects();
     }
 
     @Override
     public void deleteCollect(String original) {
         mLocalDbSource.deleteCollect(original);
-    }
-
-    @Override
-    public void deleteHistory(String original) {
-        mLocalDbSource.deleteHistory(original);
     }
 
 }
