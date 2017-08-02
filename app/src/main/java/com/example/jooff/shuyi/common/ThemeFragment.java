@@ -12,10 +12,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.main.MainActivity;
-import com.example.jooff.shuyi.settings.SettingsFragment;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import butterknife.ButterKnife;
@@ -23,6 +23,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Jooff on 2017/1/29.
+ * Tomorrow is a nice day
  */
 
 public class ThemeFragment extends DialogFragment {
@@ -53,13 +54,7 @@ public class ThemeFragment extends DialogFragment {
             R.id.color8})
     public void setColor(Button color) {
         if (isNightMode) {
-            MySnackBar.getSnack(color, R.string.close_night_mode).setAction("关闭夜间模式", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SettingsFragment fragment = new SettingsFragment();
-                    fragment.show(getActivity().getSupportFragmentManager(), "settingsDialog");
-                }
-            }).show();
+            Toast.makeText(this.getActivity(), R.string.close_night_mode, Toast.LENGTH_SHORT).show();
             return;
         }
         switch (color.getId()) {

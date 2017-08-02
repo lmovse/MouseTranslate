@@ -127,12 +127,12 @@
             app:fab_size="mini"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_theme"
+            android:id="@+id/fab_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/colorAccent"
             app:fab_colorPressed="@color/colorAccentDark"
-            app:fab_icon="@drawable/ic_color_lens_white_18dp"
+            app:fab_icon="@drawable/ic_book_white_18dp"
             app:fab_size="mini"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton

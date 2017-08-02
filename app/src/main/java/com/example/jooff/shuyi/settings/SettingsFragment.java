@@ -13,9 +13,11 @@ import android.widget.CompoundButton;
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
+import com.example.jooff.shuyi.common.ThemeFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Jooff on 2017/1/24.
@@ -37,6 +39,13 @@ public class SettingsFragment extends DialogFragment implements SettingsContract
 
     @BindView(R.id.note_mode)
     SwitchCompat noteMode;
+
+    @OnClick(R.id.color_theme)
+    public void showThemes() {
+        ThemeFragment fragment = new ThemeFragment();
+        fragment.show(this.getActivity().getSupportFragmentManager(), "tf");
+        this.dismiss();
+    }
 
     @NonNull
     @Override

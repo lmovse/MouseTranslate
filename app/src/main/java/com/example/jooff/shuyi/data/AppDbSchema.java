@@ -9,13 +9,20 @@ import android.provider.BaseColumns;
 
 public class AppDbSchema {
     public static final String DB_NAME = "mouse_translate";
-    public static final int DB_VISION = 1;
+    public static final int DB_VISION = 2;
 
     // Use private constructor to prevent init class
     private AppDbSchema() {}
 
     public static final class HistoryTable implements BaseColumns {
         public static final String TABLE_NAME = "History";
+        public static final String ORIGINAL = "original";
+        public static final String RESULT = "result";
+        public static final String COLLECTED = "collected";
+    }
+
+    public static final class CollectTable implements BaseColumns {
+        public static final String TABLE_NAME = "collect";
         public static final String ORIGINAL = "original";
         public static final String RESULT = "result";
     }

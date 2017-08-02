@@ -13,6 +13,4 @@ public interface OnAppStatusListener {
 
     void onSuccess(String original);
 
-    void onSnackBarShow();
-
 }

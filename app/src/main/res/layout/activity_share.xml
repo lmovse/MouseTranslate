@@ -63,6 +63,16 @@
                     android:src="@drawable/ic_delete_white_18dp"/>
 
                 <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/show_quick_trans"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingBottom="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/ic_beach_access_white_18dp"/>
+
+                <ImageView
                     android:id="@+id/share_original_send"
                     android:paddingBottom="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_horizontal_margin"

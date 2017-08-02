@@ -1,4 +1,4 @@
-package com.example.jooff.shuyi.history;
+package com.example.jooff.shuyi.collect;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,7 +18,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,29 +31,28 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Jooff on 2017/1/14.
  * Tomorrow is a nice day
  */
 
-public class HistoryFragment extends Fragment implements HistoryContract.View {
-    private HistoryRvAdapter mAdapter;
-    private HistoryContract.Presenter mPresenter;
+public class CollectFragment extends Fragment implements CollectContract.View {
+    private CollectRvAdapter mAdapter;
+    private CollectContract.Presenter mPresenter;
     private Resources mResources;
     private Context mContext;
 
-    @BindView(R.id.card_history)
-    CardView cardHistory;
-    @BindView(R.id.rec_history)
-    RecyclerView recHistory;
+    @BindView(R.id.card_collect)
+    CardView cardCollect;
+    @BindView(R.id.rec_collect)
+    RecyclerView recCollect;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_history, container, false);
+        View view = inflater.inflate(R.layout.fragment_collect, container, false);
         ButterKnife.bind(this, view);
-        mPresenter = new HistoryPresenter(AppDbRepository.getInstance(getContext()), this);
+        mPresenter = new CollectPresenter(AppDbRepository.getInstance(getContext()), this);
         initView();
         return view;
     }
@@ -68,21 +66,21 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void initView() {
-        mAdapter = new HistoryRvAdapter(new ArrayList<History>(0), mListener);
-        recHistory.setAdapter(mAdapter);
-        recHistory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recHistory.setNestedScrollingEnabled(false);
-        recHistory.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mAdapter = new CollectRvAdapter(new ArrayList<History>(0), mListener);
+        recCollect.setAdapter(mAdapter);
+        recCollect.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recCollect.setNestedScrollingEnabled(false);
+        recCollect.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new HistoryRvCallback());
-        mItemTouchHelper.attachToRecyclerView(recHistory);
+        mItemTouchHelper.attachToRecyclerView(recCollect);
         mPresenter.initTheme();
         mPresenter.loadData();
     }
 
     @Override
-    public void showHistory(ArrayList<History> items) {
+    public void showCollects(ArrayList<History> items) {
         mAdapter.refreshItems(items);
-        cardHistory.setVisibility(View.VISIBLE);
+        cardCollect.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -92,7 +90,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     }
 
     @Override
-    public void showHistoryDeleted() {
+    public void showCollectDeleted() {
         Toast.makeText(this.getActivity(), R.string.delete_success, Toast.LENGTH_SHORT).show();
     }
 
@@ -118,9 +116,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
             int position = viewHolder.getAdapterPosition();
             mAdapter.remove(position);
             if (mAdapter.getItemCount() == 0) {
-                cardHistory.setVisibility(View.GONE);
+                cardCollect.setVisibility(View.GONE);
             }
-            mPresenter.deleteHistoryItem(position);
+            mPresenter.deleteCollect(position);
         }
 
         @Override
@@ -178,32 +176,25 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
     /**
      * 重写 RecyclerView 适配器类
      */
-    class HistoryRvAdapter extends RecyclerView.Adapter<HistoryRvAdapter.historyViewHolder> {
+    class CollectRvAdapter extends RecyclerView.Adapter<CollectRvAdapter.collectViewHolder> {
         private OnItemClickListener onItemClickListener;
         private ArrayList<History> items;
 
         @Override
-        public HistoryRvAdapter.historyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new HistoryRvAdapter.historyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.m_item_history, parent, false));
+        public CollectRvAdapter.collectViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new CollectRvAdapter.collectViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.m_item_collect, parent, false));
         }
 
-        public HistoryRvAdapter(ArrayList<History> items, OnItemClickListener listener) {
+        public CollectRvAdapter(ArrayList<History> items, OnItemClickListener listener) {
             this.items = items;
             onItemClickListener = listener;
         }
 
         @Override
-        public void onBindViewHolder(final HistoryRvAdapter.historyViewHolder holder, int position) {
+        public void onBindViewHolder(final CollectRvAdapter.collectViewHolder holder, int position) {
             History item = items.get(position);
             holder.textOriginal.setText(item.getOriginal());
             holder.textResult.setText(item.getResult());
-            if (item.getCollected() == 0) {
-                holder.collect.setTag(false);
-                holder.collect.setImageResource(R.drawable.ic_star_border_black_24dp);
-            } else {
-                holder.collect.setImageResource(R.drawable.ic_star_yellow_800_24dp);
-                holder.collect.setTag(true);
-            }
             if (onItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -231,30 +222,13 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
             notifyDataSetChanged();
         }
 
-        class historyViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.item_original)
+        class collectViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.item_collect_original)
             TextView textOriginal;
-            @BindView(R.id.item_result)
+            @BindView(R.id.item_collect_result)
             TextView textResult;
-            @BindView(R.id.collcect)
-            ImageView collect;
 
-            @OnClick(R.id.collcect)
-            public void show(ImageView collect) {
-                if ((boolean) collect.getTag()) {
-                    collect.setImageResource(R.drawable.ic_star_border_black_24dp);
-                    collect.setTag(false);
-                    mCollectListener.onCollectClickListener(collect, this.getLayoutPosition());
-                    Toast.makeText(mContext, "取消收藏成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    collect.setImageResource(R.drawable.ic_star_yellow_800_24dp);
-                    collect.setTag(true);
-                    mCollectListener.onCollectClickListener(collect, this.getLayoutPosition());
-                    Toast.makeText(mContext, "收藏成功", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            historyViewHolder(View itemView) {
+            collectViewHolder(View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }
@@ -266,25 +240,10 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         void onItemClick(View v, int position);
     }
 
-    public interface OnCollectClickListener {
-        void onCollectClickListener(View view, int position);
-    }
-
     OnItemClickListener mListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View v, int position) {
             mPresenter.beginTranslate(position);
-        }
-    };
-
-    OnCollectClickListener mCollectListener = new OnCollectClickListener() {
-        @Override
-        public void onCollectClickListener(View view, int position) {
-            if ((boolean) view.getTag()) {
-                mPresenter.collectHistory(position);
-            } else {
-                mPresenter.unCollectHistory(position);
-            }
         }
     };
 

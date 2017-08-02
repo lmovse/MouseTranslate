@@ -12,18 +12,19 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
+            android:layout_marginBottom="@dimen/app_padding"
             android:layout_marginTop="@dimen/app_padding"
             android:layout_marginLeft="@dimen/app_padding"
-            android:layout_marginBottom="@dimen/app_padding"
+            android:layout_marginStart="@dimen/app_padding"
             app:cardElevation="0dp"
             android:visibility="gone"
-            android:id="@+id/card_history"
+            android:id="@+id/card_collect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
                 android:background="@color/background"
-                android:id="@+id/rec_history"
+                android:id="@+id/rec_collect"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

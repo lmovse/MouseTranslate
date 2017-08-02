@@ -1,6 +1,7 @@
 package com.example.jooff.shuyi.history;
 
-import com.example.jooff.shuyi.common.MyApp;
+import android.util.Log;
+
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
 
@@ -22,22 +23,31 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void loadData() {
-        ArrayList<History> items = mHistoryDbSource.getHistorys();
-        if (!items.isEmpty()) {
-            mHistoryView.showHistory(items);
+        ArrayList<History> historys = mHistoryDbSource.getHistorys();
+        if (!historys.isEmpty()) {
+            mHistoryView.showHistory(historys);
         }
     }
 
     @Override
-    public void initTheme() {
-        if (!MyApp.sIsNightMode) {
-            mHistoryView.setAppTheme(MyApp.sColorPrimary);
-        }
+    public void initTheme() {}
+
+    @Override
+    public void collectHistory(int position) {
+        mHistoryDbSource.collectHistory(mHistoryDbSource.getHistorys().get(position));
+    }
+
+    @Override
+    public void unCollectHistory(int position) {
+        String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
+        Log.d("取消收藏项", "unCollectHistory: " + original);
+        mHistoryDbSource.cancelCollect(original);
     }
 
     @Override
     public void deleteHistoryItem(int position) {
         String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
+        Log.d("删除项", "deleteHistory: " + original);
         mHistoryDbSource.deleteHistory(original);
         mHistoryView.showHistoryDeleted();
     }

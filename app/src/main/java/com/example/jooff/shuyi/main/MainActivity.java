@@ -20,7 +20,6 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,14 +30,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.collect.CollectFragment;
 import com.example.jooff.shuyi.common.AboutFragment;
 import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.common.CopyTranslateService;
 import com.example.jooff.shuyi.common.MyApp;
-import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
 import com.example.jooff.shuyi.common.SourceFragment;
-import com.example.jooff.shuyi.common.ThemeFragment;
 import com.example.jooff.shuyi.history.HistoryFragment;
 import com.example.jooff.shuyi.settings.SettingsFragment;
 import com.example.jooff.shuyi.translate.main.MainTranslateView;
@@ -50,9 +48,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-
-import static com.example.jooff.shuyi.common.MySnackBar.getSnack;
-
 
 public class MainActivity extends AppCompatActivity implements MainContract.View, OnAppStatusListener {
     public MainContract.Presenter mPresenter;
@@ -124,9 +119,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         showFrag(new SettingsFragment(), "sf");
     }
 
-    @OnClick(R.id.fab_theme)
-    public void setTheme() {
-        showFrag(new ThemeFragment(), "tf");
+    @OnClick(R.id.fab_book)
+    public void showBook() {
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.contentFrag, new CollectFragment()).commit();
+        mFabMenu.collapse();
     }
 
     @OnClick(R.id.fab_source)
@@ -179,8 +176,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showEmptyInput() {
-        getSnack(mCoordinatorLayout, R.string.no_text).show();
-        onSnackBarShow();
+        Toast.makeText(this, R.string.no_text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -220,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         intent.setType("text/*");
         PendingIntent notifyIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_notifi)
                 .setOngoing(true)
                 .setContentIntent(notifyIntent)
                 .setContentTitle(this.getString(R.string.app_name))
@@ -257,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void initTheme(int themeId, int colorPrimary) {
         MyApp.sColorPrimary = colorPrimary;
-        MySnackBar.color = colorPrimary;
         switch (themeId) {
             case 1024:
                 setTheme(R.style.AppTheme_Dark);
@@ -332,8 +327,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void showConfirmFinish() {
-        MySnackBar.getSnack(mCoordinatorLayout, R.string.confirm_exit).show();
-        onSnackBarShow();
+        Toast.makeText(this, R.string.confirm_exit, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -342,26 +336,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mEditText.setText(original);
     }
 
-    @Override
-    public void onSnackBarShow() {
-        mFabMenu.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_up));
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1785);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFabMenu.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.anim_down));
-                    }
-                });
-            }
-        }).start();
-    }
 
     @Override
     public void onSettingChanged(int position, boolean isChecked) {

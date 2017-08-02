@@ -12,12 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.Constant;
-import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.common.OnAppStatusListener;
-import com.example.jooff.shuyi.common.SourceFragment;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
@@ -155,8 +154,7 @@ public class MainTranslateView extends Fragment implements MainTranslateContract
      */
     @Override
     public void showError() {
-        MySnackBar.getSnack(mTransCard, R.string.invalid_translate).show();
-        mListener.onSnackBarShow();
+        Toast.makeText(this.getActivity(), R.string.only_support_dic, Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -164,14 +162,7 @@ public class MainTranslateView extends Fragment implements MainTranslateContract
      */
     @Override
     public void showNotSupport() {
-        MySnackBar.getSnack(mTransCard, R.string.only_support_dic).setAction("换源", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SourceFragment sourceFragment = new SourceFragment();
-                sourceFragment.show(getActivity().getSupportFragmentManager(), "sourceFragment");
-            }
-        }).show();
-        mListener.onSnackBarShow();
+        Toast.makeText(this.getActivity(), R.string.invalid_translate, Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -186,8 +177,7 @@ public class MainTranslateView extends Fragment implements MainTranslateContract
 
     @Override
     public void showCopySuccess() {
-        MySnackBar.getSnack(mTransCard, R.string.copy_success).show();
-        mListener.onSnackBarShow();
+        Toast.makeText(this.getActivity(), R.string.copy_success, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -20,8 +20,6 @@
     <string name="negative">不见</string>
     <string name="negative_string">让我感谢你，赠我空欢喜</string>
     <string name="positive_string">与君初相识，犹如故人归</string>
-    <string name="no_title">""</string>
-    <string name="positive_love">2017年2月3日</string>
     <string name="dic">字典</string>
     <string name="us_phonetic">美 : &#160;</string>
     <string name="en_phonetic">英 : &#160;</string>
@@ -29,7 +27,7 @@
     <string name="delete_success">删除成功</string>
     <string name="confirm_exit">再点一次退出应用</string>
     <string name="only_support_dic">当前源仅支持查词，请尝试更换翻译源</string>
-    <string name="close_night_mode">当前处于夜间模式，不支持更换主题, 请先关闭</string>
+    <string name="close_night_mode">请先关闭夜间模式</string>
     <string name="explain">释义</string>
     <string name="notifi_name">点击进行快速查词</string>
     <string name="share_intent">com.example.jooff.share</string>

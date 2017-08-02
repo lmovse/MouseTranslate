@@ -1,4 +1,4 @@
-package com.example.jooff.shuyi.history;
+package com.example.jooff.shuyi.collect;
 
 import com.example.jooff.shuyi.base.BasePresenter;
 import com.example.jooff.shuyi.base.BaseView;
@@ -11,28 +11,25 @@ import java.util.ArrayList;
  * Tomorrow is a nice day
  */
 
-public interface HistoryContract {
+public interface CollectContract {
 
     interface View extends BaseView {
 
-        void showHistory(ArrayList<History> items);
+        void showCollects(ArrayList<History> items);
 
         void showTranslate(String original);
 
-        void showHistoryDeleted();
+        void showCollectDeleted();
 
     }
 
     interface Presenter extends BasePresenter {
 
-        void deleteHistoryItem(int position);
+        void deleteCollect(int position);
 
         void beginTranslate(int position);
 
         void initTheme();
 
-        void collectHistory(int position);
-
-        void unCollectHistory(int position);
     }
 }

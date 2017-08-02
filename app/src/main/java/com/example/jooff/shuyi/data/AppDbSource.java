@@ -24,9 +24,19 @@ public interface AppDbSource {
 
         void saveHistory(History history);
 
+        void collectHistory(History history);
+
+        void cancelCollect(String original);
+
         History getHistory(String original);
 
+        History getCollect(String original);
+
         ArrayList<History> getHistorys();
+
+        ArrayList<History> getCollects();
+
+        void deleteCollect(String original);
 
         void deleteHistory(String original);
 

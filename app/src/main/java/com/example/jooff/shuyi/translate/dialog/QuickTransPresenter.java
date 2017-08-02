@@ -1,12 +1,9 @@
 package com.example.jooff.shuyi.translate.dialog;
 
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.media.MediaPlayer;
-import android.util.Log;
+import android.content.Intent;
+import android.os.Build;
 
 import com.example.jooff.shuyi.api.YouDaoTransAPI;
-import com.example.jooff.shuyi.common.Constant;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
@@ -14,30 +11,22 @@ import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 import com.example.jooff.shuyi.util.UTF8Format;
 
-import java.io.IOException;
-
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by Jooff on 2017/2/1.
  * Tomorrow is a nice day
  */
 
-public class DialogTransPresenter implements DialogTransContract.Presenter {
-    private DialogTransContract.View mView;
-    private int colorPrimary;
-    private boolean isNightMode;
-    private String mUsSpeech;
+public class QuickTransPresenter implements QuickTransContract.Presenter {
+    private QuickTransContract.View mView;
     private String original;
     private AppDbRepository mAppDbRepository;
 
-    public DialogTransPresenter(SharedPreferences preferences
-            ,AppDbRepository transSource
-            , DialogTransContract.View view) {
+    public QuickTransPresenter(AppDbRepository transSource
+            , Intent intent
+            , QuickTransContract.View view) {
         mView = view;
         mAppDbRepository = transSource;
-        colorPrimary = preferences.getInt(Constant.ARG_PRIMARY, Color.parseColor("#F44336"));
-        isNightMode = preferences.getBoolean(Constant.ARG_NIGHT, false);
+        original = getOriginal(intent);
     }
 
     @Override
@@ -57,10 +46,6 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
                     } else if (response.getTranslation() != null) {
                         mView.showTrans(original, response.getTranslation());
                     }
-                    if (response.getUkPhonetic() != null) {
-                        mUsSpeech = response.getUsSpeech();
-                        mView.showSpeech();
-                    }
                 }
 
                 @Override
@@ -77,29 +62,19 @@ public class DialogTransPresenter implements DialogTransContract.Presenter {
         loadData();
     }
 
-    @Override
-    public void playSpeech() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MediaPlayer mPlay = new MediaPlayer();
-                try {
-                    mPlay.setDataSource(mUsSpeech);
-                    mPlay.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mPlay.start();
+    private String getOriginal(Intent intent) {
+        String original = null;
+        if (intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT) != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                original = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString();
             }
-        }).start();
-    }
-
-    @Override
-    public void initTheme() {
-        Log.d(TAG, "initKitKatLayout: " + isNightMode);
-        if (!isNightMode) {
-            mView.setAppTheme(colorPrimary);
+            return original;
         }
+        if (intent.getStringExtra("original") != null) {
+            original = intent.getStringExtra("original");
+            return original;
+        }
+        return null;
     }
 
 }

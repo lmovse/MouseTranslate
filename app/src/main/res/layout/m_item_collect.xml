@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/app_padding"
+              android:layout_marginRight="@dimen/app_padding"
+              android:background="@color/white"
+              android:baselineAligned="false"
+              android:foreground="?attr/selectableItemBackground"
+              android:orientation="vertical"
+              android:padding="@dimen/app_padding">
+
+        <TextView
+            android:id="@+id/item_collect_original"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="love"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/item_collect_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:text="爱"
+            android:maxLines="1"
+            android:paddingRight="30dp"
+            android:textSize="16sp"/>
+
+</LinearLayout>

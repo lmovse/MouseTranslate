@@ -5,6 +5,7 @@
               android:background="@color/white"
               android:foreground="?attr/selectableItemBackground"
               android:orientation="horizontal"
+              android:layout_marginRight="@dimen/app_padding"
               android:padding="@dimen/app_padding"
               android:baselineAligned="false">
 
@@ -39,6 +40,7 @@
         android:gravity="end"
         android:layout_height="match_parent">
         <ImageButton
+            android:id="@+id/collcect"
             android:background="@color/white"
             android:layout_gravity="end"
             android:layout_marginRight="@dimen/app_padding"

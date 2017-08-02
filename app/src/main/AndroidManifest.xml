@@ -20,8 +20,19 @@
             <intent-filter>
                 <action android:name="com.example.jooff.share"/>
                 <category android:name="android.intent.category.DEFAULT"/>
-                <action android:name="android.intent.action.SEND"/>
+                <data android:mimeType="text/*"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:launchMode="singleInstance"
+            android:name=".translate.dialog.QuickTransView"
+            android:theme="@style/CopyDialog">
+            <intent-filter>
+                <action android:name="com.example.jooff.quick"/>
+                <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.intent.action.PROCESS_TEXT"/>
+                <action android:name="android.intent.action.SEND"/>
                 <data android:mimeType="text/*"/>
             </intent-filter>
         </activity>

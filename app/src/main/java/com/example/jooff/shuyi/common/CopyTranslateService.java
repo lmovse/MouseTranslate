@@ -29,8 +29,20 @@ public class CopyTranslateService extends Service {
         public void onPrimaryClipChanged() {
             final ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             ClipData clipData = cm.getPrimaryClip();
-            String mOriginal = clipData.getItemAt(0).getText().toString();
-            Intent intent = new Intent("com.example.jooff.share");
+            String mOriginal = "";
+            try {
+                mOriginal = clipData.getItemAt(0).getText().toString();
+            } catch (Exception e) {
+//                Handler handler = new Handler(Looper.getMainLooper());
+//                handler.post(new Runnable() {
+//                    public void run() {
+//                        Toast.makeText(getApplicationContext(), "获取复制结果失败，请重试",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//                return;
+            }
+            Intent intent = new Intent("com.example.jooff.quick");
             intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setType("text/*");
             if (!TextUtils.isEmpty(mOriginal.trim())) {

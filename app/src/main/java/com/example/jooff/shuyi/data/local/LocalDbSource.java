@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Tomorrow is a nice day
  */
 
-public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.TranslateDbSource {
+public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.TranslateDbSource {
     private static LocalDbSource sLocalDbSource = null;
     private SQLiteDatabase db;
 
@@ -73,6 +73,23 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
     }
 
     @Override
+    public void collectHistory(History history) {
+        ContentValues values = new ContentValues();
+        values.put(AppDbSchema.CollectTable.ORIGINAL, history.getOriginal());
+        values.put(AppDbSchema.CollectTable.RESULT, history.getResult());
+        db.insert(AppDbSchema.CollectTable.TABLE_NAME, null, values);
+        Object[] args = {1, history.getOriginal()};
+        db.execSQL("UPDATE " + AppDbSchema.HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
+    }
+
+    @Override
+    public void cancelCollect(String original) {
+        deleteCollect(original);
+        Object[] args = {0, original};
+        db.execSQL("UPDATE " + AppDbSchema.HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
+    }
+
+    @Override
     public History getHistory(String original) {
         History item = null;
         String queryLogic = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
@@ -82,7 +99,8 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
             cursor.moveToFirst();
             String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
             String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-            item = new History(textOriginal, textResult);
+            int collected = cursor.getInt(cursor.getColumnIndex(AppDbSchema.HistoryTable.COLLECTED));
+            item = new History(textOriginal, textResult, collected);
         }
         if (cursor != null) {
             cursor.close();
@@ -98,7 +116,8 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
             while (cursor.moveToNext()) {
                 String hisOrigin = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
                 String hisResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-                History item = new History(hisOrigin, hisResult);
+                int collected = cursor.getInt(cursor.getColumnIndex(AppDbSchema.HistoryTable.COLLECTED));
+                History item = new History(hisOrigin, hisResult, collected);
                 items.add(0, item);
             }
         }
@@ -109,8 +128,50 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource,AppDbSource.Tr
     }
 
     @Override
+    public History getCollect(String original) {
+        History item = null;
+        String queryLogic = AppDbSchema.CollectTable.ORIGINAL + " == ? ";
+        String[] queryArgs = {original};
+        Cursor cursor = db.query(AppDbSchema.CollectTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.ORIGINAL));
+            String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.RESULT));
+            item = new History(textOriginal, textResult, 1);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return item;
+    }
+
+    @Override
+    public ArrayList<History> getCollects() {
+        ArrayList<History> items = new ArrayList<>();
+        Cursor cursor = db.query(AppDbSchema.CollectTable.TABLE_NAME, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                String hisOrigin = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.ORIGINAL));
+                String hisResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.RESULT));
+                History item = new History(hisOrigin, hisResult, 1);
+                items.add(0, item);
+            }
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return items;
+    }
+
+    @Override
+    public void deleteCollect(String original) {
+        String deleteClause = AppDbSchema.CollectTable.ORIGINAL + " == ? ";
+        String[] deleteArgs = {original};
+        db.delete(AppDbSchema.CollectTable.TABLE_NAME, deleteClause, deleteArgs);
+    }
+
+    @Override
     public void deleteHistory(String original) {
-        //指定删除的逻辑
         String deleteClause = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
         String[] deleteArgs = {original};
         db.delete(AppDbSchema.HistoryTable.TABLE_NAME, deleteClause, deleteArgs);

@@ -50,7 +50,7 @@ public class MainTranslatePresenter implements MainTranslateContract.Presenter {
                 }
                 mView.showCompletedTrans(response.getQuery());
                 if (transFrom != 0) {
-                    History history = new History(response.getQuery(), response.getTranslation());
+                    History history = new History(response.getQuery(), response.getTranslation(), 0);
                     mAppDbRepository.saveHistory(history);
                 }
                 if (response.getTranslation() != null) {
@@ -71,10 +71,8 @@ public class MainTranslatePresenter implements MainTranslateContract.Presenter {
                     StringBuilder mWeb = new StringBuilder();
                     mWeb.append("\n");
                     for (int i = 0; i < response.getOriginal().size(); i++) {
-                        mWeb.append(String.valueOf(i + 1))
-                                .append("  ")
-                                .append(response.getOriginal().get(i))
-                                .append("\n    ")
+                        mWeb.append(response.getOriginal().get(i))
+                                .append("\n")
                                 .append(response.getTranslate().get(i))
                                 .append("\n")
                                 .append("\n");

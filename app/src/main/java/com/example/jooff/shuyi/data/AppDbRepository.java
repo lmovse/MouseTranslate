@@ -68,13 +68,38 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
+    public void collectHistory(History history) {
+        mLocalDbSource.collectHistory(history);
+    }
+
+    @Override
+    public void cancelCollect(String original) {
+        mLocalDbSource.cancelCollect(original);
+    }
+
+    @Override
     public History getHistory(String original) {
         return mLocalDbSource.getHistory(original);
     }
 
     @Override
+    public History getCollect(String original) {
+        return mLocalDbSource.getCollect(original);
+    }
+
+    @Override
     public ArrayList<History> getHistorys() {
         return mLocalDbSource.getHistorys();
+    }
+
+    @Override
+    public ArrayList<History> getCollects() {
+        return mLocalDbSource.getCollects();
+    }
+
+    @Override
+    public void deleteCollect(String original) {
+        mLocalDbSource.deleteCollect(original);
     }
 
     @Override

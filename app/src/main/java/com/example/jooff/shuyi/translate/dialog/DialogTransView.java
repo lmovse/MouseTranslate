@@ -1,5 +1,8 @@
 package com.example.jooff.shuyi.translate.dialog;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
@@ -14,11 +17,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.common.AboutFragment;
 import com.example.jooff.shuyi.common.Constant;
-import com.example.jooff.shuyi.common.MySnackBar;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.main.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
@@ -33,12 +36,16 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
 
     @BindView(R.id.share_result)
     TextView mResult;
+
     @BindView(R.id.share_toolbar)
     Toolbar mToolbar;
+
     @BindView(R.id.share_appbar)
     AppBarLayout mAppBar;
+
     @BindView(R.id.share_speech)
     ImageView mShareSpeech;
+
     @BindView(R.id.share_et)
     EditText mEditText;
 
@@ -49,7 +56,6 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         ButterKnife.bind(this);
         mPresenter = new DialogTransPresenter(getSharedPreferences(Constant.ARG_NAME, MODE_PRIVATE)
                 , AppDbRepository.getInstance(this.getApplicationContext())
-                , getIntent()
                 , this);
         initView();
         mPresenter.loadData();
@@ -63,11 +69,10 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         android.view.WindowManager.LayoutParams p = getWindow().getAttributes();
-        p.y = - (int) (dm.heightPixels * 0.2);
+        p.y = -dm.heightPixels;
         p.width = (int) (dm.widthPixels * 0.8);
         getWindow().setAttributes(p);
 
-        // 初始化 toolbar
         mToolbar.setTitle(R.string.app_name);
         mToolbar.inflateMenu(R.menu.menu_main);
         mToolbar.setOnMenuItemClickListener(this);
@@ -126,6 +131,23 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
         mPresenter.beginTrans(mEditText.getText().toString());
     }
 
+    @OnClick(R.id.show_quick_trans)
+    public void showQuikTrans(ImageView quickTrans) {
+        quickTrans.startAnimation(AnimationUtil.getScale(this));
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this.getString(R.string.share_intent));
+        intent.setType("text/*");
+        PendingIntent notifyIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification = new Notification.Builder(this)
+                .setSmallIcon(R.mipmap.ic_notifi)
+                .setOngoing(true)
+                .setContentIntent(notifyIntent)
+                .setContentTitle(this.getString(R.string.app_name))
+                .setContentText(this.getString(R.string.notifi_name)).build();
+        manager.notify(1, notification);
+        Toast.makeText(this, "已开启快速翻译", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void showTrans(String original, String result) {
         mEditText.setText(original);
@@ -135,7 +157,7 @@ public class DialogTransView extends AppCompatActivity implements DialogTransCon
 
     @Override
     public void showError() {
-        MySnackBar.getSnack(mAppBar, R.string.invalid_translate).show();
+        Toast.makeText(this, R.string.invalid_translate, Toast.LENGTH_SHORT).show();
     }
 
     @Override
