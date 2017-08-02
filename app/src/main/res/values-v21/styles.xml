@@ -19,8 +19,8 @@
     </style>
 
     <style name="AppTheme.Purple">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimaryPurple</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPurple</item>
     </style>
 
     <style name="AppTheme.Pink">

@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#673AB7</color>
-    <color name="colorPrimaryDark">#512DA8</color>
+    <color name="colorPrimary">#1b82d2</color>
+    <color name="colorPrimaryDark">#14619d</color>
+
     <color name="colorAccent">#e91e63</color>
     <color name="colorAccentDark">#c2185b</color>
+
     <color name="black">@android:color/black</color>
     <color name="white">@android:color/white</color>
     <color name="background">#e5e5e5</color>
+
+    <color name="colorPrimaryPurple">#673AB7</color>
+    <color name="colorPrimaryDarkPurple">#512DA8</color>
 
     <color name="colorPrimaryPink">#E71E61</color>
     <color name="colorPrimaryDarkPink">#C1195A</color>
@@ -29,7 +34,7 @@
     <color name="colorPrimaryRed">#F44336</color>
     <color name="colorPrimaryDarkRed">#D32f2f</color>
 
-    <color name="colorPrimaryBlue">#2297F1</color>
-    <color name="colorPrimaryDarkBlue">#1978D0</color>
+    <color name="colorPrimaryBlue">#1b82d2</color>
+    <color name="colorPrimaryDarkBlue">#14619d</color>
 
 </resources>

@@ -107,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     // 解决旋转屏幕时报空指针
     @Override
-    protected void onSaveInstanceState(Bundle outState) {}
+    protected void onSaveInstanceState(Bundle outState) {
+    }
 
     @Override
     protected void onDestroy() {
@@ -149,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         mFabMenu.collapse();
         mEditText.setText("");
         mEditText.startAnimation(AnimationUtil.getAlpha(this));
+        InputMethodManager imm = (InputMethodManager) getApplication().getSystemService(INPUT_METHOD_SERVICE);
+        imm.toggleSoftInputFromWindow(mEditText.getWindowToken(), 0, 0);
         delete.startAnimation(AnimationUtil.getScale(this));
         mPresenter.loadData();
     }
@@ -361,7 +364,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -372,7 +376,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
