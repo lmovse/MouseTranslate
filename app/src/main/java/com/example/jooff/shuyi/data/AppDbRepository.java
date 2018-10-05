@@ -37,28 +37,28 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
-    public void getTrans(int tranFrom, String original, AppDbSource.TranslateCallback callback) {
+    public void getTrans(int tranFrom, String transUrl, AppDbSource.TranslateCallback callback) {
         switch (tranFrom) {
             case TransSource.FROM_COLLECT:
-                mLocalDbSource.getTrans(TransSource.FROM_COLLECT, original, callback);
+                mLocalDbSource.getTrans(TransSource.FROM_COLLECT, transUrl, callback);
                 break;
             case TransSource.FROM_HISTORY:
-                mLocalDbSource.getTrans(TransSource.FROM_HISTORY, original, callback);
+                mLocalDbSource.getTrans(TransSource.FROM_HISTORY, transUrl, callback);
                 break;
             case R.id.source_jinshan:
-                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSAHN, original, callback);
+                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSAHN, transUrl, callback);
                 break;
             case R.id.source_baidu:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAUDU, original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAUDU, transUrl, callback);
                 break;
             case R.id.source_yiyun:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YIYUN, original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YIYUN, transUrl, callback);
                 break;
             case R.id.source_shanbei:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_SHANBEI, original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_SHANBEI, transUrl, callback);
                 break;
             case R.id.source_youdao:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, original, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, transUrl, callback);
                 break;
         }
     }

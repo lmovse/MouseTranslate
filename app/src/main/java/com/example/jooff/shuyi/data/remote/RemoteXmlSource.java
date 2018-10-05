@@ -1,7 +1,5 @@
 package com.example.jooff.shuyi.data.remote;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.data.AppDbSource;
@@ -29,22 +27,14 @@ public class RemoteXmlSource implements AppDbSource.TranslateDbSource {
     }
 
     @Override
-    public void getTrans(final int transFrom, String original, final AppDbSource.TranslateCallback callback) {
-        StringRequest stringRequest = new StringRequest(original, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                try {
-                    EntityFormat.getBeanFromJinShan(new String(s.getBytes("ISO-8859-1"), "utf-8"), callback);
-                } catch (XmlPullParserException | IOException e) {
-                    e.printStackTrace();
-                }
+    public void getTrans(final int transFrom, String transUrl, final AppDbSource.TranslateCallback callback) {
+        StringRequest stringRequest = new StringRequest(transUrl, s -> {
+            try {
+                EntityFormat.getBeanFromJinShan(new String(s.getBytes("ISO-8859-1"), "utf-8"), callback);
+            } catch (XmlPullParserException | IOException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                callback.onError(1);
-            }
-        });
+        }, volleyError -> callback.onError(1));
         MyApp.sRequestQueue.add(stringRequest);
     }
 }

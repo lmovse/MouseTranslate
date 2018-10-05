@@ -198,7 +198,7 @@ public class MainPresenter implements MainContract.Presenter {
                 default:
                     break;
             }
-            mView.showTrans(transFrom, transUrl);
+            mView.showTrans(transFrom, original, transUrl);
         }
     }
 

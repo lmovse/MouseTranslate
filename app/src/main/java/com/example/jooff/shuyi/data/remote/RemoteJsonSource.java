@@ -28,8 +28,9 @@ public class RemoteJsonSource implements AppDbSource.TranslateDbSource {
     }
 
     @Override
-    public void getTrans(final int source, final String original, final AppDbSource.TranslateCallback callback) {
-        JsonObjectRequest request = new JsonObjectRequest(original, s -> {
+    public void getTrans(final int source, final String transUrl,
+                         final AppDbSource.TranslateCallback callback) {
+        JsonObjectRequest request = new JsonObjectRequest(transUrl, s -> {
             try {
                 switch (source) {
                     case TransSource.FROM_BAUDU:

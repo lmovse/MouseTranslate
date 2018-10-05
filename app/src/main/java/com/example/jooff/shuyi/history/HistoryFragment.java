@@ -87,7 +87,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void showTranslate(String original) {
-        MainTransView fragment = MainTransView.newInstance(0, original);
+        MainTransView fragment = MainTransView.newInstance(0, original, original);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, fragment).commit();
     }
 

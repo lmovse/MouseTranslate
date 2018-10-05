@@ -3,7 +3,6 @@ package com.example.jooff.shuyi.translate.main;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -62,9 +61,10 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     @BindView(R.id.dic_web)
     TextView mWeb;
 
-    public static MainTransView newInstance(int transSource, String original) {
+    public static MainTransView newInstance(int transSource, String original, String transUrl) {
         Bundle bundle = new Bundle();
         bundle.putInt(AppPref.ARG_FROM, transSource);
+        bundle.putString(AppPref.ARG_TRANS_URL, transUrl);
         bundle.putString(AppPref.ARG_ORIGINAL, original);
         MainTransView fragment = new MainTransView();
         fragment.setArguments(bundle);
@@ -77,9 +77,8 @@ public class MainTransView extends Fragment implements MainTransContract.View {
         ButterKnife.bind(this, view);
         mContext = getActivity();
         mListener = (OnAppStatusListener) mContext;
-        mPresenter = new MainTransPresenter(getArguments()
-                , AppDbRepository.getInstance(getContext().getApplicationContext())
-                , this);
+        mPresenter = new MainTransPresenter(getArguments(),
+                AppDbRepository.getInstance(getContext().getApplicationContext()), this);
         initView();
         return view;
     }
@@ -162,7 +161,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
      */
     @Override
     public void showError() {
-        Toast.makeText(mContext, R.string.only_support_dic, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.invalid_translate, Toast.LENGTH_SHORT).show();
     }
 
     /*
@@ -170,7 +169,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
      */
     @Override
     public void showNotSupport() {
-        Toast.makeText(mContext, R.string.invalid_translate, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.only_support_dic, Toast.LENGTH_SHORT).show();
     }
 
     /*

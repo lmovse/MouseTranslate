@@ -48,7 +48,7 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
         if (oldVersion == 1) {
             sqLiteDatabase.execSQL("ALTER TABLE "
                     + AppDbSchema.HistoryTable.TABLE_NAME + " ADD "
-                    + AppDbSchema.HistoryTable.COLLECTED + " tinyint unsigned default 0 ");
+                    + AppDbSchema.HistoryTable.COLLECTED + "tinyint unsigned default 0 ");
             sqLiteDatabase.execSQL("CREATE TABLE "
                     + AppDbSchema.CollectTable.TABLE_NAME + "("
                     + AppDbSchema.CollectTable._ID + " integer" + " primary key autoincrement" + ", "
@@ -56,18 +56,6 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
                     + AppDbSchema.CollectTable.RESULT + " text" + ")");
             Log.d(TAG, "onUpgrade: 更新表成功！");
         }
-//        } else {
-//            Log.d(TAG, "onUpgrade: 正在新建两张表。。。");
-//            sqLiteDatabase.execSQL(CREATE_HISTORY);
-//            sqLiteDatabase.execSQL("ALTER TABLE "
-//                    + AppDbSchema.HistoryTable.TABLE_NAME + " ADD "
-//                    + AppDbSchema.HistoryTable.COLLECTED + " tinyint unsigned default 0 ");
-//            sqLiteDatabase.execSQL("CREATE TABLE "
-//                    + AppDbSchema.CollectTable.TABLE_NAME + "("
-//                    + AppDbSchema.CollectTable._ID + " integer" + " primary key autoincrement" + ", "
-//                    + AppDbSchema.CollectTable.ORIGINAL + " text" + ", "
-//                    + AppDbSchema.CollectTable.RESULT + " text" + ")");
-//        }
     }
 
 }

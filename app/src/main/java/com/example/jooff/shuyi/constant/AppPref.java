@@ -29,4 +29,5 @@ public interface AppPref {
 
     String ARG_THEME = "themeId";
 
+    String ARG_TRANS_URL = "transUrl";
 }

@@ -46,7 +46,7 @@ public interface AppDbSource {
 
     interface TranslateDbSource {
 
-       void getTrans(int transFrom, String original, TranslateCallback callback);
+       void getTrans(int transFrom, String transUrl, TranslateCallback callback);
 
     }
 

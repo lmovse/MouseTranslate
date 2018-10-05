@@ -194,12 +194,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showTrans(int transFrom, String original) {
+    public void showTrans(int transFrom, String original, String transUrl) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
         mProgressBar.setVisibility(View.VISIBLE);
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.contentFrag, MainTransView.newInstance(transFrom, original)).commit();
+        fm.beginTransaction().replace(R.id.contentFrag, MainTransView.newInstance(transFrom, original, transUrl)).commit();
     }
 
     @Override
@@ -361,7 +361,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onSuccess(String original) {
         mProgressBar.setVisibility(View.GONE);
-        mEditText.setText(original);
     }
 
     @Override

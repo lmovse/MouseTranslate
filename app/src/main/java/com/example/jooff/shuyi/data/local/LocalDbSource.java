@@ -48,15 +48,15 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
 //--------------------------------------- Trans Source ---------------------------------------------
 
     @Override
-    public void getTrans(int transFrom, String original, AppDbSource.TranslateCallback callback) {
+    public void getTrans(int transFrom, String transUrl, AppDbSource.TranslateCallback callback) {
         Translate trans = new Translate();
         if (transFrom == TransSource.FROM_COLLECT) {
-            Collect collect = getCollect(original);
+            Collect collect = getCollect(transUrl);
             trans.setQuery(collect.getOriginal());
             trans.setTranslation(collect.getResult());
         }
         if (transFrom == TransSource.FROM_HISTORY) {
-            History history = getHistory(original);
+            History history = getHistory(transUrl);
             trans.setQuery(history.getOriginal());
             trans.setTranslation(history.getResult());
         }

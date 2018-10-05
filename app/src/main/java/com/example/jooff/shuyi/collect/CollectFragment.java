@@ -85,7 +85,7 @@ public class CollectFragment extends Fragment implements CollectContract.View {
 
     @Override
     public void showTranslate(String original) {
-        MainTransView fragment = MainTransView.newInstance(-1, original);
+        MainTransView fragment = MainTransView.newInstance(-1, original, original);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.contentFrag, fragment).commit();
     }
 

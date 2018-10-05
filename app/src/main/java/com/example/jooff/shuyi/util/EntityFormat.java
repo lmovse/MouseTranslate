@@ -23,8 +23,11 @@ import java.util.List;
  */
 
 public class EntityFormat {
+
     private static Translate sTranslate = new Translate();
+
     private static List<String> original = new ArrayList<>();
+
     private static List<String> translate = new ArrayList<>();
 
     public static void getBeanFromYoudao(final JSONObject json, AppDbSource.TranslateCallback callback) throws JSONException {

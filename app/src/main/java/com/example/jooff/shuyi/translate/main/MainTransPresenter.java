@@ -24,24 +24,30 @@ import static android.content.Context.CLIPBOARD_SERVICE;
  */
 
 public class MainTransPresenter implements MainTransContract.Presenter {
-    private String mOriginal;
+
     private String mUsSpeech;
+
     private String mUkSpeech;
-    private int transFrom;
+
+    private TransHolder transHolder;
+
     private AppDbRepository mAppDbRepository;
+
     private MainTransContract.View mView;
 
     public MainTransPresenter(Bundle bundle, AppDbRepository transSource,
                               MainTransContract.View view) {
-        transFrom = bundle.getInt(AppPref.ARG_FROM);
-        mOriginal = bundle.getString(AppPref.ARG_ORIGINAL);
+        transHolder = new TransHolder(bundle.getString(AppPref.ARG_TRANS_URL),
+                bundle.getInt(AppPref.ARG_FROM), bundle.getString(AppPref.ARG_ORIGINAL));
         mAppDbRepository = transSource;
         mView = view;
     }
 
     @Override
     public void loadData() {
-        mAppDbRepository.getTrans(transFrom, mOriginal, new AppDbSource.TranslateCallback() {
+        final int transFrom = transHolder.getTransFrom();
+        mAppDbRepository.getTrans(transFrom, transHolder.getTransUrl(), new AppDbSource.TranslateCallback() {
+
             @Override
             public void onResponse(Translate response) {
                 if (response == null) {
@@ -50,7 +56,7 @@ public class MainTransPresenter implements MainTransContract.Presenter {
                 }
                 mView.showCompletedTrans(response.getQuery());
                 if (transFrom != TransSource.FROM_COLLECT && transFrom != TransSource.FROM_HISTORY) {
-                    History history = new History(response.getQuery(), response.getTranslation(), 0);
+                    History history = new History(transHolder.getOriginal(), response.getTranslation(), 0);
                     mAppDbRepository.saveHistory(history);
                 }
                 if (response.getTranslation() != null) {
@@ -100,23 +106,20 @@ public class MainTransPresenter implements MainTransContract.Presenter {
     @Override
     public void playSpeech(int speechFrom) {
         final int from = speechFrom;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MediaPlayer mPlay = new MediaPlayer();
-                try {
-                    if (from == 0) {
-                        mPlay.setDataSource(mUsSpeech);
-                    } else {
-                        mPlay.setDataSource(mUkSpeech);
-                    }
-                    mPlay.prepare();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+        new Thread(() -> {
+            MediaPlayer mPlay = new MediaPlayer();
+            try {
+                if (from == 0) {
+                    mPlay.setDataSource(mUsSpeech);
+                } else {
+                    mPlay.setDataSource(mUkSpeech);
                 }
-                mPlay.start();
+                mPlay.prepare();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            mPlay.start();
         }).start();
     }
 
@@ -133,6 +136,33 @@ public class MainTransPresenter implements MainTransContract.Presenter {
         ClipData result = ClipData.newPlainText("result", trans);
         clipboardManager.setPrimaryClip(result);
         mView.showCopySuccess();
+    }
+
+    static class TransHolder {
+
+        private String transUrl;
+
+        private int transFrom;
+
+        private String original;
+
+        public TransHolder(String transUrl, int transFrom, String original) {
+            this.transUrl = transUrl;
+            this.transFrom = transFrom;
+            this.original = original;
+        }
+
+        public String getTransUrl() {
+            return transUrl;
+        }
+
+        public int getTransFrom() {
+            return transFrom;
+        }
+
+        public String getOriginal() {
+            return original;
+        }
     }
 
 }

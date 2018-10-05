@@ -12,7 +12,7 @@ public interface MainContract {
 
     interface View extends BaseView{
 
-        void showTrans(int transFrom, String original);
+        void showTrans(int transFrom, String s, String original);
 
         void showEmptyInput();
 
