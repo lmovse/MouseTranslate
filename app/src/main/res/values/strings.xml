@@ -28,7 +28,7 @@
     <string name="confirm_exit">再点一次退出应用</string>
     <string name="only_support_dic">当前源仅支持查词，请尝试更换翻译源</string>
     <string name="close_night_mode">请先关闭夜间模式</string>
-    <string name="notifi_name">点击进行快速查词</string>
+    <string name="notify_name">点击进行快速查词</string>
     <string name="share_intent">com.example.jooff.share</string>
     <string name="source_jinshan">金山</string>
     <string name="source_youdao">有道</string>

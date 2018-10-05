@@ -20,8 +20,12 @@ import com.example.jooff.shuyi.constant.ThemeColor;
 import com.example.jooff.shuyi.main.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
+import java.util.Objects;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static java.util.Objects.requireNonNull;
 
 /**
  * Created by Jooff on 2017/1/29.
@@ -38,11 +42,11 @@ public class ThemeFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.m_dialog_theme, null);
+        View view = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.m_dialog_theme, null);
         ButterKnife.bind(this, view);
         mPreferences = getActivity().getSharedPreferences(AppPref.ARG_NAME, Context.MODE_PRIVATE);
         isNightMode = mPreferences.getBoolean(AppPref.ARG_NIGHT, false);
-        return new AlertDialog.Builder(getContext()).setTitle("主题").setView(view).create();
+        return new AlertDialog.Builder(Objects.requireNonNull(getContext())).setTitle("主题").setView(view).create();
     }
 
     @OnClick({R.id.color_girl,
@@ -61,9 +65,9 @@ public class ThemeFragment extends DialogFragment {
         }
         switch (color.getId()) {
             case R.id.color_girl:
-                colorPrimary = R.color.colorPrimary;
-                colorPrimaryDark = R.color.colorPrimaryDark;
-                themeId = ThemeColor.RED;
+                colorPrimary = R.color.colorPrimaryGirl;
+                colorPrimaryDark = R.color.colorPrimaryDarkGirl;
+                themeId = ThemeColor.GIRL;
                 break;
             case R.id.color_pink:
                 colorPrimary = R.color.colorPrimaryPink;
@@ -72,13 +76,13 @@ public class ThemeFragment extends DialogFragment {
                 break;
             case R.id.color_bule_grey:
                 colorPrimary = R.color.colorPrimaryBlueGrey;
-                colorPrimaryDark = R.color.colorPrimaryDarkBuleGrey;
-                themeId = ThemeColor.BULE_GREY;
+                colorPrimaryDark = R.color.colorPrimaryDarkBlueGrey;
+                themeId = ThemeColor.BLUE_GREY;
                 break;
             case R.id.color_blue:
-                colorPrimary = R.color.colorPrimaryGirl;
-                colorPrimaryDark = R.color.colorPrimaryDarkGirl;
-                themeId = ThemeColor.BULE;
+                colorPrimary = R.color.colorPrimaryBlue;
+                colorPrimaryDark = R.color.colorPrimaryDarkBlue;
+                themeId = ThemeColor.BLUE;
                 break;
             case R.id.color_green:
                 colorPrimary = R.color.colorPrimaryGreen;
@@ -98,26 +102,26 @@ public class ThemeFragment extends DialogFragment {
             case R.id.color_red:
                 colorPrimary = R.color.colorPrimaryRed;
                 colorPrimaryDark = R.color.colorPrimaryDarkRed;
-                themeId = ThemeColor.GIRL;
+                themeId = ThemeColor.RED;
                 break;
             case R.id.color_purple:
-                colorPrimary = R.color.colorPrimaryBlue;
-                colorPrimaryDark = R.color.colorPrimaryDarkBlue;
+                colorPrimary = R.color.colorPrimaryPurple;
+                colorPrimaryDark = R.color.colorPrimaryDarkPurple;
                 themeId = ThemeColor.PURPLE;
                 break;
             default:
                 break;
         }
         SharedPreferences.Editor mEditor = mPreferences.edit();
-        mEditor.putInt(AppPref.ARG_PRIMARY, ContextCompat.getColor(getContext(), colorPrimary));
+        mEditor.putInt(AppPref.ARG_PRIMARY, ContextCompat.getColor(requireNonNull(getContext()), colorPrimary));
         mEditor.putInt(AppPref.ARG_DARK, ContextCompat.getColor(getContext(), colorPrimaryDark));
         mEditor.putInt(AppPref.ARG_THEME, themeId);
         mEditor.apply();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             startActivity(new Intent(getActivity(), MainActivity.class));
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            requireNonNull(getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
-            AnimationUtil.startActivity(getActivity(), new Intent(getActivity(), MainActivity.class), color, colorPrimary, 618);
+            AnimationUtil.startActivity(requireNonNull(getActivity()), new Intent(getActivity(), MainActivity.class), color, colorPrimary, 618);
         }
         this.dismiss();
     }

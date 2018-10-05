@@ -84,7 +84,7 @@ public class CopyTransView extends AppCompatActivity implements CopyTransContrac
                 .setOngoing(true)
                 .setContentIntent(notifyIntent)
                 .setContentTitle(this.getString(R.string.app_name))
-                .setContentText(this.getString(R.string.notifi_name)).build();
+                .setContentText(this.getString(R.string.notify_name)).build();
         manager.notify(1, notification);
         Toast.makeText(this, "已开启快速翻译", Toast.LENGTH_SHORT).show();
     }

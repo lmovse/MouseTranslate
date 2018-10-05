@@ -30,7 +30,7 @@
 
     <style name="AppTheme.BlueGrey">
         <item name="colorPrimary">@color/colorPrimaryBlueGrey</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkBuleGrey</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkBlueGrey</item>
     </style>
 
     <style name="AppTheme.Girl">
@@ -58,7 +58,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
     </style>
 
-    <style name="AppTheme.Bule">
+    <style name="AppTheme.Blue">
         <item name="colorPrimary">@color/colorPrimaryBlue</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkBlue</item>
     </style>

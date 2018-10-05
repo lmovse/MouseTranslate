@@ -1,5 +1,6 @@
 package com.example.jooff.shuyi.main;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -31,8 +33,8 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.collect.CollectFragment;
-import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.common.MyApp;
+import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.ThemeColor;
 import com.example.jooff.shuyi.fragment.AboutFragment;
 import com.example.jooff.shuyi.fragment.SourceFragment;
@@ -51,7 +53,10 @@ import butterknife.OnClick;
 import butterknife.OnItemSelected;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View, OnAppStatusListener {
-    public MainContract.Presenter mPresenter;
+
+    private static final String TAG = "MainActivity";
+
+    private MainContract.Presenter mPresenter;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -106,8 +111,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     // 解决旋转屏幕时报空指针
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSaveInstanceState: ");
     }
 
     @Override
@@ -158,7 +165,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @OnItemSelected(R.id.result_spinner)
     public void onSelected(int position) {
-        // 更新所选目标语言
         String resultLan = getResources().getStringArray(R.array.BDLanguageEN)[position];
         mPresenter.refreshResultLan(resultLan);
     }
@@ -224,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 .setOngoing(true)
                 .setContentIntent(notifyIntent)
                 .setContentTitle(this.getString(R.string.app_name))
-                .setContentText(this.getString(R.string.notifi_name)).build();
+                .setContentText(this.getString(R.string.notify_name)).build();
         manager.notify(1, notification);
     }
 
@@ -262,16 +268,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 setTheme(R.style.AppTheme_Dark);
                 break;
             case ThemeColor.RED:
-                setTheme(R.style.AppTheme_Purple);
+                setTheme(R.style.AppTheme_Red);
                 break;
             case ThemeColor.PINK:
                 setTheme(R.style.AppTheme_Pink);
                 break;
-            case ThemeColor.BULE_GREY:
+            case ThemeColor.BLUE_GREY:
                 setTheme(R.style.AppTheme_BlueGrey);
                 break;
-            case ThemeColor.BULE:
-                setTheme(R.style.AppTheme_Girl);
+            case ThemeColor.BLUE:
+                setTheme(R.style.AppTheme_Blue);
                 break;
             case ThemeColor.GREEN:
                 setTheme(R.style.AppTheme_Green);
@@ -283,10 +289,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 setTheme(R.style.AppTheme_Teal);
                 break;
             case ThemeColor.GIRL:
-                setTheme(R.style.AppTheme_Red);
+                setTheme(R.style.AppTheme_Girl);
                 break;
             case ThemeColor.PURPLE:
-                setTheme(R.style.AppTheme_Bule);
+                setTheme(R.style.AppTheme_Purple);
                 break;
             default:
                 break;
