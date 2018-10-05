@@ -68,6 +68,7 @@ public interface MainContract {
 
         void handleClick();
 
+        void removeAllHistory();
     }
 
 }

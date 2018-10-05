@@ -31,9 +31,8 @@ public class MainTransPresenter implements MainTransContract.Presenter {
     private AppDbRepository mAppDbRepository;
     private MainTransContract.View mView;
 
-    public MainTransPresenter(Bundle bundle
-            , AppDbRepository transSource
-            , MainTransContract.View view) {
+    public MainTransPresenter(Bundle bundle, AppDbRepository transSource,
+                              MainTransContract.View view) {
         transFrom = bundle.getInt(AppPref.ARG_FROM);
         mOriginal = bundle.getString(AppPref.ARG_ORIGINAL);
         mAppDbRepository = transSource;

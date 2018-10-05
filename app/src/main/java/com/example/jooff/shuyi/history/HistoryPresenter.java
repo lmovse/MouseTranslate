@@ -23,7 +23,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void loadData() {
-        ArrayList<History> historys = mHistoryDbSource.getHistorys();
+        ArrayList<History> historys = mHistoryDbSource.getHistories();
         if (!historys.isEmpty()) {
             mHistoryView.showHistory(historys);
         }
@@ -34,19 +34,19 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void collectHistory(int position) {
-        mHistoryDbSource.collectHistory(mHistoryDbSource.getHistorys().get(position));
+        mHistoryDbSource.collectHistory(mHistoryDbSource.getHistories().get(position));
     }
 
     @Override
     public void unCollectHistory(int position) {
-        String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
+        String original = mHistoryDbSource.getHistories().get(position).getOriginal();
         Log.d("取消收藏项", "unCollectHistory: " + original);
         mHistoryDbSource.cancelCollect(original);
     }
 
     @Override
     public void deleteHistoryItem(int position) {
-        String original = mHistoryDbSource.getHistorys().get(position).getOriginal();
+        String original = mHistoryDbSource.getHistories().get(position).getOriginal();
         Log.d("删除项", "deleteHistory: " + original);
         mHistoryDbSource.deleteHistory(original);
         mHistoryView.showHistoryDeleted();
@@ -54,7 +54,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void beginTranslate(int position) {
-        History item = mHistoryDbSource.getHistorys().get(position);
+        History item = mHistoryDbSource.getHistories().get(position);
         String original = item.getOriginal();
         mHistoryView.showTranslate(original);
     }

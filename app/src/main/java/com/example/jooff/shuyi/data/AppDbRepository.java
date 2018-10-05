@@ -20,8 +20,10 @@ import java.util.ArrayList;
  */
 
 public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSource.HistoryDbSource, AppDbSource.CollectDbSource {
+
     private final LocalDbSource mLocalDbSource;
-    public static AppDbRepository instance = null;
+
+    private static AppDbRepository instance = null;
 
     private AppDbRepository(Context context) {
         mLocalDbSource = LocalDbSource.getInstance(context);
@@ -82,13 +84,18 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     }
 
     @Override
-    public ArrayList<History> getHistorys() {
-        return mLocalDbSource.getHistorys();
+    public ArrayList<History> getHistories() {
+        return mLocalDbSource.getHistories();
     }
 
     @Override
     public void deleteHistory(String original) {
         mLocalDbSource.deleteHistory(original);
+    }
+
+    @Override
+    public void deleteAllHistory() {
+        mLocalDbSource.deleteAllHistory();
     }
 
     @Override

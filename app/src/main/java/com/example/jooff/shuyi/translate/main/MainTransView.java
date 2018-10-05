@@ -72,7 +72,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_translate, container, false);
         ButterKnife.bind(this, view);
         mContext = getActivity();

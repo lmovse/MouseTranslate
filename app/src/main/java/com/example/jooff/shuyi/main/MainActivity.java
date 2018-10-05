@@ -11,6 +11,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,7 @@ import com.example.jooff.shuyi.collect.CollectFragment;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.ThemeColor;
+import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.fragment.AboutFragment;
 import com.example.jooff.shuyi.fragment.SourceFragment;
 import com.example.jooff.shuyi.history.HistoryFragment;
@@ -88,7 +90,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter = new MainPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE), this);
+        mPresenter = new MainPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE),
+                this, AppDbRepository.getInstance(this));
         mPresenter.initTheme();
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -149,6 +152,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void onSend(ImageView send) {
         send.startAnimation(AnimationUtil.getScale(this));
         mPresenter.beginTrans(mEditText.getText().toString());
+    }
+
+    @OnClick(R.id.delete_all_history)
+    public void onDeleteAllHistory(ImageView deleteAll) {
+        deleteAll.startAnimation(AnimationUtil.getScale(this));
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setMessage("是否确定删除所有的历史记录？")
+                .setPositiveButton("确定", (dialog, which) -> {
+                    mPresenter.removeAllHistory();
+                    showHistory();
+                    dialog.dismiss();
+                })
+                .setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
+                .create();
+        alertDialog.show();
     }
 
     @OnClick(R.id.original_delete)

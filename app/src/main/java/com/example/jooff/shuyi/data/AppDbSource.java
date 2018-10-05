@@ -31,10 +31,11 @@ public interface AppDbSource {
 
         History getHistory(String original);
 
-        ArrayList<History> getHistorys();
+        ArrayList<History> getHistories();
 
         void deleteHistory(String original);
 
+        void deleteAllHistory();
     }
 
     interface CollectDbSource {

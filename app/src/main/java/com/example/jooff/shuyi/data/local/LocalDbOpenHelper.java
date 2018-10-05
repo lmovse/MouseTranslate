@@ -24,7 +24,7 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
             + AppDbSchema.HistoryTable._ID + " integer" + " primary key autoincrement,"
             + AppDbSchema.HistoryTable.ORIGINAL + " text,"
             + AppDbSchema.HistoryTable.RESULT + " text, "
-            + AppDbSchema.HistoryTable.COLLECTED + " tinyint unsigned default 0" + ")";
+            + AppDbSchema.HistoryTable.COLLECTED + "tinyint unsigned default 0" + ")";
 
     private static final String CREATE_COLLECT = "CREATE TABLE "
             + AppDbSchema.CollectTable.TABLE_NAME + " ("

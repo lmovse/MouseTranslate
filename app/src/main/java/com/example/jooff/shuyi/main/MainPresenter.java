@@ -15,6 +15,7 @@ import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.constant.TransMode;
+import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.util.MD5Format;
 import com.example.jooff.shuyi.util.UTF8Format;
 
@@ -29,22 +30,40 @@ import java.util.regex.Pattern;
  */
 
 public class MainPresenter implements MainContract.Presenter {
+
     private MainContract.View mView;
+
     private SharedPreferences mPref;
+
     private Boolean isDoubleClick;
+
     private Boolean isCopyTrans;
+
     private Boolean isTransMode;
+
     private Boolean isNightMode;
+
     private Boolean isNoteMode;
+
     private String mResultLan;
+
     private int transFrom;
+
     private int colorPrimary;
+
     private int colorPrimaryDark;
+
     private int themeId;
 
-    public MainPresenter(SharedPreferences sharedPreferences, MainContract.View mainView) {
+    private AppDbRepository mAppDbRepository;
+
+    private static final Pattern LETTER_PATTEN = Pattern.compile("[a-zA-Z]+");
+
+    public MainPresenter(SharedPreferences sharedPreferences, MainContract.View mainView,
+                         AppDbRepository appDbRepository) {
         mPref = sharedPreferences;
         mView = mainView;
+        mAppDbRepository = appDbRepository;
         isCopyTrans = mPref.getBoolean(AppPref.ARG_COPY, false);
         isTransMode = mPref.getBoolean(AppPref.ARG_TRANS, false);
         isNightMode = mPref.getBoolean(AppPref.ARG_NIGHT, false);
@@ -158,9 +177,7 @@ public class MainPresenter implements MainContract.Presenter {
                     break;
                 case R.id.source_yiyun:
                     String originalLan, resultLan;
-                    // 设置源语言与目标语言
-                    Pattern p = Pattern.compile("[a-zA-Z]+");
-                    Matcher m = p.matcher(original);
+                    Matcher m = LETTER_PATTEN.matcher(original);
                     if (m.matches()) {
                         originalLan = "en";
                         resultLan = "zh";
@@ -219,6 +236,11 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             }, 2000);
         } else mView.doFinish();
+    }
+
+    @Override
+    public void removeAllHistory() {
+        mAppDbRepository.deleteAllHistory();
     }
 
 }

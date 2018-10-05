@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.jooff.shuyi.constant.TransSource;
-import com.example.jooff.shuyi.data.AppDbSchema;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.Collect;
 import com.example.jooff.shuyi.data.entity.History;
@@ -14,28 +13,29 @@ import com.example.jooff.shuyi.data.entity.Translate;
 
 import java.util.ArrayList;
 
+import static com.example.jooff.shuyi.data.AppDbSchema.CollectTable;
+import static com.example.jooff.shuyi.data.AppDbSchema.HistoryTable;
+
 /**
  * Created by Jooff on 2016/8/14.
  * Tomorrow is a nice day
  */
 
 public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.CollectDbSource, AppDbSource.TranslateDbSource {
-    private static LocalDbSource sLocalDbSource = null;
+
+    private volatile static LocalDbSource sLocalDbSource = null;
+
     private SQLiteDatabase db;
 
-    /**
-     * 构造方法私有化，创建单例类
-     */
+    public static final String DELETE_ALL_HISTORY_SQL = "DELETE FROM " + HistoryTable.TABLE_NAME;
+
     private LocalDbSource(Context context) {
         LocalDbOpenHelper mHelper = new LocalDbOpenHelper(context);
         db = mHelper.getWritableDatabase();
     }
 
-    /**
-     * 获取单例的实例,使用双重校验锁，保证线程安全与速率
-     */
     public static LocalDbSource getInstance(Context context) {
-        if (sLocalDbSource== null) {
+        if (sLocalDbSource == null) {
             synchronized (LocalDbSource.class) {
                 if (sLocalDbSource == null) {
                     sLocalDbSource = new LocalDbSource(context);
@@ -72,46 +72,46 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
     public void saveHistory(History history) {
         if (getHistory(history.getOriginal()) == null) {
             ContentValues values = new ContentValues();
-            values.put(AppDbSchema.HistoryTable.ORIGINAL, history.getOriginal());
-            values.put(AppDbSchema.HistoryTable.RESULT, history.getResult());
-            db.insert(AppDbSchema.HistoryTable.TABLE_NAME, null, values);
+            values.put(HistoryTable.ORIGINAL, history.getOriginal());
+            values.put(HistoryTable.RESULT, history.getResult());
+            db.insert(HistoryTable.TABLE_NAME, null, values);
         } else {
             ContentValues values = new ContentValues();
-            String updateClause = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
+            String updateClause = HistoryTable.ORIGINAL + " == ? ";
             String[] updateArgs = {history.getOriginal()};
-            values.put(AppDbSchema.HistoryTable.RESULT, history.getResult());
-            db.update(AppDbSchema.HistoryTable.TABLE_NAME, values, updateClause, updateArgs);
+            values.put(HistoryTable.RESULT, history.getResult());
+            db.update(HistoryTable.TABLE_NAME, values, updateClause, updateArgs);
         }
     }
 
     @Override
     public void collectHistory(History history) {
         ContentValues values = new ContentValues();
-        values.put(AppDbSchema.CollectTable.ORIGINAL, history.getOriginal());
-        values.put(AppDbSchema.CollectTable.RESULT, history.getResult());
-        db.insert(AppDbSchema.CollectTable.TABLE_NAME, null, values);
+        values.put(CollectTable.ORIGINAL, history.getOriginal());
+        values.put(CollectTable.RESULT, history.getResult());
+        db.insert(CollectTable.TABLE_NAME, null, values);
         Object[] args = {1, history.getOriginal()};
-        db.execSQL("UPDATE " + AppDbSchema.HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
+        db.execSQL("UPDATE " + HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
     }
 
     @Override
     public void cancelCollect(String original) {
         deleteCollect(original);
         Object[] args = {0, original};
-        db.execSQL("UPDATE " + AppDbSchema.HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
+        db.execSQL("UPDATE " + HistoryTable.TABLE_NAME + " SET collected = ? where original = ?", args);
     }
 
     @Override
     public History getHistory(String original) {
         History item = null;
-        String queryLogic = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
+        String queryLogic = HistoryTable.ORIGINAL + " == ? ";
         String[] queryArgs = {original};
-        Cursor cursor = db.query(AppDbSchema.HistoryTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
+        Cursor cursor = db.query(HistoryTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
-            String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-            int collected = cursor.getInt(cursor.getColumnIndex(AppDbSchema.HistoryTable.COLLECTED));
+            String textOriginal = cursor.getString(cursor.getColumnIndex(HistoryTable.ORIGINAL));
+            String textResult = cursor.getString(cursor.getColumnIndex(HistoryTable.RESULT));
+            int collected = cursor.getInt(cursor.getColumnIndex(HistoryTable.COLLECTED));
             item = new History(textOriginal, textResult, collected);
         }
         if (cursor != null) {
@@ -121,14 +121,14 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
     }
 
     @Override
-    public ArrayList<History> getHistorys() {
+    public ArrayList<History> getHistories() {
         ArrayList<History> items = new ArrayList<>();
-        Cursor cursor = db.query(AppDbSchema.HistoryTable.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = db.query(HistoryTable.TABLE_NAME, null, null, null, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String hisOrigin = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.ORIGINAL));
-                String hisResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.HistoryTable.RESULT));
-                int collected = cursor.getInt(cursor.getColumnIndex(AppDbSchema.HistoryTable.COLLECTED));
+                String hisOrigin = cursor.getString(cursor.getColumnIndex(HistoryTable.ORIGINAL));
+                String hisResult = cursor.getString(cursor.getColumnIndex(HistoryTable.RESULT));
+                int collected = cursor.getInt(cursor.getColumnIndex(HistoryTable.COLLECTED));
                 History item = new History(hisOrigin, hisResult, collected);
                 items.add(0, item);
             }
@@ -141,9 +141,14 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
 
     @Override
     public void deleteHistory(String original) {
-        String deleteClause = AppDbSchema.HistoryTable.ORIGINAL + " == ? ";
+        String deleteClause = HistoryTable.ORIGINAL + " == ? ";
         String[] deleteArgs = {original};
-        db.delete(AppDbSchema.HistoryTable.TABLE_NAME, deleteClause, deleteArgs);
+        db.delete(HistoryTable.TABLE_NAME, deleteClause, deleteArgs);
+    }
+
+    @Override
+    public void deleteAllHistory() {
+        db.execSQL(DELETE_ALL_HISTORY_SQL);
     }
 
 //--------------------------------------- Collect Source -------------------------------------------
@@ -151,13 +156,13 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
     @Override
     public Collect getCollect(String original) {
         Collect item = null;
-        String queryLogic = AppDbSchema.CollectTable.ORIGINAL + " == ? ";
+        String queryLogic = CollectTable.ORIGINAL + " == ? ";
         String[] queryArgs = {original};
-        Cursor cursor = db.query(AppDbSchema.CollectTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
+        Cursor cursor = db.query(CollectTable.TABLE_NAME, null, queryLogic, queryArgs, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
-            String textOriginal = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.ORIGINAL));
-            String textResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.RESULT));
+            String textOriginal = cursor.getString(cursor.getColumnIndex(CollectTable.ORIGINAL));
+            String textResult = cursor.getString(cursor.getColumnIndex(CollectTable.RESULT));
             item = new Collect(textOriginal, textResult);
         }
         if (cursor != null) {
@@ -169,11 +174,11 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
     @Override
     public ArrayList<Collect> getCollects() {
         ArrayList<Collect> items = new ArrayList<>();
-        Cursor cursor = db.query(AppDbSchema.CollectTable.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = db.query(CollectTable.TABLE_NAME, null, null, null, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String hisOrigin = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.ORIGINAL));
-                String hisResult = cursor.getString(cursor.getColumnIndex(AppDbSchema.CollectTable.RESULT));
+                String hisOrigin = cursor.getString(cursor.getColumnIndex(CollectTable.ORIGINAL));
+                String hisResult = cursor.getString(cursor.getColumnIndex(CollectTable.RESULT));
                 Collect item = new Collect(hisOrigin, hisResult);
                 items.add(0, item);
             }
@@ -186,9 +191,9 @@ public class LocalDbSource implements AppDbSource.HistoryDbSource, AppDbSource.C
 
     @Override
     public void deleteCollect(String original) {
-        String deleteClause = AppDbSchema.CollectTable.ORIGINAL + " == ? ";
+        String deleteClause = CollectTable.ORIGINAL + " == ? ";
         String[] deleteArgs = {original};
-        db.delete(AppDbSchema.CollectTable.TABLE_NAME, deleteClause, deleteArgs);
+        db.delete(CollectTable.TABLE_NAME, deleteClause, deleteArgs);
     }
 
 }
