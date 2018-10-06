@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -24,12 +25,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
@@ -37,6 +41,7 @@ import com.example.jooff.shuyi.collect.CollectFragment;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.ThemeColor;
+import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.fragment.AboutFragment;
 import com.example.jooff.shuyi.fragment.SourceFragment;
@@ -182,8 +187,15 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @OnItemSelected(R.id.result_spinner)
-    public void onSelected(int position) {
-        String resultLan = getResources().getStringArray(R.array.BDLanguageEN)[position];
+    public void onSelected(AdapterView<?> parent, View p1, int position, long p3) {
+        ((TextView) parent.getChildAt(0)).setTextColor(0xffffffff);
+        String resultLan;
+        int source = mPresenter.getSource();
+        if (source == R.id.source_google) {
+            resultLan = getResources().getStringArray(R.array.GoogleLanguageEN)[position];
+        } else {
+            resultLan = getResources().getStringArray(R.array.BDLanguageEN)[position];
+        }
         mPresenter.refreshResultLan(resultLan);
     }
 
@@ -208,11 +220,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void showSpinner(String lan) {
+    public void showSpinner(String lan, int transFrom) {
         int i, position = 1;
-        String[] resultLanguages = getResources().getStringArray(R.array.BDLanguageEN);
+        String[] resultLanguages = {};
+        if (transFrom == R.id.source_google) {
+            mSpinner.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.GoogleLanguageCN)));
+            resultLanguages = getResources().getStringArray(R.array.GoogleLanguageEN);
+        } else if (transFrom == R.id.source_baidu) {
+            mSpinner.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.BDLanguageCN)));
+            resultLanguages = getResources().getStringArray(R.array.BDLanguageEN);
+        }
         for (i = 0; i < resultLanguages.length; i++) {
-            if (getResources().getStringArray(R.array.BDLanguageEN)[i].equals(lan)) {
+            if (resultLanguages[i].equals(lan)) {
                 position = i;
                 break;
             }
@@ -359,7 +378,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void onSuccess(String original) {
+    public void onSuccess(int transFrom, String original) {
+        if (transFrom == TransSource.FROM_HISTORY) {
+            mEditText.setText(original);
+        }
         mProgressBar.setVisibility(View.GONE);
     }
 

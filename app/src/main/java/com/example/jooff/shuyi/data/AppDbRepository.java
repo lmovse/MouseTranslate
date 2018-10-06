@@ -46,10 +46,10 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
                 mLocalDbSource.getTrans(TransSource.FROM_HISTORY, transUrl, callback);
                 break;
             case R.id.source_jinshan:
-                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSAHN, transUrl, callback);
+                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSHAN, transUrl, callback);
                 break;
             case R.id.source_baidu:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAUDU, transUrl, callback);
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAIDU, transUrl, callback);
                 break;
             case R.id.source_yiyun:
                 RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YIYUN, transUrl, callback);
@@ -59,6 +59,10 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
                 break;
             case R.id.source_youdao:
                 RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, transUrl, callback);
+            case R.id.source_google:
+                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_GOOGLE, transUrl, callback);
+                break;
+            default:
                 break;
         }
     }

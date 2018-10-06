@@ -13,12 +13,14 @@ public class TransSource {
 
     public static final int FROM_YOUDAO = 1;
 
-    public static final int FROM_JINSAHN = 2;
+    public static final int FROM_JINSHAN = 2;
 
-    public static final int FROM_BAUDU = 3;
+    public static final int FROM_BAIDU = 3;
 
     public static final int FROM_YIYUN = 4;
 
     public static final int FROM_SHANBEI = 5;
+
+    public static final int FROM_GOOGLE = 6;
 
 }

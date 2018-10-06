@@ -28,6 +28,15 @@
             android:layout_height="wrap_content"/>
 
         <RadioButton
+            android:id="@+id/source_google"
+            android:layout_marginTop="@dimen/activity_horizontal_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="@string/source_google"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <RadioButton
             android:id="@+id/source_baidu"
             android:layout_marginTop="@dimen/activity_horizontal_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"

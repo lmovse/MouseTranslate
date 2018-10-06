@@ -176,9 +176,9 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     通知主 activity 翻译完成，以便隐藏 progressbar 与显示原文
      */
     @Override
-    public void showCompletedTrans(String original) {
+    public void showCompletedTrans(int transFrom, String original) {
         if (mListener != null) {
-            mListener.onSuccess(original);
+            mListener.onSuccess(transFrom, original);
         }
     }
 

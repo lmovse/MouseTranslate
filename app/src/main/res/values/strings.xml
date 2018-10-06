@@ -33,6 +33,7 @@
     <string name="source_jinshan">金山</string>
     <string name="source_youdao">有道</string>
     <string name="source_baidu">百度</string>
+    <string name="source_google">谷歌</string>
     <string name="source_yiyun">译云</string>
     <string name="source_shanbei">扇贝</string>
 </resources>

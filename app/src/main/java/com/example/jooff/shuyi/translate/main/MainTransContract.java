@@ -28,7 +28,7 @@ public interface MainTransContract {
 
         void showNotSupport();
 
-        void showCompletedTrans(String original);
+        void showCompletedTrans(int transFrom, String original);
 
         void showCopySuccess();
 

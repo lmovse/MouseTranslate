@@ -1,10 +1,12 @@
 package com.example.jooff.shuyi.util;
 
 import com.example.jooff.shuyi.api.ShanBeiTransApi;
+import com.example.jooff.shuyi.common.GsonInstance;
 import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
+import com.example.jooff.shuyi.data.remote.model.GoogleTranslation;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -124,7 +126,7 @@ public class EntityFormat {
         if (!ukPhonetic.equals("")) {
             sTranslate.setUkPhonetic(ukPhonetic);
         }
-        if (original.isEmpty()){
+        if (original.isEmpty()) {
             callback.onError(2);
             clearTrans();
             return;
@@ -210,5 +212,22 @@ public class EntityFormat {
         translate = new ArrayList<>();
     }
 
+    public static void getBeanFromGoogle(String s, AppDbSource.TranslateCallback callback) {
+        GoogleTranslation googleTranslation = GsonInstance.newInstance().fromJson(s,
+                GoogleTranslation.class);
+        if (googleTranslation == null) {
+            callback.onError(1);
+            return;
+        }
+        List<GoogleTranslation.Sentences> sentences = googleTranslation.getSentences();
+        if (sentences == null || sentences.isEmpty()) {
+            callback.onError(1);
+            return;
+        }
+        GoogleTranslation.Sentences basicSentence = sentences.get(0);
+        sTranslate.setQuery(basicSentence.getOrig());
+        sTranslate.setTranslation(basicSentence.getTrans());
+        callback.onResponse(sTranslate);
+    }
 }
 

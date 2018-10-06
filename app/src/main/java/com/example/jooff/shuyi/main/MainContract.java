@@ -16,7 +16,7 @@ public interface MainContract {
 
         void showEmptyInput();
 
-        void showSpinner(String lan);
+        void showSpinner(String lan, int transFrom);
 
         void hideSpinner();
 
@@ -69,6 +69,8 @@ public interface MainContract {
         void handleClick();
 
         void removeAllHistory();
+
+        int getSource();
     }
 
 }

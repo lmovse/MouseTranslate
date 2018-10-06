@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.api.BaiDuTransAPI;
+import com.example.jooff.shuyi.api.GoogleTransApi;
 import com.example.jooff.shuyi.api.JinShanTransApi;
 import com.example.jooff.shuyi.api.ShanBeiTransApi;
 import com.example.jooff.shuyi.api.YiYunTransApi;
@@ -17,6 +18,7 @@ import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.constant.TransMode;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.util.MD5Format;
+import com.example.jooff.shuyi.util.TkUtil;
 import com.example.jooff.shuyi.util.UTF8Format;
 
 import java.util.Timer;
@@ -102,8 +104,8 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             }
         }
-        if (transFrom == R.id.source_baidu) {
-            mView.showSpinner(mResultLan);
+        if (transFrom == R.id.source_baidu || transFrom == R.id.source_google) {
+            mView.showSpinner(mResultLan, transFrom);
         }
         if (isNoteMode) {
             mView.showNotification();
@@ -195,6 +197,12 @@ public class MainPresenter implements MainContract.Presenter {
                 case R.id.source_shanbei:
                     transUrl = ShanBeiTransApi.SHANBEI_SEARCH_URL + UTF8Format.encode(original).replace("\n", "");
                     break;
+                case R.id.source_google:
+                    transUrl = GoogleTransApi.TRANS_URL
+                            + GoogleTransApi.SRC_LANG
+                            + GoogleTransApi.TARGET_LANG + mResultLan
+                            + GoogleTransApi.TK + TkUtil.getTK(original)
+                            + GoogleTransApi.ORIGINAL + UTF8Format.encode(original).replace("\n", "");
                 default:
                     break;
             }
@@ -210,8 +218,8 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void refreshSource(int source) {
         transFrom = source;
-        if (transFrom == R.id.source_baidu) {
-            mView.showSpinner(mResultLan);
+        if (transFrom == R.id.source_baidu || transFrom == R.id.source_google) {
+            mView.showSpinner(mResultLan, transFrom);
         } else {
             mView.hideSpinner();
         }
@@ -241,6 +249,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void removeAllHistory() {
         mAppDbRepository.deleteAllHistory();
+    }
+
+    @Override
+    public int getSource() {
+        return mPref.getInt(AppPref.ARG_FROM, R.id.source_baidu);
     }
 
 }

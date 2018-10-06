@@ -33,13 +33,10 @@ public class SourceFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         mPref = getActivity().getSharedPreferences(AppPref.ARG_NAME, Context.MODE_PRIVATE);
         mSources.check(mPref.getInt(AppPref.ARG_FROM, R.id.source_youdao));
-        mSources.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int sourceId) {
-                OnAppStatusListener mListener = (OnAppStatusListener) getActivity();
-                mListener.onSourceChanged(sourceId);
-                mPref.edit().putInt(AppPref.ARG_FROM, sourceId).apply();
-            }
+        mSources.setOnCheckedChangeListener((group, sourceId) -> {
+            OnAppStatusListener mListener = (OnAppStatusListener) getActivity();
+            mListener.onSourceChanged(sourceId);
+            mPref.edit().putInt(AppPref.ARG_FROM, sourceId).apply();
         });
         return new AlertDialog.Builder(getContext()).setTitle("换源").setView(view).create();
     }

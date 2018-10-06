@@ -11,6 +11,6 @@ public interface OnAppStatusListener {
 
     void onSourceChanged(int source);
 
-    void onSuccess(String original);
+    void onSuccess(int transFrom, String original);
 
 }

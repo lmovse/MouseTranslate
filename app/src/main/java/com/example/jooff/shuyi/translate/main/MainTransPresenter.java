@@ -54,7 +54,7 @@ public class MainTransPresenter implements MainTransContract.Presenter {
                     mView.showError();
                     return;
                 }
-                mView.showCompletedTrans(response.getQuery());
+                mView.showCompletedTrans(transFrom, response.getQuery());
                 if (transFrom != TransSource.FROM_COLLECT && transFrom != TransSource.FROM_HISTORY) {
                     History history = new History(transHolder.getOriginal(), response.getTranslation(), 0);
                     mAppDbRepository.saveHistory(history);
