@@ -7,7 +7,7 @@ android {
         applicationId "com.example.jooff.shuyi"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 13
+        versionCode 14
         versionName "2.6.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
