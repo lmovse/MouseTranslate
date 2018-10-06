@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.main.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
@@ -45,7 +46,8 @@ public class QuickTransView extends AppCompatActivity implements QuickTransContr
         setContentView(R.layout.activity_quick);
         ButterKnife.bind(this);
         initView();
-        mPresenter = new QuickTransPresenter(AppDbRepository.getInstance(this.getApplicationContext()), this);
+        mPresenter = new QuickTransPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE),
+                AppDbRepository.getInstance(this.getApplicationContext()), this);
         mPresenter.loadData();
     }
 
@@ -95,7 +97,7 @@ public class QuickTransView extends AppCompatActivity implements QuickTransContr
     }
 
     @OnClick(R.id.quick_trans_reset)
-    public void showQuikTrans(ImageView delete) {
+    public void showQuickTrans(ImageView delete) {
         mEditText.setText("");
         mEditText.setHint(R.string.et_hint);
         mShareSpeech.setVisibility(View.GONE);

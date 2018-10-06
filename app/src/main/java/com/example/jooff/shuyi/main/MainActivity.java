@@ -228,10 +228,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void showSpinner(String lan, int transFrom) {
         int i, position = 1;
         String[] resultLanguages = {};
-        if (transFrom == R.id.source_google) {
+        if (transFrom == TransSource.FROM_GOOGLE) {
             mSpinner.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.GoogleLanguageCN)));
             resultLanguages = getResources().getStringArray(R.array.GoogleLanguageEN);
-        } else if (transFrom == R.id.source_baidu) {
+        } else if (transFrom == TransSource.FROM_BAIDU) {
             mSpinner.setAdapter(new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getResources().getStringArray(R.array.BDLanguageCN)));
             resultLanguages = getResources().getStringArray(R.array.BDLanguageEN);
         }

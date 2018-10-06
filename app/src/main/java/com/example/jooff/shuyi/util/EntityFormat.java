@@ -224,9 +224,14 @@ public class EntityFormat {
             callback.onError(1);
             return;
         }
-        GoogleTranslation.Sentences basicSentence = sentences.get(0);
-        sTranslate.setQuery(basicSentence.getOrig());
-        sTranslate.setTranslation(basicSentence.getTrans());
+        StringBuilder orig = new StringBuilder();
+        StringBuilder translation = new StringBuilder();
+        for (int i = 0; i < sentences.size() - 1; i++) {
+            orig.append(sentences.get(i).getOrig());
+            translation.append(sentences.get(i).getTrans());
+        }
+        sTranslate.setQuery(orig.toString());
+        sTranslate.setTranslation(translation.toString());
         callback.onResponse(sTranslate);
     }
 }

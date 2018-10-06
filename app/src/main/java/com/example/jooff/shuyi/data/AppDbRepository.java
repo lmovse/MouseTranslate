@@ -2,8 +2,6 @@ package com.example.jooff.shuyi.data;
 
 import android.content.Context;
 
-import com.example.jooff.shuyi.R;
-import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.entity.Collect;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.local.LocalDbSource;
@@ -11,6 +9,15 @@ import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
 import com.example.jooff.shuyi.data.remote.RemoteXmlSource;
 
 import java.util.ArrayList;
+
+import static com.example.jooff.shuyi.constant.TransSource.FROM_BAIDU;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_COLLECT;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_GOOGLE;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_HISTORY;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_JINSHAN;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_SHANBEI;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_YIYUN;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_YOUDAO;
 
 /**
  * Created by Jooff on 2017/1/20.
@@ -39,29 +46,29 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
     @Override
     public void getTrans(int tranFrom, String transUrl, AppDbSource.TranslateCallback callback) {
         switch (tranFrom) {
-            case TransSource.FROM_COLLECT:
-                mLocalDbSource.getTrans(TransSource.FROM_COLLECT, transUrl, callback);
+            case FROM_COLLECT:
+                mLocalDbSource.getTrans(tranFrom, transUrl, callback);
                 break;
-            case TransSource.FROM_HISTORY:
-                mLocalDbSource.getTrans(TransSource.FROM_HISTORY, transUrl, callback);
+            case FROM_HISTORY:
+                mLocalDbSource.getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_jinshan:
-                RemoteXmlSource.getInstance().getTrans(TransSource.FROM_JINSHAN, transUrl, callback);
+            case FROM_JINSHAN:
+                RemoteXmlSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_baidu:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_BAIDU, transUrl, callback);
+            case FROM_BAIDU:
+                RemoteJsonSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_yiyun:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YIYUN, transUrl, callback);
+            case FROM_YIYUN:
+                RemoteJsonSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_shanbei:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_SHANBEI, transUrl, callback);
+            case FROM_SHANBEI:
+                RemoteJsonSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_youdao:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, transUrl, callback);
+            case FROM_YOUDAO:
+                RemoteJsonSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
-            case R.id.source_google:
-                RemoteJsonSource.getInstance().getTrans(TransSource.FROM_GOOGLE, transUrl, callback);
+            case FROM_GOOGLE:
+                RemoteJsonSource.getInstance().getTrans(tranFrom, transUrl, callback);
                 break;
             default:
                 break;

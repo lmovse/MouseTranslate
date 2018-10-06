@@ -1,17 +1,19 @@
 package com.example.jooff.shuyi.translate.copy;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 
-import com.example.jooff.shuyi.api.YouDaoTransAPI;
+import com.example.jooff.shuyi.constant.AppPref;
+import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
-import com.example.jooff.shuyi.util.UTF8Format;
+import com.example.jooff.shuyi.util.TransUrlParser;
 
 import java.io.IOException;
 
@@ -21,14 +23,19 @@ import java.io.IOException;
  */
 
 public class CopyTransPresenter implements CopyTransContract.Presenter {
+
     private CopyTransContract.View mView;
+
     private String original;
+
     private String source;
+
     private AppDbRepository mAppDbRepository;
 
-    public CopyTransPresenter(AppDbRepository transSource
-            , Intent intent
-            , CopyTransContract.View view) {
+    private SharedPreferences sharedPreferences;
+
+    public CopyTransPresenter(SharedPreferences sharedPreferences, AppDbRepository transSource, Intent intent, CopyTransContract.View view) {
+        this.sharedPreferences = sharedPreferences;
         mView = view;
         mAppDbRepository = transSource;
         original = getOriginal(intent);
@@ -36,51 +43,49 @@ public class CopyTransPresenter implements CopyTransContract.Presenter {
 
     @Override
     public void loadData() {
-        String url;
+        String transUrl;
         if (original != null) {
-            url = YouDaoTransAPI.YOUDAO_URL
-                    + YouDaoTransAPI.YOUDAO_ORIGINAL
-                    + UTF8Format.encode(original.replace("\n", ""));
-            RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, url,
+            int transFrom = sharedPreferences.getInt(AppPref.ARG_FROM,
+                    SettingDefault.TRANS_FROM);
+            transUrl = TransUrlParser.getTransUrl(transFrom, original,
+                    sharedPreferences.getString(AppPref.ARG_LAN, "zh-CN"));
+            RemoteJsonSource.getInstance().getTrans(transFrom, transUrl,
                     new AppDbSource.TranslateCallback() {
-                @Override
-                public void onResponse(Translate response) {
-                    String original = response.getQuery();
-                    if (response.getExplains() != null) {
-                        String explain = response.getExplains();
-                        mAppDbRepository.saveHistory(new History(original, explain, 0));
-                        mView.showTrans(original, explain);
-                    } else if (response.getTranslation() != null) {
-                        mView.showTrans(original, response.getTranslation());
-                    }
-                    if (response.getUsSpeech() != null) {
-                        source = response.getUsSpeech();
-                        mView.showSpeechAndPhonetic(response.getUsPhonetic());
-                    }
-                }
+                        @Override
+                        public void onResponse(Translate response) {
+                            String original = response.getQuery();
+                            if (response.getExplains() != null) {
+                                String explain = response.getExplains();
+                                mAppDbRepository.saveHistory(new History(original, explain, 0));
+                                mView.showTrans(original, explain);
+                            } else if (response.getTranslation() != null) {
+                                mView.showTrans(original, response.getTranslation());
+                            }
+                            if (response.getUsSpeech() != null) {
+                                source = response.getUsSpeech();
+                                mView.showSpeechAndPhonetic(response.getUsPhonetic());
+                            }
+                        }
 
-                @Override
-                public void onError(int errorCode) {
-                    mView.showError();
-                }
-            });
+                        @Override
+                        public void onError(int errorCode) {
+                            mView.showError();
+                        }
+                    });
         }
     }
 
     @Override
     public void playSpeech() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MediaPlayer mPlay = new MediaPlayer();
-                try {
-                    mPlay.setDataSource(source);
-                    mPlay.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mPlay.start();
+        new Thread(() -> {
+            MediaPlayer mPlay = new MediaPlayer();
+            try {
+                mPlay.setDataSource(source);
+                mPlay.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            mPlay.start();
         }).start();
     }
 

@@ -1,15 +1,16 @@
 package com.example.jooff.shuyi.translate.quick;
 
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 
-import com.example.jooff.shuyi.api.YouDaoTransAPI;
-import com.example.jooff.shuyi.constant.TransSource;
+import com.example.jooff.shuyi.constant.AppPref;
+import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.AppDbSource;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.entity.Translate;
 import com.example.jooff.shuyi.data.remote.RemoteJsonSource;
-import com.example.jooff.shuyi.util.UTF8Format;
+import com.example.jooff.shuyi.util.TransUrlParser;
 
 import java.io.IOException;
 
@@ -19,25 +20,33 @@ import java.io.IOException;
  */
 
 public class QuickTransPresenter implements QuickTransContract.Presenter {
+
     private QuickTransContract.View mView;
+
     private String mUsSpeech;
+
     private String original;
+
     private AppDbRepository mAppDbRepository;
 
-    public QuickTransPresenter(AppDbRepository transSource
+    private SharedPreferences sharedPreferences;
+
+    public QuickTransPresenter(SharedPreferences sharedPreferences, AppDbRepository transSource
             , QuickTransContract.View view) {
+        this.sharedPreferences = sharedPreferences;
         mView = view;
         mAppDbRepository = transSource;
     }
 
     @Override
     public void loadData() {
-        String url;
+        String transUrl;
         if (original != null) {
-            url = YouDaoTransAPI.YOUDAO_URL
-                    + YouDaoTransAPI.YOUDAO_ORIGINAL
-                    + UTF8Format.encode(original.replace("\n", ""));
-            RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, url,
+            int transFrom = sharedPreferences.getInt(AppPref.ARG_FROM,
+                    SettingDefault.TRANS_FROM);
+            transUrl = TransUrlParser.getTransUrl(transFrom, original,
+                    sharedPreferences.getString(AppPref.ARG_LAN, "zh-CN"));
+            RemoteJsonSource.getInstance().getTrans(transFrom, transUrl,
                     new AppDbSource.TranslateCallback() {
                 @Override
                 public void onResponse(Translate response) {
@@ -71,18 +80,15 @@ public class QuickTransPresenter implements QuickTransContract.Presenter {
 
     @Override
     public void playSpeech() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MediaPlayer mPlay = new MediaPlayer();
-                try {
-                    mPlay.setDataSource(mUsSpeech);
-                    mPlay.prepare();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mPlay.start();
+        new Thread(() -> {
+            MediaPlayer mPlay = new MediaPlayer();
+            try {
+                mPlay.setDataSource(mUsSpeech);
+                mPlay.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+            mPlay.start();
         }).start();
     }
 

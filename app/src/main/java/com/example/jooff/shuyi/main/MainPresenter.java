@@ -6,25 +6,16 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.example.jooff.shuyi.R;
-import com.example.jooff.shuyi.api.BaiDuTransAPI;
-import com.example.jooff.shuyi.api.GoogleTransApi;
-import com.example.jooff.shuyi.api.JinShanTransApi;
-import com.example.jooff.shuyi.api.ShanBeiTransApi;
-import com.example.jooff.shuyi.api.YiYunTransApi;
-import com.example.jooff.shuyi.api.YouDaoTransAPI;
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.SettingDefault;
 import com.example.jooff.shuyi.constant.TransMode;
+import com.example.jooff.shuyi.constant.TransSource;
 import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.util.MD5Format;
-import com.example.jooff.shuyi.util.TkUtil;
-import com.example.jooff.shuyi.util.UTF8Format;
+import com.example.jooff.shuyi.util.TransUrlParser;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Jooff on 2017/1/17.
@@ -59,11 +50,14 @@ public class MainPresenter implements MainContract.Presenter {
 
     private AppDbRepository mAppDbRepository;
 
-    private static final Pattern LETTER_PATTEN = Pattern.compile("[a-zA-Z]+");
-
     public MainPresenter(SharedPreferences sharedPreferences, MainContract.View mainView,
                          AppDbRepository appDbRepository) {
         mPref = sharedPreferences;
+        mPref.registerOnSharedPreferenceChangeListener((spf, key) -> {
+            if (key.equals(AppPref.ARG_FROM)) {
+                transFrom = spf.getInt(AppPref.ARG_FROM, SettingDefault.TRANS_FROM);
+            }
+        });
         mView = mainView;
         mAppDbRepository = appDbRepository;
         isCopyTrans = mPref.getBoolean(AppPref.ARG_COPY, false);
@@ -104,7 +98,7 @@ public class MainPresenter implements MainContract.Presenter {
                 }
             }
         }
-        if (transFrom == R.id.source_baidu || transFrom == R.id.source_google) {
+        if (transFrom == TransSource.FROM_BAIDU|| transFrom == TransSource.FROM_GOOGLE) {
             mView.showSpinner(mResultLan, transFrom);
         }
         if (isNoteMode) {
@@ -154,58 +148,11 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void beginTrans(String original) {
-        String transUrl = "";
+        String transUrl;
         if (TextUtils.isEmpty(original)) {
             mView.showEmptyInput();
         } else {
-            switch (transFrom) {
-                case R.id.source_youdao:
-                    transUrl = YouDaoTransAPI.YOUDAO_URL
-                            + YouDaoTransAPI.YOUDAO_ORIGINAL + UTF8Format.encode(original).replace("\n", "");
-                    break;
-                case R.id.source_jinshan:
-                    transUrl = JinShanTransApi.JINSHAN_URL
-                            + JinShanTransApi.JINSHAN_ORIGINAL + UTF8Format.encode(original).replace("\n", "")
-                            + JinShanTransApi.JINSHAN_KEY;
-                    break;
-                case R.id.source_baidu:
-                    transUrl = BaiDuTransAPI.BAIDU_URL
-                            + BaiDuTransAPI.BAIDU_ORIGINAL + UTF8Format.encode(original).replace("\n", "")
-                            + BaiDuTransAPI.BAIDU_ORIGINAL_LAN
-                            + BaiDuTransAPI.BAIDU_RESULT_LAN + mResultLan
-                            + BaiDuTransAPI.BAIDU_ID
-                            + BaiDuTransAPI.BAIDU_SALT + String.valueOf(1234567899)
-                            + BaiDuTransAPI.BAIDU_SIGN + MD5Format.getMd5(BaiDuTransAPI.BAIDU_ID.substring(7) + original + 1234567899 + BaiDuTransAPI.BAIDU_KEY);
-                    break;
-                case R.id.source_yiyun:
-                    String originalLan, resultLan;
-                    Matcher m = LETTER_PATTEN.matcher(original);
-                    if (m.matches()) {
-                        originalLan = "en";
-                        resultLan = "zh";
-                    } else {
-                        originalLan = "zh";
-                        resultLan = "en";
-                    }
-                    transUrl = YiYunTransApi.YIYUN_URL
-                            + YiYunTransApi.YIYUN_ORIGINAL + UTF8Format.encode(original).replace("\n", "")
-                            + YiYunTransApi.YIYUN_ORIGINAL_LAN + originalLan
-                            + YiYunTransApi.YIYUN_RESULT_LAN + resultLan
-                            + YiYunTransApi.YIYUN_ID
-                            + YiYunTransApi.YIYUN_KEY;
-                    break;
-                case R.id.source_shanbei:
-                    transUrl = ShanBeiTransApi.SHANBEI_SEARCH_URL + UTF8Format.encode(original).replace("\n", "");
-                    break;
-                case R.id.source_google:
-                    transUrl = GoogleTransApi.TRANS_URL
-                            + GoogleTransApi.SRC_LANG
-                            + GoogleTransApi.TARGET_LANG + mResultLan
-                            + GoogleTransApi.TK + TkUtil.getTK(original)
-                            + GoogleTransApi.ORIGINAL + UTF8Format.encode(original).replace("\n", "");
-                default:
-                    break;
-            }
+            transUrl = TransUrlParser.getTransUrl(transFrom, original, mResultLan);
             mView.showTrans(transFrom, original, transUrl);
         }
     }
@@ -218,7 +165,7 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void refreshSource(int source) {
         transFrom = source;
-        if (transFrom == R.id.source_baidu || transFrom == R.id.source_google) {
+        if (transFrom == TransSource.FROM_BAIDU || transFrom == TransSource.FROM_GOOGLE) {
             mView.showSpinner(mResultLan, transFrom);
         } else {
             mView.hideSpinner();
