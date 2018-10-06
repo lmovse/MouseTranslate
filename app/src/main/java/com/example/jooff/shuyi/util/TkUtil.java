@@ -1,33 +1,13 @@
 package com.example.jooff.shuyi.util;
 
-import android.os.AsyncTask;
-import android.util.Log;
-
-import com.example.jooff.shuyi.api.GoogleTransApi;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 
 public class TkUtil {
 
     private static String tkk = null; // 谷歌翻译页面中的验证值
-
-    private static Pattern TKK_PATTERN = Pattern.compile("TKK=(.*);VERSION_LABEL");
 
     private static Random generator = new Random();
 
@@ -130,73 +110,11 @@ public class TkUtil {
 
     /**
      * 获取翻译页面，并且提取界面中的 tkk
-     * 本脚本中，只在第一次使用的时候刷新。在不同的场景中，请设置自己的刷新频率，避免被发现
      */
     private static void setTKK() {
         long a = Math.abs(generator.nextInt());
         long b = generator.nextInt();
         long c = System.currentTimeMillis() / (60 * 60 * 1000);
         tkk = c + "." + (a + b);
-        if (tkk == null) {
-            String translatePage = sendGet(GoogleTransApi.BASE_URL);
-            Matcher matcher = TKK_PATTERN.matcher(translatePage);
-            while (matcher.find()) {
-                tkk = matcher.group(1);
-            }
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine se = manager.getEngineByName("js");
-            try {
-                tkk = (String) se.eval(tkk);
-            } catch (ScriptException e) {
-                Log.e("TKUtil", "setTKK: failed!", e);
-            }
-        }
     }
-
-    public static String sendGet(String httpUrl) {
-        String result = "";
-        AsyncTask<String, Void, String> asyncTask = new AsyncTask<String, Void, String>() {
-            @Override
-            protected String doInBackground(String... strings) {
-                String result = "";
-                BufferedReader reader = null;
-                StringBuilder sbf = new StringBuilder();
-                try {
-                    URL url = new URL(httpUrl);
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setRequestProperty("User-Agent", GoogleTransApi.DEFAULT_USER_AGENT);
-                    urlConnection.connect();
-                    InputStream is = urlConnection.getInputStream();
-                    reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    String strRead;
-                    while ((strRead = reader.readLine()) != null) {
-                        sbf.append(strRead);
-                        sbf.append("\r\n");
-                    }
-                    reader.close();
-                    result = sbf.toString();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                return result;
-            }
-        };
-        try {
-            asyncTask.execute();
-            result = asyncTask.get();
-        } catch (ExecutionException | InterruptedException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
 }

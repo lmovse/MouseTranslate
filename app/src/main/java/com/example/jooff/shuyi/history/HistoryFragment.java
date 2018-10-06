@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -26,7 +27,6 @@ import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.translate.main.MainTransView;
-import com.example.jooff.shuyi.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -68,11 +68,11 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
 
     @Override
     public void initView() {
-        mAdapter = new HistoryRvAdapter(new ArrayList<History>(0), mListener);
+        mAdapter = new HistoryRvAdapter(new ArrayList<>(0), mListener);
         recHistory.setAdapter(mAdapter);
         recHistory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recHistory.setNestedScrollingEnabled(false);
-        recHistory.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        recHistory.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new HistoryRvCallback());
         mItemTouchHelper.attachToRecyclerView(recHistory);
         mPresenter.initTheme();
@@ -169,7 +169,7 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
                     super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                 }
             } else {
-                // 拖动时有系统自己完成
+                // 拖动时由系统自己完成
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
         }
@@ -205,12 +205,9 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
                 holder.collect.setTag(true);
             }
             if (onItemClickListener != null) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int pos = holder.getLayoutPosition();
-                        onItemClickListener.onItemClick(holder.itemView, pos);
-                    }
+                holder.itemView.setOnClickListener(view -> {
+                    int pos = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.itemView, pos);
                 });
             }
         }
@@ -232,10 +229,13 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         }
 
         class historyViewHolder extends RecyclerView.ViewHolder {
+
             @BindView(R.id.item_original)
             TextView textOriginal;
+
             @BindView(R.id.item_result)
             TextView textResult;
+
             @BindView(R.id.collcect)
             ImageView collect;
 
@@ -259,7 +259,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
                 ButterKnife.bind(this, itemView);
             }
         }
-
     }
 
     public interface OnItemClickListener {

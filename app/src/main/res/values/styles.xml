@@ -13,16 +13,9 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
-    <style name="AlertDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="AppTheme.white">
         <item name="android:textColor">@android:color/white</item>
     </style>
-
-    <style name="ToastTheme" parent="@android:style/Theme.NoDisplay"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 

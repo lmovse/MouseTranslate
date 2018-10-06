@@ -59,6 +59,7 @@ public class AppDbRepository implements AppDbSource.TranslateDbSource, AppDbSour
                 break;
             case R.id.source_youdao:
                 RemoteJsonSource.getInstance().getTrans(TransSource.FROM_YOUDAO, transUrl, callback);
+                break;
             case R.id.source_google:
                 RemoteJsonSource.getInstance().getTrans(TransSource.FROM_GOOGLE, transUrl, callback);
                 break;

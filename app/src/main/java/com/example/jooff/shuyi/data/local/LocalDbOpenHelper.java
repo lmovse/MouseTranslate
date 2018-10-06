@@ -24,7 +24,7 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
             + AppDbSchema.HistoryTable._ID + " integer" + " primary key autoincrement,"
             + AppDbSchema.HistoryTable.ORIGINAL + " text,"
             + AppDbSchema.HistoryTable.RESULT + " text, "
-            + AppDbSchema.HistoryTable.COLLECTED + "tinyint unsigned default 0" + ")";
+            + AppDbSchema.HistoryTable.COLLECTED + " tinyint unsigned default 0" + ")";
 
     private static final String CREATE_COLLECT = "CREATE TABLE "
             + AppDbSchema.CollectTable.TABLE_NAME + " ("
@@ -48,7 +48,7 @@ public class LocalDbOpenHelper extends SQLiteOpenHelper {
         if (oldVersion == 1) {
             sqLiteDatabase.execSQL("ALTER TABLE "
                     + AppDbSchema.HistoryTable.TABLE_NAME + " ADD "
-                    + AppDbSchema.HistoryTable.COLLECTED + "tinyint unsigned default 0 ");
+                    + AppDbSchema.HistoryTable.COLLECTED + " tinyint unsigned default 0 ");
             sqLiteDatabase.execSQL("CREATE TABLE "
                     + AppDbSchema.CollectTable.TABLE_NAME + "("
                     + AppDbSchema.CollectTable._ID + " integer" + " primary key autoincrement" + ", "

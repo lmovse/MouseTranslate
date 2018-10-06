@@ -33,7 +33,6 @@
         <item>孟加拉语</item>
         <item>波斯尼亚语</item>
         <item>克罗地亚语</item>
-        <item>捷克语</item>
     </string-array>
 
     <string-array name="GoogleLanguageEN">
@@ -70,7 +69,6 @@
         <item>bn</item>
         <item>bs</item>
         <item>hr</item>
-        <item>cs</item>
     </string-array>
 
 </resources>

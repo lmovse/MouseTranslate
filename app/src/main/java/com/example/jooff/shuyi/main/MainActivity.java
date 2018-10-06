@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void onSuccess(int transFrom, String original) {
-        if (transFrom == TransSource.FROM_HISTORY) {
+        if (transFrom == TransSource.FROM_HISTORY || transFrom == TransSource.FROM_COLLECT) {
             mEditText.setText(original);
         }
         mProgressBar.setVisibility(View.GONE);

@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -25,7 +26,6 @@ import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.data.entity.Collect;
 import com.example.jooff.shuyi.translate.main.MainTransView;
-import com.example.jooff.shuyi.util.DividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -70,7 +70,7 @@ public class CollectFragment extends Fragment implements CollectContract.View {
         recCollect.setAdapter(mAdapter);
         recCollect.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recCollect.setNestedScrollingEnabled(false);
-        recCollect.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        recCollect.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new HistoryRvCallback());
         mItemTouchHelper.attachToRecyclerView(recCollect);
         mPresenter.initTheme();
@@ -196,12 +196,9 @@ public class CollectFragment extends Fragment implements CollectContract.View {
             holder.textOriginal.setText(item.getOriginal());
             holder.textResult.setText(item.getResult());
             if (onItemClickListener != null) {
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int pos = holder.getLayoutPosition();
-                        onItemClickListener.onItemClick(holder.itemView, pos);
-                    }
+                holder.itemView.setOnClickListener(view -> {
+                    int pos = holder.getLayoutPosition();
+                    onItemClickListener.onItemClick(holder.itemView, pos);
                 });
             }
         }

@@ -23,9 +23,9 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void loadData() {
-        ArrayList<History> historys = mHistoryDbSource.getHistories();
-        if (!historys.isEmpty()) {
-            mHistoryView.showHistory(historys);
+        ArrayList<History> histories = mHistoryDbSource.getHistories();
+        if (!histories.isEmpty()) {
+            mHistoryView.showHistory(histories);
         }
     }
 

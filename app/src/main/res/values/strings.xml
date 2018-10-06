@@ -6,14 +6,14 @@
     <string name="result">译文</string>
     <string name="invalid_translate">发生了一些不可描述的错误</string>
     <string name="copy_success">复制成功</string>
-    <string name="give_me_five">见或不见</string>
-    <string name="five">"\n"你见，或者不见我，
+    <string name="give_me_five">评或不评</string>
+    <string name="five">"\n"你评，或者不评我，
                         "\n"我就在那里，
                         "\n"不悲不喜。
                         "\n"你赞，或者不赞我，
                         "\n"赞就在那里，
                         "\n"不增不减。
-                        "\n"来我怀里，
+                        "\n"来酷安给我好评，
                         "\n"或者，
                         "\n"让我住进你的心里。</string>
     <string name="positive">见</string>
