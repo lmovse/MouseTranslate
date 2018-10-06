@@ -7,5 +7,15 @@
         android:orderInCategory="100"
         app:showAsAction="never"
         />
+    <item
+        android:title="@string/item_check_update"
+        android:orderInCategory="200"
+        app:showAsAction="never"
+        />
+    <item
+        android:title="@string/item_feedback"
+        android:orderInCategory="300"
+        app:showAsAction="never"
+        />
 
 </menu>

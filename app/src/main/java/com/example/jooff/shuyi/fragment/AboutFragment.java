@@ -1,7 +1,6 @@
 package com.example.jooff.shuyi.fragment;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,20 +25,15 @@ public class AboutFragment extends DialogFragment {
                 .setCancelable(false)
                 .setTitle(R.string.give_me_five)
                 .setMessage(R.string.five)
-                .setPositiveButton(R.string.positive, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getContext(), R.string.positive_string, Toast.LENGTH_SHORT).show();
-                        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                .setPositiveButton(R.string.positive, (dialogInterface, i) -> {
+                    Toast.makeText(getContext(), R.string.positive_string, Toast.LENGTH_SHORT).show();
+                    Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    try {
                         startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }).setNegativeButton(R.string.negative, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), R.string.negative_string, Toast.LENGTH_SHORT).show();
-                    }
-                }).create();
+                }).setNegativeButton(R.string.negative, (dialog, which) -> Toast.makeText(getContext(), R.string.negative_string, Toast.LENGTH_SHORT).show()).create();
     }
 }

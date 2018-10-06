@@ -66,7 +66,7 @@ public class CollectFragment extends Fragment implements CollectContract.View {
 
     @Override
     public void initView() {
-        mAdapter = new CollectRvAdapter(new ArrayList<Collect>(0), mListener);
+        mAdapter = new CollectRvAdapter(new ArrayList<>(0), mListener);
         recCollect.setAdapter(mAdapter);
         recCollect.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recCollect.setNestedScrollingEnabled(false);

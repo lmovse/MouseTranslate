@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Mouse 翻译</string>
     <string name="item_about">关于</string>
+    <string name="item_check_update">检查更新</string>
+    <string name="item_feedback">意见反馈</string>
     <string name="app_settings">设置</string>
     <string name="et_hint">请输入要翻译的词或句子</string>
     <string name="result">译文</string>
