@@ -18,6 +18,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class JinShanSource extends RemoteSource<String> implements TranslateRemoteSource {
 
     @Override
@@ -35,7 +38,8 @@ public class JinShanSource extends RemoteSource<String> implements TranslateRemo
     @Override
     protected void request(String url, AppDataSource.TranslateCallback callback, Class<String> translationClass) {
         StringRequest request = new StringRequest(Request.Method.GET, url, s -> {
-            Translate translate = parseResult(s, callback);
+            String translation = new String(s.getBytes(ISO_8859_1), UTF_8);
+            Translate translate = parseResult(translation, callback);
             if (translate != null)
                 callback.onResponse(translate);
         }, volleyError -> callback.onError(1));
