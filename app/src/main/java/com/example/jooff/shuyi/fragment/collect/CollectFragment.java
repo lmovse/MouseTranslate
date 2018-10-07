@@ -85,7 +85,6 @@ public class CollectFragment extends Fragment implements CollectContract.View {
         recCollect.addItemDecoration(itemDecoration);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new HistoryRvCallback());
         mItemTouchHelper.attachToRecyclerView(recCollect);
-        mPresenter.initTheme();
         mPresenter.loadData();
     }
 

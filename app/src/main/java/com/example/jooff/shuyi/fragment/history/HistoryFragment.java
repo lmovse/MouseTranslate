@@ -88,7 +88,6 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
         recHistory.addItemDecoration(itemDecoration);
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new HistoryRvCallback());
         mItemTouchHelper.attachToRecyclerView(recHistory);
-        mPresenter.initTheme();
         mPresenter.loadData();
     }
 
