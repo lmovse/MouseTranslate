@@ -19,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -353,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                 setTheme(R.style.AppTheme_Purple);
                 break;
             default:
+                setTheme(R.style.AppTheme_Blue);
                 break;
         }
     }
@@ -420,9 +420,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void initView() {
         mPresenter.initSettings();
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            initKitKatLayout();
-        }
         mPresenter.loadData();
         String original = getIntent().getStringExtra("original");
         if (original != null) {
@@ -446,25 +443,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             public void afterTextChanged(Editable s) {
             }
         });
-    }
-
-    @Override
-    public void initKitKatLayout() {
-        mStatus.setVisibility(View.VISIBLE);
-        CoordinatorLayout.LayoutParams params =
-                (CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams();
-
-        // 设置高度 将输入的整形数值转换为相对应的 dp 值
-        params.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281,
-                this.getResources().getDisplayMetrics());
-        params.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
-        mAppBarLayout.setLayoutParams(params);
-
-        //　设置边距
-        params = (CoordinatorLayout.LayoutParams) mContentFrag.getLayoutParams();
-        params.setMargins(0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 281,
-                this.getResources().getDisplayMetrics()), 0, 0);
-        mContentFrag.setLayoutParams(params);
     }
 
 }

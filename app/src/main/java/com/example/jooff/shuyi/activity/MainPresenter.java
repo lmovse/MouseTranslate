@@ -64,7 +64,7 @@ public class MainPresenter implements MainContract.Presenter {
         isNoteMode = mPref.getBoolean(AppPref.ARG_NOTE, false);
         colorPrimary = mPref.getInt(AppPref.ARG_PRIMARY, Color.parseColor(SettingDefault.COLOR_PRIMARY));
         colorPrimaryDark = mPref.getInt(AppPref.ARG_DARK, Color.parseColor(SettingDefault.COLOR_PRIMARY_DARK));
-        themeId = mPref.getInt(AppPref.ARG_THEME, 0);
+        themeId = mPref.getInt(AppPref.ARG_THEME, SettingDefault.THEME_ID);
         transFrom = mPref.getInt(AppPref.ARG_FROM, SettingDefault.TRANS_FROM);
         mResultLan = mPref.getString(AppPref.ARG_LAN, SettingDefault.RESULT_LAN);
         isDoubleClick = false;

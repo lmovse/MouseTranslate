@@ -7,6 +7,8 @@ package com.example.jooff.shuyi.constant;
 
 public final class SettingDefault {
 
+    public static final int THEME_ID = ThemeColor.BLUE;
+
     private SettingDefault() {
 
     }

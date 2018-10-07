@@ -19,8 +19,9 @@ public abstract class RemoteSource<T> {
         StringRequest request = new StringRequest(Request.Method.GET, url, s -> {
             Gson gson = GsonInstance.newInstance();
             T result = null;
+            System.out.println(s);
             try {
-                result= gson.fromJson(s, translationClass);
+                result = gson.fromJson(s, translationClass);
             } catch (Exception e) {
                 Log.e(TAG, "request: Gson parse error", e);
             }
@@ -30,7 +31,10 @@ public abstract class RemoteSource<T> {
                     callback.onResponse(translate);
                 }
             }
-        }, volleyError -> callback.onError(1));
+        }, volleyError -> {
+            Log.e(TAG, "request: request error", volleyError);
+            callback.onError(1);
+        });
         MyApp.sRequestQueue.add(request);
     }
 

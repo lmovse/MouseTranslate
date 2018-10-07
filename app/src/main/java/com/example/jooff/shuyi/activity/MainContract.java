@@ -32,8 +32,6 @@ public interface MainContract {
 
         void setMaterial(int colorPrimaryDark);
 
-        void initKitKatLayout();
-
         void initTheme(int themeId, int colorPrimary);
 
         void setAppTheme(int colorPrimary, int colorPrimaryDark);

@@ -1,23 +1,24 @@
 package com.example.jooff.shuyi.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.ThemeColor;
-import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import java.util.Objects;
@@ -42,7 +43,8 @@ public class ThemeFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = Objects.requireNonNull(getActivity()).getLayoutInflater().inflate(R.layout.m_dialog_theme, null);
+        LayoutInflater layoutInflater = Objects.requireNonNull(getActivity()).getLayoutInflater();
+        @SuppressLint("InflateParams") View view = layoutInflater.inflate(R.layout.m_dialog_theme, null);
         ButterKnife.bind(this, view);
         mPreferences = getActivity().getSharedPreferences(AppPref.ARG_NAME, Context.MODE_PRIVATE);
         isNightMode = mPreferences.getBoolean(AppPref.ARG_NIGHT, false);
@@ -117,12 +119,8 @@ public class ThemeFragment extends DialogFragment {
         mEditor.putInt(AppPref.ARG_DARK, ContextCompat.getColor(getContext(), colorPrimaryDark));
         mEditor.putInt(AppPref.ARG_THEME, themeId);
         mEditor.apply();
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
-            requireNonNull(getActivity()).overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        } else {
-            AnimationUtil.startActivity(requireNonNull(getActivity()), new Intent(getActivity(), MainActivity.class), color, colorPrimary, 618);
-        }
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        AnimationUtil.startActivity(requireNonNull(getActivity()), intent, color, colorPrimary, 618);
         this.dismiss();
     }
 
