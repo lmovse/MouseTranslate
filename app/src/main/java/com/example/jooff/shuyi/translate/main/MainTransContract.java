@@ -34,6 +34,7 @@ public interface MainTransContract {
 
         void setAppTheme(int color);
 
+        void showDict();
     }
 
     interface Presenter extends BasePresenter {

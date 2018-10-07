@@ -5,7 +5,10 @@ package com.example.jooff.shuyi.constant;
  * Tomorrow is a nice day
  */
 
-public class TransSource {
+public final class TransSource {
+
+    private TransSource() {
+    }
 
     public static final int FROM_COLLECT = -1;
 

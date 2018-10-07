@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.constant.AppPref;
-import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.main.MainActivity;
+import com.example.jooff.shuyi.data.AppDataRepository;
+import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import butterknife.BindView;
@@ -51,7 +51,7 @@ public class CopyTransView extends AppCompatActivity implements CopyTransContrac
         p.alpha = 0.9f;      // 设置本身透明度
         getWindow().setAttributes(p);
         mPresenter = new CopyTransPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE),
-                AppDbRepository.getInstance(this.getApplicationContext()), getIntent(), this);
+                AppDataRepository.getInstance(this.getApplicationContext()), getIntent(), this);
         initView();
         mPresenter.loadData();
     }

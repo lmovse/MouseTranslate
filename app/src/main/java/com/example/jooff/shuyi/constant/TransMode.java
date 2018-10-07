@@ -5,7 +5,11 @@ package com.example.jooff.shuyi.constant;
  * Tomorrow is a nice day
  */
 
-public class TransMode {
+public final class TransMode {
+
+    private TransMode() {
+
+    }
 
     public static final int COPY_TANS = 0;
 

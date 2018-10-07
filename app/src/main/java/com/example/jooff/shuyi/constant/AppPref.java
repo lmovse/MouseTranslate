@@ -5,29 +5,28 @@ package com.example.jooff.shuyi.constant;
  * Tomorrow is a nice day
  */
 
-public interface AppPref {
+public final class AppPref {
 
-    String ARG_COPY = "copyTrans";
+    public static final String ARG_COPY = "copyTrans";
 
-    String ARG_TRANS = "transTrans";
+    public static final String ARG_TRANS = "transTrans";
 
-    String ARG_NIGHT = "nightMode";
+    public static final String ARG_NIGHT = "nightMode";
 
-    String ARG_NOTE = "noteMode";
+    public static final String ARG_NOTE = "noteMode";
 
-    String ARG_PRIMARY = "colorPrimary";
+    public static final String ARG_PRIMARY = "colorPrimary";
 
-    String ARG_DARK = "colorPrimaryDark";
+    public static final String ARG_DARK = "colorPrimaryDark";
 
-    String ARG_FROM = "transFrom";
+    public static final String ARG_FROM = "transFrom";
 
-    String ARG_ORIGINAL = "original";
+    public static final String ARG_ORIGINAL = "original";
 
-    String ARG_LAN = "resultLan";
+    public static final String ARG_LAN = "resultLan";
 
-    String ARG_NAME = "data";
+    public static final String ARG_NAME = "data";
 
-    String ARG_THEME = "themeId";
+    public static final String ARG_THEME = "themeId";
 
-    String ARG_TRANS_URL = "transUrl";
 }

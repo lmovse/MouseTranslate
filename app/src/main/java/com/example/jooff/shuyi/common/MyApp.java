@@ -12,8 +12,11 @@ import com.android.volley.toolbox.Volley;
  */
 
 public class MyApp extends Application{
+
     public static RequestQueue sRequestQueue;
+
     public static boolean sIsNightMode = false;
+
     public static int sColorPrimary = Color.parseColor("#35464e");
 
     @Override

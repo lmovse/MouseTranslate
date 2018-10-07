@@ -3,20 +3,26 @@ package com.example.jooff.shuyi.translate.main;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import com.example.jooff.shuyi.common.MyApp;
 import com.example.jooff.shuyi.constant.AppPref;
-import com.example.jooff.shuyi.constant.TransSource;
-import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.data.AppDbSource;
+import com.example.jooff.shuyi.data.AppDataRepository;
+import com.example.jooff.shuyi.data.AppDataSource.TranslateCallback;
 import com.example.jooff.shuyi.data.entity.History;
 import com.example.jooff.shuyi.data.entity.Translate;
 
 import java.io.IOException;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static com.example.jooff.shuyi.constant.AppPref.ARG_FROM;
+import static com.example.jooff.shuyi.constant.AppPref.ARG_LAN;
+import static com.example.jooff.shuyi.constant.SettingDefault.RESULT_LAN;
+import static com.example.jooff.shuyi.constant.SettingDefault.TRANS_FROM;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_COLLECT;
+import static com.example.jooff.shuyi.constant.TransSource.FROM_HISTORY;
 
 /**
  * Created by Jooff on 2017/1/18.
@@ -29,57 +35,71 @@ public class MainTransPresenter implements MainTransContract.Presenter {
 
     private String mUkSpeech;
 
-    private TransHolder transHolder;
+    private AppDataRepository mAppDbRepository;
 
-    private AppDbRepository mAppDbRepository;
+    private String original;
+
+    private int transFrom;
 
     private MainTransContract.View mView;
 
-    public MainTransPresenter(Bundle bundle, AppDbRepository transSource,
-                              MainTransContract.View view) {
-        transHolder = new TransHolder(bundle.getString(AppPref.ARG_TRANS_URL),
-                bundle.getInt(AppPref.ARG_FROM), bundle.getString(AppPref.ARG_ORIGINAL));
-        mAppDbRepository = transSource;
+    public MainTransPresenter(Bundle bundle, AppDataRepository repository,
+                              MainTransContract.View view, SharedPreferences pref) {
+        transFrom = bundle.getInt(ARG_FROM);
+        original = bundle.getString(AppPref.ARG_ORIGINAL);
         mView = view;
+        mAppDbRepository = repository;
+        mAppDbRepository.setTransFrom(transFrom);
+        mAppDbRepository.setResultLan(pref.getString(ARG_LAN, RESULT_LAN));
+        pref.registerOnSharedPreferenceChangeListener(((sharedPreferences, key) -> {
+            if (key.equals(ARG_FROM)) {
+                mAppDbRepository.setTransFrom(sharedPreferences.getInt(ARG_FROM, TRANS_FROM));
+            } else if (key.equals(ARG_LAN)) {
+                mAppDbRepository.setResultLan(sharedPreferences.getString(ARG_LAN, RESULT_LAN));
+            }
+        }));
     }
 
     @Override
     public void loadData() {
-        final int transFrom = transHolder.getTransFrom();
-        mAppDbRepository.getTrans(transFrom, transHolder.getTransUrl(), new AppDbSource.TranslateCallback() {
-
+        mAppDbRepository.getTrans(mAppDbRepository.getUrl(original), new TranslateCallback() {
             @Override
-            public void onResponse(Translate response) {
-                if (response == null) {
+            public void onResponse(Translate translate) {
+                if (translate == null) {
                     mView.showError();
                     return;
                 }
-                mView.showCompletedTrans(transFrom, response.getQuery());
-                if (transFrom != TransSource.FROM_COLLECT && transFrom != TransSource.FROM_HISTORY) {
-                    History history = new History(transHolder.getOriginal(), response.getTranslation(), 0);
+                mView.showCompletedTrans(transFrom, translate.getQuery());
+                if (transFrom != FROM_COLLECT && transFrom != FROM_HISTORY) {
+                    History history = new History(original, translate.getTranslation(), 0);
                     mAppDbRepository.saveHistory(history);
                 }
-                if (response.getTranslation() != null) {
-                    mView.showResult(response.getTranslation());
+                if (translate.getTranslation() != null) {
+                    mView.showResult(translate.getTranslation());
                 }
-                if (response.getExplains() != null) {
-                    mView.showExplain(response.getExplains());
+                if (translate.getExplains() != null
+                        || translate.getExplainsEn() != null
+                        || translate.getUkPhonetic() != null) {
+                    mView.showDict();
                 }
-                if (response.getExplainsEn() != null) {
-                    mView.showExplainEn(response.getExplainsEn());
+                if (translate.getExplains() != null) {
+                    mView.showExplain(translate.getExplains());
                 }
-                if (response.getUkPhonetic() != null) {
-                    mView.showPhonetic(response.getUsPhonetic(), response.getUkPhonetic());
-                    mUsSpeech = response.getUsSpeech();
-                    mUkSpeech = response.getUkSpeech();
+                if (translate.getExplainsEn() != null) {
+                    mView.showExplainEn(translate.getExplainsEn());
                 }
-                if (response.getOriginal() != null) {
+                if (translate.getUkPhonetic() != null) {
+                    mView.showPhonetic(translate.getUsPhonetic(), translate.getUkPhonetic());
+                    mUsSpeech = translate.getUsSpeech();
+                    mUkSpeech = translate.getUkSpeech();
+                }
+                if (translate.getOriginal() != null) {
                     StringBuilder mWeb = new StringBuilder();
                     mWeb.append("\n");
-                    for (int i = 0; i < response.getOriginal().size(); i++) {
-                        mWeb.append(response.getOriginal().get(i))
+                    for (int i = 0; i < translate.getOriginal().size(); i++) {
+                        mWeb.append(translate.getOriginal().get(i))
                                 .append("\n")
-                                .append(response.getTranslate().get(i))
+                                .append(translate.getTranslate().get(i))
                                 .append("\n")
                                 .append("\n");
                     }
@@ -132,37 +152,10 @@ public class MainTransPresenter implements MainTransContract.Presenter {
 
     @Override
     public void setTextToClip(Context context, String trans) {
-        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboardManager =
+                (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
         ClipData result = ClipData.newPlainText("result", trans);
         clipboardManager.setPrimaryClip(result);
         mView.showCopySuccess();
     }
-
-    static class TransHolder {
-
-        private String transUrl;
-
-        private int transFrom;
-
-        private String original;
-
-        public TransHolder(String transUrl, int transFrom, String original) {
-            this.transUrl = transUrl;
-            this.transFrom = transFrom;
-            this.original = original;
-        }
-
-        public String getTransUrl() {
-            return transUrl;
-        }
-
-        public int getTransFrom() {
-            return transFrom;
-        }
-
-        public String getOriginal() {
-            return original;
-        }
-    }
-
 }

@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.constant.ThemeColor;
-import com.example.jooff.shuyi.main.MainActivity;
+import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import java.util.Objects;

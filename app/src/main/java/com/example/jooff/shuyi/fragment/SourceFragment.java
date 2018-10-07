@@ -63,8 +63,8 @@ public class SourceFragment extends DialogFragment {
         mSources.setOnCheckedChangeListener((group, sourceId) -> {
             OnAppStatusListener mListener = (OnAppStatusListener) getActivity();
             Integer transFrom = idFromMap.get(sourceId);
-            mListener.onSourceChanged(transFrom);
             mPref.edit().putInt(AppPref.ARG_FROM, transFrom).apply();
+            mListener.onSourceChanged(transFrom);
         });
         return new AlertDialog.Builder(getContext()).setTitle("换源").setView(view).create();
     }

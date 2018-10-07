@@ -5,7 +5,11 @@ package com.example.jooff.shuyi.constant;
  * Tomorrow is a nice day
  */
 
-public class ThemeColor {
+public final class ThemeColor {
+
+    private ThemeColor() {
+
+    }
 
     public static final int RED = 0;
 

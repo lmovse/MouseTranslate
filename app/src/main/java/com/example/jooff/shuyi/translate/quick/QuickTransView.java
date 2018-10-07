@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.constant.AppPref;
-import com.example.jooff.shuyi.data.AppDbRepository;
-import com.example.jooff.shuyi.main.MainActivity;
+import com.example.jooff.shuyi.data.AppDataRepository;
+import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import butterknife.BindView;
@@ -47,7 +47,7 @@ public class QuickTransView extends AppCompatActivity implements QuickTransContr
         ButterKnife.bind(this);
         initView();
         mPresenter = new QuickTransPresenter(getSharedPreferences(AppPref.ARG_NAME, MODE_PRIVATE),
-                AppDbRepository.getInstance(this.getApplicationContext()), this);
+                AppDataRepository.getInstance(this.getApplicationContext()), this);
         mPresenter.loadData();
     }
 

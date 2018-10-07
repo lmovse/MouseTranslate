@@ -1,8 +1,10 @@
 package com.example.jooff.shuyi.translate.main;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -15,13 +17,16 @@ import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
 import com.example.jooff.shuyi.constant.AppPref;
+import com.example.jooff.shuyi.data.AppDataRepository;
 import com.example.jooff.shuyi.listener.OnAppStatusListener;
-import com.example.jooff.shuyi.data.AppDbRepository;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.jooff.shuyi.constant.AppPref.ARG_NAME;
 
 
 /**
@@ -30,8 +35,11 @@ import butterknife.OnClick;
  */
 
 public class MainTransView extends Fragment implements MainTransContract.View {
+
     private Context mContext;
+
     private MainTransContract.Presenter mPresenter;
+
     private OnAppStatusListener mListener;
 
     @BindView(R.id.content_trans)
@@ -61,24 +69,26 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     @BindView(R.id.dic_web)
     TextView mWeb;
 
-    public static MainTransView newInstance(int transSource, String original, String transUrl) {
+    public static MainTransView newInstance(int transFrom, String original) {
         Bundle bundle = new Bundle();
-        bundle.putInt(AppPref.ARG_FROM, transSource);
-        bundle.putString(AppPref.ARG_TRANS_URL, transUrl);
         bundle.putString(AppPref.ARG_ORIGINAL, original);
+        bundle.putInt(AppPref.ARG_FROM, transFrom);
         MainTransView fragment = new MainTransView();
         fragment.setArguments(bundle);
         return fragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_translate, container, false);
         ButterKnife.bind(this, view);
         mContext = getActivity();
         mListener = (OnAppStatusListener) mContext;
-        mPresenter = new MainTransPresenter(getArguments(),
-                AppDbRepository.getInstance(getContext().getApplicationContext()), this);
+        AppDataRepository repository = AppDataRepository.getInstance(getContext());
+        SharedPreferences pref = getActivity().getSharedPreferences(ARG_NAME, MODE_PRIVATE);
+        Bundle arguments = getArguments();
+        mPresenter = new MainTransPresenter(arguments, repository, this, pref);
         initView();
         return view;
     }
@@ -151,8 +161,7 @@ public class MainTransView extends Fragment implements MainTransContract.View {
      */
     @Override
     public void showWeb(String web) {
-        mDicCard.setVisibility(View.VISIBLE);
-        mDicCard.startAnimation(AnimationUtil.getAlpha(mContext));
+        mWeb.setVisibility(View.VISIBLE);
         mWeb.setText(web);
     }
 
@@ -190,6 +199,12 @@ public class MainTransView extends Fragment implements MainTransContract.View {
     @Override
     public void setAppTheme(int color) {
         mTransCard.setCardBackgroundColor(color);
+    }
+
+    @Override
+    public void showDict() {
+        mDicCard.setVisibility(View.VISIBLE);
+        mDicCard.startAnimation(AnimationUtil.getAlpha(mContext));
     }
 
     @Override
