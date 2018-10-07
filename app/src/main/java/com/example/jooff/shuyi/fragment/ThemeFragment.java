@@ -51,7 +51,7 @@ public class ThemeFragment extends DialogFragment {
 
     @OnClick({R.id.color_girl,
             R.id.color_pink,
-            R.id.color_bule_grey,
+            R.id.color_blue_grey,
             R.id.color_blue,
             R.id.color_green,
             R.id.color_brown,
@@ -74,7 +74,7 @@ public class ThemeFragment extends DialogFragment {
                 colorPrimaryDark = R.color.colorPrimaryDarkPink;
                 themeId = ThemeColor.PINK;
                 break;
-            case R.id.color_bule_grey:
+            case R.id.color_blue_grey:
                 colorPrimary = R.color.colorPrimaryBlueGrey;
                 colorPrimaryDark = R.color.colorPrimaryDarkBlueGrey;
                 themeId = ThemeColor.BLUE_GREY;

@@ -25,7 +25,7 @@
             android:background="@drawable/shape_color_pink"/>
 
         <Button
-            android:id="@+id/color_bule_grey"
+            android:id="@+id/color_blue_grey"
             android:layout_width="40dp"
             android:layout_height="41dp"
             android:layout_gravity="right"

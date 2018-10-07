@@ -1,6 +1,8 @@
 package com.example.jooff.shuyi.data.entity;
 
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -46,6 +48,7 @@ public class History implements Serializable {
         this.collected = collected;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "History{" +

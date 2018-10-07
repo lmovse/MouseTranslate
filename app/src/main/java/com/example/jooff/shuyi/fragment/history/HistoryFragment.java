@@ -261,10 +261,10 @@ public class HistoryFragment extends Fragment implements HistoryContract.View {
             @BindView(R.id.item_result)
             TextView textResult;
 
-            @BindView(R.id.collcect)
+            @BindView(R.id.collect)
             ImageView collect;
 
-            @OnClick(R.id.collcect)
+            @OnClick(R.id.collect)
             public void show(ImageView collect) {
                 if ((boolean) collect.getTag()) {
                     collect.setImageResource(R.drawable.ic_star_border_black_24dp);

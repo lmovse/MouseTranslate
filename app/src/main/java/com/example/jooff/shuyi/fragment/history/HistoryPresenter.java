@@ -33,9 +33,6 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     }
 
     @Override
-    public void initTheme() {}
-
-    @Override
     public void collectHistory(int position) {
         mHistoryDbSource.collectHistory(mHistoryDbSource.getHistories().get(position));
     }

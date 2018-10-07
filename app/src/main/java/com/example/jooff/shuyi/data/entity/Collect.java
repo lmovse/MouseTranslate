@@ -1,6 +1,8 @@
 package com.example.jooff.shuyi.data.entity;
 
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -28,6 +30,7 @@ public class Collect implements Serializable {
         this.result = result;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Collect{" +

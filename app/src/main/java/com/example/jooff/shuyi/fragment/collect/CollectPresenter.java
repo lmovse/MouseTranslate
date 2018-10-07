@@ -28,9 +28,6 @@ public class CollectPresenter implements CollectContract.Presenter {
     }
 
     @Override
-    public void initTheme() {}
-
-    @Override
     public void deleteCollect(int position) {
         String original = mCollectDbSource.getCollects().get(position).getOriginal();
         mCollectDbSource.deleteCollect(original);

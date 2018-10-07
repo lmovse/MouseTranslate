@@ -29,7 +29,5 @@ public interface CollectContract {
 
         void beginTranslate(int position);
 
-        void initTheme();
-
     }
 }

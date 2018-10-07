@@ -29,8 +29,6 @@ public interface HistoryContract {
 
         void beginTranslate(int position);
 
-        void initTheme();
-
         void collectHistory(int position);
 
         void unCollectHistory(int position);

@@ -1,5 +1,6 @@
 package com.example.jooff.shuyi.translate.copy;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,9 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jooff.shuyi.R;
+import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.constant.AppPref;
 import com.example.jooff.shuyi.data.AppDataRepository;
-import com.example.jooff.shuyi.activity.MainActivity;
 import com.example.jooff.shuyi.util.AnimationUtil;
 
 import butterknife.BindView;
@@ -73,7 +74,7 @@ public class CopyTransView extends AppCompatActivity implements CopyTransContrac
     }
 
     @OnClick(R.id.show_quick)
-    public void showQuikTrans(ImageView quickTrans) {
+    public void showQuickTrans(ImageView quickTrans) {
         quickTrans.startAnimation(AnimationUtil.getScale(this));
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Intent intent = new Intent(this.getString(R.string.share_intent));
@@ -103,6 +104,7 @@ public class CopyTransView extends AppCompatActivity implements CopyTransContrac
         Toast.makeText(this, R.string.invalid_translate, Toast.LENGTH_SHORT).show();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showSpeechAndPhonetic(String phonetic) {
         mPhonetic.setVisibility(View.VISIBLE);

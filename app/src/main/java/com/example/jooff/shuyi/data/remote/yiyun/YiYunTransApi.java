@@ -5,6 +5,7 @@ package com.example.jooff.shuyi.data.remote.yiyun;
  * Tomorrow is a nice day
  */
 
+@SuppressWarnings("SpellCheckingInspection")
 public class YiYunTransApi {
 
     public static final String YIYUN_URL = "http://api.yeekit.com/dotranslate.php";

@@ -5,6 +5,7 @@ package com.example.jooff.shuyi.data.remote.baidu;
  * Tomorrow is a nice day
  */
 
+@SuppressWarnings("SpellCheckingInspection")
 public class BaiDuTransAPI {
 
     public static final String BAIDU_RESULT_LAN = "&to=";
