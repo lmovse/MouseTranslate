@@ -42,6 +42,8 @@ public class AppDataRepository implements AppDataSource.TranslateRemoteSource, A
     private volatile static AppDataRepository instance = null;
 
     public void setTransFrom(int transFrom) {
+        ((LocalSource) sourceMap.get(FROM_COLLECT)).setTransFrom(transFrom);
+        ((LocalSource) sourceMap.get(FROM_HISTORY)).setTransFrom(transFrom);
         this.transFrom = transFrom;
     }
 
