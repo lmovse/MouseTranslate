@@ -8,7 +8,7 @@ import com.example.jooff.shuyi.base.BaseView;
  * Tomorrow is a nice day
  */
 
-public class SettingsContract {
+public interface SettingsContract {
 
     interface View extends BaseView{
 

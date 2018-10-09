@@ -13,7 +13,9 @@ import static com.example.jooff.shuyi.constant.AppPref.ARG_TRANS;
  */
 
 public class SettingsPresenter implements SettingsContract.Presenter {
+
     private SettingsContract.View mView;
+
     private SharedPreferences mPref;
 
     public SettingsPresenter(SharedPreferences sharedPreferences, SettingsContract.View settingsView) {
@@ -23,10 +25,10 @@ public class SettingsPresenter implements SettingsContract.Presenter {
 
     @Override
     public void loadData() {
-        boolean[] mSettings = {mPref.getBoolean(ARG_COPY, false)
-                , mPref.getBoolean(ARG_TRANS, false)
-                , mPref.getBoolean(ARG_NIGHT, false)
-                , mPref.getBoolean(ARG_NOTE, false)};
+        boolean[] mSettings = {mPref.getBoolean(ARG_COPY, false),
+                mPref.getBoolean(ARG_TRANS, false),
+                mPref.getBoolean(ARG_NIGHT, false),
+                mPref.getBoolean(ARG_NOTE, false)};
         mView.showSettings(mSettings);
     }
 

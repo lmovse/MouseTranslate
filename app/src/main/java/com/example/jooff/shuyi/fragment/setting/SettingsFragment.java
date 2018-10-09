@@ -1,5 +1,6 @@
 package com.example.jooff.shuyi.fragment.setting;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SwitchCompat;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 
@@ -25,7 +27,9 @@ import butterknife.OnClick;
  */
 
 public class SettingsFragment extends DialogFragment implements SettingsContract.View, CompoundButton.OnCheckedChangeListener {
+
     private SettingsContract.Presenter mPresenter;
+
     private OnAppStatusListener mListener;
 
     @BindView(R.id.copy_trans)
@@ -50,7 +54,8 @@ public class SettingsFragment extends DialogFragment implements SettingsContract
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        View view = getActivity().getLayoutInflater().inflate(R.layout.m_dialog_setting, null);
+        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+        @SuppressLint("InflateParams") View view = layoutInflater.inflate(R.layout.m_dialog_setting, null);
         ButterKnife.bind(this, view);
         mPresenter = new SettingsPresenter(getActivity().getSharedPreferences(AppPref.ARG_NAME, Context.MODE_PRIVATE), this);
         initView();
@@ -92,10 +97,8 @@ public class SettingsFragment extends DialogFragment implements SettingsContract
     @Override
     public void onStop() {
         super.onStop();
-        boolean[] settings = {copyTrans.isChecked()
-                , transMode.isChecked()
-                , nightMode.isChecked()
-                , noteMode.isChecked()};
+        boolean[] settings = {copyTrans.isChecked(), transMode.isChecked(),
+                nightMode.isChecked(), noteMode.isChecked()};
         mPresenter.saveSettings(settings);
     }
 

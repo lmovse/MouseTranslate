@@ -11,7 +11,9 @@ import java.util.ArrayList;
  */
 
 public class CollectPresenter implements CollectContract.Presenter {
+
     private AppDataSource.CollectDbSource mCollectDbSource;
+
     private CollectContract.View mCollectView;
 
     public CollectPresenter(AppDataSource.CollectDbSource collectDbSource, CollectContract.View collectView) {
